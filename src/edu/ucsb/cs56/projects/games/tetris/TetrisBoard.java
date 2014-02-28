@@ -61,7 +61,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	timer = new Timer(timerdelay,this);
 	timer.start();
 	
-	this.setPreferredSize(new Dimension(155,250));
+	this.setPreferredSize(new Dimension(208,434));
 	this.setBackground(Color.WHITE);
 	
 	//if(this.canMoveDown() == true) 
@@ -144,7 +144,8 @@ public class TetrisBoard extends JPanel implements ActionListener {
     public void putBlock(Block block){
 	
 	//int [][] theBlock = block.getBlock();
-	
+	//int k = (int)(Math.random() * MAX_COL);
+
 	BlockPosX = 5;
 	BlockPosY = 0;
 	int posX = 5;
@@ -446,11 +447,11 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	    for(int col = 0; col <MAX_COL; col++){
 		if(board[row][col] == 1){
 		    gr.setColor(getColor(color[row][col]));
-		    gr.fillRect(10*col,10*row,10,10);
+		    gr.fillRect(20*col,20*row,20,20);
 		}
 		else{
 		    gr.setColor(Color.WHITE);
-		    gr.fillRect(10*col,10*row,10,10);
+		    gr.fillRect(20*col,20*row,20,20);
 		}
 	    
 	    }
@@ -499,7 +500,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
 		TetrisBoard b = new TetrisBoard();
 		window.add(b);
-		window.setSize(150,300);
+		window.setSize(212,432);
 		window.setVisible(true);
 
 
