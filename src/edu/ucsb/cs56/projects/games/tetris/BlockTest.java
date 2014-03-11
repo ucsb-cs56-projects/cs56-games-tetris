@@ -1,4 +1,4 @@
-package edu.ucsb.cs56.S11.j_lee03.Jinouk;
+package edu.ucsb.cs56.projects.games.tetris;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 

@@ -15,7 +15,7 @@
   <property name="projectPath" value="${course}/${quarter}/issues/${ticketNum}"/>
   <property name="javadocDest" value="${webRoot}/${projectPath}/javadoc"/>
   <property name="javadocURL" value="${webBaseUrl}/${projectPath}/javadoc"/>
-  <property name="mainClass" value="edu.ucsb.cs56.S11.j_lee03.Jinouk.TetrisBoard"/>
+  <property name="mainClass" value="edu.ucsb.cs56.projects.games.tetris.TetrisBoard"/>
 
 
 
