@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.*;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -32,6 +33,8 @@ public class TetrisBoard extends JPanel implements ActionListener {
     Block BlockInControl;
     Color BlockColor;
     int whichType;
+    static JLabel statusBar;
+    int score = 0;
 
     private final int MAX_COL = 10;
     private final int MAX_ROW = 20;
@@ -60,12 +63,12 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	timerdelay = 400;
 	timer = new Timer(timerdelay,this);
 	timer.start();
-	
-	this.setPreferredSize(new Dimension(208,434));
+
+	this.setPreferredSize(new Dimension(205,460));
 	this.setBackground(Color.WHITE);
-	
+
 	//if(this.canMoveDown() == true) 
-	    addKeyListener(new TAdapter());
+	addKeyListener(new TAdapter());
     }
     
     public void actionPerformed(ActionEvent e) {
@@ -117,7 +120,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 		this.deleteRows();
 	    }
 	this.repaint();
-	
+
     }
     
     public int getBlockPosX(){
@@ -142,7 +145,8 @@ public class TetrisBoard extends JPanel implements ActionListener {
     }
 
     public void putBlock(Block block){
-	
+	score++;
+	statusBar.setText("SCORE = " + String.valueOf(score));
 	//int [][] theBlock = block.getBlock();
 	//int k = (int)(Math.random() * MAX_COL);
 
@@ -157,16 +161,18 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	    if(board[posY+1][i] == 1)
 	        x = 1;
 	}
-	if(x==1)
+	if(x==1){
 	    this.clearBoard();
-	
+	    score = 0;
+	}
+
 
 	for(int r=0;r<4;r++){
 	    for(int c=0;c<4;c++){
 		if(block.getRowCol(r,c) == 1)
 		    {
 			board[posY][posX]=1;
-			
+
 			switch(whichType){
 			case 1: color[posY][posX] = 1;
 			    break;
@@ -184,7 +190,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 			    break;
 			}
 		    }
-		
+
 		posX++;
 	    }
 	    posY++;
@@ -414,6 +420,10 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	}
 	for (int col = 0; col < MAX_COL; col++)
 	    board[0][col] = 0;
+	if(rowtobedeleted != 0){
+	    score = score + 10;
+	    statusBar.setText("SCORE = " + String.valueOf(score));
+	}
     }
 
     public Color getColor(int x){
@@ -436,9 +446,9 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	}
 	return BlockColor;
     }
-	
-		
-		
+
+
+
 
     public void paint(Graphics gr)
     {
@@ -453,16 +463,30 @@ public class TetrisBoard extends JPanel implements ActionListener {
 		    gr.setColor(Color.WHITE);
 		    gr.fillRect(20*col,20*row,20,20);
 		}
-	    
+
 	    }
 	}
     }
+
+    private void pause()
+    {	
+	isPaused = !isPaused;
+	if (isPaused) {
+	    timer.stop();
+            statusBar.setText("GAME PAUSED");
+	} else {
+	    timer.start();
+	    statusBar.setText("SCORE = " + String.valueOf(score));
+	}
+	repaint();
+    }
+    
     
     class TAdapter extends KeyAdapter {
          public void keyPressed(KeyEvent e) {
-	     
+
              int keycode = e.getKeyCode();
-	     /*
+	     
              if (keycode == 'p' || keycode == 'P') {
                  pause();
                  return;
@@ -470,7 +494,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	     
              if (isPaused)
                  return;
-	     */
+	     
              switch (keycode) {
              case KeyEvent.VK_LEFT:
                  moveLeft();
@@ -486,73 +510,19 @@ public class TetrisBoard extends JPanel implements ActionListener {
          }
     }
 
-
-
-
-
-
-
 	public static void main(String [] args){
 
 	    JFrame window = new JFrame("TETRIS");
-	    
+
 	    window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+	    statusBar = new JLabel("SCORE = 0");
+	    window.getContentPane().add(BorderLayout.SOUTH, statusBar);
 
-		TetrisBoard b = new TetrisBoard();
-		window.add(b);
-		window.setSize(212,432);
-		window.setVisible(true);
-
-
-		/*
-
-		b.putBlock(t3,4,9);
-		//b.drop();
-		b.updateBoard();
-		b.moveDown();
-		b.moveDown();
-		b.moveDown();
-		b.moveDown();
-		b.moveDown();
-		b.moveDown();
-		b.moveDown();
-		b.moveDown();
-		b.moveDown();b.moveDown();
-		b.moveDown();
-		b.moveDown();
-		b.moveDown();
-		b.moveDown();
-		b.moveDown();b.moveDown();
-		b.moveDown();
-		b.moveDown();
-		b.moveDown();
-		b.updateBoard;();
-		b.moveRight();
-		b.moveRight();
-		b.moveRight();
-		b.moveRight();
-		b.moveRight();
-
-		b.updateBoard();
-		b.moveLeft();
-		b.moveLeft();
-		b.moveLeft();
-		b.moveLeft();
-		b.moveLeft();
-		b.moveLeft();
-		b.moveLeft();
-		b.moveLeft();
-		b.updateBoard();
-		b.putBlock(t2,4,0);
-		b.updateBoard();
-		b.moveDown();
-		b.moveDown();
-		b.moveLeft();
-		b.moveRight();
-		b.moveRight();
-		b.updateBoard();
-		*/
+	    TetrisBoard b = new TetrisBoard();
+	    window.add(b);
+	    window.setSize(205,460);
+	    window.setVisible(true);
+	    
 	}
 
     }
-
