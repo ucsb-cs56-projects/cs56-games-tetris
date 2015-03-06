@@ -19,7 +19,7 @@ public class BoardTest{
 
     */
 
-    @Test public void testBoolFunc(){
+    /*@Test public void testBoolFunc(){
 
 	TetrisBoard tb = new TetrisBoard();
 	
@@ -47,7 +47,7 @@ public class BoardTest{
 	    tb.moveLeft();
 
 	assertEquals(false,tb.canMoveLeft());
-    }
+    }*/
 
     /**
 
@@ -56,7 +56,7 @@ public class BoardTest{
        Test with their position
     */
 
-    @Test public void testBlockMove(){
+    /*@Test public void testBlockMove(){
 
 	TetrisBoard tb = new TetrisBoard();
 	Type3 t3 =  new Type3();
@@ -81,7 +81,7 @@ public class BoardTest{
 	tb.drop();
 	assertEquals(26,tb.getBlockPosY());
 
-    }
+    }*/
 
 }
 
