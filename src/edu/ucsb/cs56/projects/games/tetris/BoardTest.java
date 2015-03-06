@@ -25,7 +25,9 @@ public class BoardTest{
 	
 	Type2 t2 = new Type2();
 	
-	tb.putBlock(t2, 4, 4);
+	tb.putBlock(t2);
+	tb.BlockPosX = 4;
+	tb.BlockPosY = 4;
 	assertEquals(true,tb.canMoveDown());
 	tb.moveRight();
 	tb.moveRight();
@@ -59,7 +61,9 @@ public class BoardTest{
 	TetrisBoard tb = new TetrisBoard();
 	Type3 t3 =  new Type3();
 
-	tb.putBlock(t3,4,9);
+	tb.putBlock(t3);
+	tb.BlockPosX = 4;
+	tb.BlockPosY = 9;
 	assertEquals(4,tb.getBlockPosX());
 	assertEquals(9,tb.getBlockPosY());
 
