@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.Timer;
 import javax.swing.JFrame;
+import javax.swing.JTextArea;
 
 
 import java.util.Arrays;
@@ -35,7 +36,11 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	private JButton PauseButton;
 	private JButton MusicButton;
 	private JButton StartButton;
+	private JButton UnpauseButton;
+	
+	private JTextArea textArea;
 
+	static JFrame window;
 	static JPanel RulePanel;
 	static JPanel StartMenu;
 
@@ -101,11 +106,11 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	   RulePanel =  new JPanel();
 	   
 	   RulePanel.setBackground(Color.LIGHT_GRAY);
-	   RulePanel.setLayout(new GridLayout(4,1,200,50));
+	   RulePanel.setLayout(new GridLayout(5,1,0,10));
 	   
 	   MainMenuButton = new JButton();
 	   MainMenuButton.setFocusable(false);
-	   MainMenuButton.setPreferredSize(new Dimension(40,10));
+	   MainMenuButton.setSize(1,1);
 	   MainMenuButton.setText("Main Menu");
 	   MainMenuButton.addActionListener(new SideButtons());
 	   RulePanel.add(MainMenuButton);
@@ -124,12 +129,21 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	   RulesButton.addActionListener(new SideButtons());
 	   RulePanel.add(RulesButton);
 
-	   
+	   UnpauseButton = new JButton();
+	   UnpauseButton.setFocusable(false);
+	   UnpauseButton.setText("Resume Game");
+	   UnpauseButton.addActionListener(new SideButtons());
+	   RulePanel.add(UnpauseButton);
+	   UnpauseButton.setVisible(false);
+
+
 	   MusicButton = new JButton();
 	   MusicButton.setFocusable(false);
 	   MusicButton.setText("Music on/off");
 	   MusicButton.addActionListener(new SideButtons());
 	   RulePanel.add(MusicButton);
+
+	   
 
     }
 
@@ -139,11 +153,33 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
     		if(e.getSource() == RulesButton)
 		   	{
+		   		
+
+		   		textArea = new JTextArea("HEY WAHTS UP");
+
+		   		window.add(textArea);
+		   		window.setVisible(true);
+
+		   		UnpauseButton.setVisible(true);
+		   		MainMenuButton.setVisible(false);
+		   		PauseButton.setVisible(false);
+		   		RulesButton.setVisible(false);
 		   		pause();
 		   	}
+		   	else if(e.getSource() == UnpauseButton)
+		   	{
+		   		pause();
+		   		UnpauseButton.setVisible(false);
+		   		MainMenuButton.setVisible(true);
+		   		PauseButton.setVisible(true);
+		   		RulesButton.setVisible(true);
+		   		window.remove(textArea);
+
+		   	} 
 		   	else if(e.getSource() == PauseButton)
 		   	{
 		   		pause();
+		   		
 		   	}
 		   	else if (e.getSource() == MusicButton){ 
 
@@ -638,7 +674,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
 	public static void main(String [] args){
 
-	    JFrame window;
+	    
 	    window = new JFrame("TETRIS");
 	    
 	    window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
@@ -649,7 +685,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	    window.add(BorderLayout.EAST, RulePanel);
 		
 	   
-	    window.setSize(330,527);
+	    window.setSize(350,527);
 	    window.setVisible(true);
 	    
 	}
