@@ -30,10 +30,13 @@ import java.awt.Point;
 
 public class TetrisBoard extends JPanel implements ActionListener {
 
-	private JButton Rules;
-	private JButton Music;
+	private JButton RestartButton;
+	private JButton RulesButton;
+	private JButton PauseButton;
+	private JButton MusicButton;
+	private JButton StartButton;
 	static JPanel RulePanel;
-	static
+	static JPanel StartMenu;
 
     Block BlockInControl;
     Color BlockColor;
@@ -62,30 +65,71 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	    }
     	}
 		this.setFocusable(true);
-	
+
+	//MainMenu();
+
+	InGameButtons();
+	beginGame();
+
+    }
+
+    public void MainMenu() {
+    	//jpanel is called startmenu
+    	//startbutton is your button for start
+
+    	
+    	StartButton.addActionListener(new MainMenuButtons());
+
+
+    }
+
+    private class MainMenuButtons implements ActionListener{
+
+    	public void actionPerformed(ActionEvent e) {
+    		if(e.getSource() == StartButton) {
+    			//beginGame();
+    			//InGameButtons();
+    			//hide this jpanel?
+    		}
+    	}
+
+    }
+
+    public void InGameButtons() {
+
 
 	   RulePanel =  new JPanel();
 	   
 	   RulePanel.setBackground(Color.LIGHT_GRAY);
 	   RulePanel.setLayout(new GridLayout(4,1,200,50));
 	   
-	   Rules = new JButton();
-	   Rules.setFocusable(false);
-	   Rules.setText("Rules/Pause");
-	   Rules.addActionListener(new SideButtons());
-	   RulePanel.add(Rules);
+	   RestartButton = new JButton();
+	   RestartButton.setFocusable(false);
+	   RestartButton.setPreferredSize(new Dimension(40,10));
+	   RestartButton.setText("Main Menu");
+	   RestartButton.addActionListener(new SideButtons());
+	   RulePanel.add(RestartButton);
+
+	   PauseButton = new JButton();
+	   PauseButton.setFocusable(false);
+	   PauseButton.setPreferredSize(new Dimension(40,40));
+	   PauseButton.setText("Pause");
+	   PauseButton.addActionListener(new SideButtons());
+	   RulePanel.add(PauseButton);
+
+	   RulesButton = new JButton();
+	   RulesButton.setFocusable(false);
+	   RulesButton.setPreferredSize(new Dimension(40,40));
+	   RulesButton.setText("Rules\n");
+	   RulesButton.addActionListener(new SideButtons());
+	   RulePanel.add(RulesButton);
 
 	   
-	   Music = new JButton();
-	   Music.setFocusable(false);
-	   Music.setText("Music on/off");
-	   Music.addActionListener(new SideButtons());
-	   RulePanel.add(Music);
-
-
-
-
-	beginGame();
+	   MusicButton = new JButton();
+	   MusicButton.setFocusable(false);
+	   MusicButton.setText("Music on/off");
+	   MusicButton.addActionListener(new SideButtons());
+	   RulePanel.add(MusicButton);
 
     }
 
@@ -93,13 +137,20 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
     	public void actionPerformed(ActionEvent e) {
 
-    		if(e.getSource() == Rules)
+    		if(e.getSource() == RulesButton)
 		   	{
 		   		pause();
 		   	}
-		   	else if (e.getSource() == Music){ 
+		   	else if(e.getSource() == PauseButton)
+		   	{
+		   		pause();
+		   	}
+		   	else if (e.getSource() == MusicButton){ 
 
-		   		;
+		   		isFallingFinished = true;
+		   	}
+		   	else if (e.getSource() == RestartButton) {
+		   		//Mainmenu()
 		   	}
 
 
@@ -457,7 +508,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 			BlockPosY++;
 		}
 		else
-		    isFallingFinished=true;;
+		    isFallingFinished=true;
 
 	}
 
@@ -596,13 +647,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	    window.add(BorderLayout.EAST, RulePanel);
 		
 	   
-	    
-
-
-
-	    //MenuButtons m = new MenuButtons();
-	    //window.add(BorderLayout.EAST,m);
-	    window.setSize(295,530);
+	    window.setSize(320,530);
 	    window.setVisible(true);
 	    
 	}
