@@ -30,11 +30,12 @@ import java.awt.Point;
 
 public class TetrisBoard extends JPanel implements ActionListener {
 
-	private JButton RestartButton;
+	private JButton MainMenuButton;
 	private JButton RulesButton;
 	private JButton PauseButton;
 	private JButton MusicButton;
 	private JButton StartButton;
+
 	static JPanel RulePanel;
 	static JPanel StartMenu;
 
@@ -97,18 +98,17 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
     public void InGameButtons() {
 
-
 	   RulePanel =  new JPanel();
 	   
 	   RulePanel.setBackground(Color.LIGHT_GRAY);
 	   RulePanel.setLayout(new GridLayout(4,1,200,50));
 	   
-	   RestartButton = new JButton();
-	   RestartButton.setFocusable(false);
-	   RestartButton.setPreferredSize(new Dimension(40,10));
-	   RestartButton.setText("Main Menu");
-	   RestartButton.addActionListener(new SideButtons());
-	   RulePanel.add(RestartButton);
+	   MainMenuButton = new JButton();
+	   MainMenuButton.setFocusable(false);
+	   MainMenuButton.setPreferredSize(new Dimension(40,10));
+	   MainMenuButton.setText("Main Menu");
+	   MainMenuButton.addActionListener(new SideButtons());
+	   RulePanel.add(MainMenuButton);
 
 	   PauseButton = new JButton();
 	   PauseButton.setFocusable(false);
@@ -147,9 +147,9 @@ public class TetrisBoard extends JPanel implements ActionListener {
 		   	}
 		   	else if (e.getSource() == MusicButton){ 
 
-		   		isFallingFinished = true;
+		   		//rowtobedeleted = MAX_ROW;
 		   	}
-		   	else if (e.getSource() == RestartButton) {
+		   	else if (e.getSource() == MainMenuButton) {
 		   		//Mainmenu()
 		   	}
 
@@ -175,7 +175,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	timer = new Timer(timerdelay,this);
 	timer.start();
 
-	this.setPreferredSize(new Dimension(205,460));
+	//this.setPreferredSize(new Dimension(205,460));
 	this.setBackground(Color.WHITE);
 
 
@@ -592,9 +592,11 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	isPaused = !isPaused;
 	if (isPaused) {
 	    timer.stop();
-            statusBar.setText("GAME PAUSED");
+	    PauseButton.setText("Resume");
+        statusBar.setText("GAME PAUSED");
 	} else {
 	    timer.start();
+	    PauseButton.setText("Pause");
 	    statusBar.setText("SCORE = " + String.valueOf(score));
 	}
 	repaint();
@@ -647,7 +649,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	    window.add(BorderLayout.EAST, RulePanel);
 		
 	   
-	    window.setSize(320,530);
+	    window.setSize(330,527);
 	    window.setVisible(true);
 	    
 	}
