@@ -10,6 +10,7 @@ import java.awt.*;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JButton;
 import javax.swing.Timer;
 import javax.swing.JFrame;
 
@@ -29,7 +30,7 @@ import java.awt.Point;
 
 public class TetrisBoard extends JPanel implements ActionListener {
 
-
+    
     Block BlockInControl;
     Color BlockColor;
     int whichType;
@@ -37,7 +38,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
     int score = 0;
 
     private final int MAX_COL = 10;
-    private final int MAX_ROW = 20;
+    private final int MAX_ROW = 24;
     private int[][] board = new int[MAX_ROW][MAX_COL];
     private int[][] color = new int[MAX_ROW][MAX_COL];
     
@@ -57,6 +58,32 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	    }
     	}
 	this.setFocusable(true);
+	
+
+	JButton Start = new JButton();
+	Start.setText("Start");
+	Start.addActionListener(new StartGame());
+	this.add(Start,BorderLayout.LINE_START);
+
+    }
+
+
+    private class StartGame implements ActionListener {
+	
+	public void actionPerformed(ActionEvent event)
+	{
+	    beginGame();
+	}
+
+    }
+    public void beginGame() {
+	for(int row = 0; row < MAX_ROW; row++){
+	    for(int col = 0; col<MAX_COL; col++){
+		board[row][col] = 0;
+		color[row][col] = 0;
+	    }
+    	}
+	this.setFocusable(true);
 	BlockColor = Color.BLACK;
 	Type1 y = new Type1();
 	this.putBlock(y);
@@ -66,6 +93,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
 	this.setPreferredSize(new Dimension(205,460));
 	this.setBackground(Color.WHITE);
+
 
 	//if(this.canMoveDown() == true) 
 	addKeyListener(new TAdapter());
@@ -496,6 +524,9 @@ public class TetrisBoard extends JPanel implements ActionListener {
                  return;
 	     
              switch (keycode) {
+	     case KeyEvent.VK_UP:
+		 BlockInControl.rotate();
+		 break;
              case KeyEvent.VK_LEFT:
                  moveLeft();
                  break;
@@ -510,19 +541,25 @@ public class TetrisBoard extends JPanel implements ActionListener {
          }
     }
 
+   
 	public static void main(String [] args){
 
-	    JFrame window = new JFrame("TETRIS");
-
+	    JFrame window;
+	    window = new JFrame("TETRIS");
+	    
 	    window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
-	    statusBar = new JLabel("SCORE = 0");
-	    window.getContentPane().add(BorderLayout.SOUTH, statusBar);
-
+	    statusBar = new JLabel("A Fun Game of Classic Tetris");
+	    window.add(BorderLayout.SOUTH, statusBar);
 	    TetrisBoard b = new TetrisBoard();
 	    window.add(b);
-	    window.setSize(205,460);
+	    //MenuButtons m = new MenuButtons();
+	    //window.add(BorderLayout.EAST,m);
+	    window.setSize(450,530);
 	    window.setVisible(true);
 	    
 	}
 
     }
+
+
+
