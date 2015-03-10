@@ -30,7 +30,11 @@ import java.awt.Point;
 
 public class TetrisBoard extends JPanel implements ActionListener {
 
-    
+	private JButton Rules;
+	private JButton Music;
+	static JPanel RulePanel;
+	static
+
     Block BlockInControl;
     Color BlockColor;
     int whichType;
@@ -57,25 +61,54 @@ public class TetrisBoard extends JPanel implements ActionListener {
 		color[row][col] = 0;
 	    }
     	}
-	this.setFocusable(true);
+		this.setFocusable(true);
 	
 
-	JButton Start = new JButton();
-	Start.setText("Start");
-	Start.addActionListener(new StartGame());
-	this.add(Start,BorderLayout.LINE_START);
+	   RulePanel =  new JPanel();
+	   
+	   RulePanel.setBackground(Color.LIGHT_GRAY);
+	   RulePanel.setLayout(new GridLayout(4,1,200,50));
+	   
+	   Rules = new JButton();
+	   Rules.setFocusable(false);
+	   Rules.setText("Rules/Pause");
+	   Rules.addActionListener(new SideButtons());
+	   RulePanel.add(Rules);
+
+	   
+	   Music = new JButton();
+	   Music.setFocusable(false);
+	   Music.setText("Music on/off");
+	   Music.addActionListener(new SideButtons());
+	   RulePanel.add(Music);
+
+
+
+
+	beginGame();
 
     }
 
+    private class SideButtons implements ActionListener{
 
-    private class StartGame implements ActionListener {
-	
-	public void actionPerformed(ActionEvent event)
-	{
-	    beginGame();
-	}
+    	public void actionPerformed(ActionEvent e) {
+
+    		if(e.getSource() == Rules)
+		   	{
+		   		pause();
+		   	}
+		   	else if (e.getSource() == Music){ 
+
+		   		;
+		   	}
+
+
+    	}
 
     }
+
+    
+
     public void beginGame() {
 	for(int row = 0; row < MAX_ROW; row++){
 	    for(int col = 0; col<MAX_COL; col++){
@@ -100,6 +133,13 @@ public class TetrisBoard extends JPanel implements ActionListener {
     }
     
     public void actionPerformed(ActionEvent e) {
+
+    
+
+   	
+
+
+
 	if (isFallingFinished) {
 	    isFallingFinished = false;
 	    int randomNumber = (int)(Math.random() * 7) + 1;
@@ -523,10 +563,10 @@ public class TetrisBoard extends JPanel implements ActionListener {
              if (isPaused)
                  return;
 	     
-             switch (keycode) {
-	     case KeyEvent.VK_UP:
-		 BlockInControl.rotate();
-		 break;
+         	switch (keycode) {
+	     	case KeyEvent.VK_UP:
+		 		 BlockInControl.rotate();
+				 break;
              case KeyEvent.VK_LEFT:
                  moveLeft();
                  break;
@@ -542,6 +582,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
     }
 
    
+
 	public static void main(String [] args){
 
 	    JFrame window;
@@ -552,9 +593,16 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	    window.add(BorderLayout.SOUTH, statusBar);
 	    TetrisBoard b = new TetrisBoard();
 	    window.add(b);
+	    window.add(BorderLayout.EAST, RulePanel);
+		
+	   
+	    
+
+
+
 	    //MenuButtons m = new MenuButtons();
 	    //window.add(BorderLayout.EAST,m);
-	    window.setSize(450,530);
+	    window.setSize(295,530);
 	    window.setVisible(true);
 	    
 	}
