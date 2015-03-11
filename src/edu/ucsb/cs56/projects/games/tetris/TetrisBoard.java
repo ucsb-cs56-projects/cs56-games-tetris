@@ -90,16 +90,33 @@ public class TetrisBoard extends JPanel implements ActionListener {
     }
 
     public void restartGame() {
-    	statusBar.setText("	Restarting Game ...	");
-    	score = 0;
-    	RestartButton.setText("Restarting...");
+    	
 
-    	for(int row = 0; row < MAX_ROW; row++){
-    		for(int col = 0; col<MAX_COL; col++){
-    			board[row][col] = 0;
-			color[row][col] = 0;
-    		}
+    	if(statusBar.getText().equals("GAME OVER")) {
+    		statusBar.setText("	Restarting Game ...	");
+    		score = 0;
+    		RestartButton.setText("Restarting...");
+    		timer.setDelay(TIMER_DELAY);
+    		timer.start();
+    		RestartButton.setText("Restart");
+    		statusBar.setText("SCORE = 1";
     	}
+    	else {
+    		statusBar.setText("	Restarting Game ...	");
+    		score = 0;
+    		RestartButton.setText("Restarting...");
+
+	    	for(int row = 0; row < MAX_ROW; row++){
+	    		for(int col = 0; col<MAX_COL; col++){
+	    			board[row][col] = 0;
+				color[row][col] = 0;
+	    		}
+	    	}
+
+	    }
+
+    	
+    	
     }
 
     public void MainMenu() {
@@ -431,20 +448,23 @@ public class TetrisBoard extends JPanel implements ActionListener {
     }
 
     public void clearBoard(){
+    	
     	for(int row = 0; row < MAX_ROW; row++){
     		for(int col = 0; col<MAX_COL; col++){
     			board[row][col] = 0;
 			color[row][col] = 0;
     		}
     	}
-    	MusicButton.setText("you lost fool");
     	
+    	timer.stop();
+    	statusBar.setText("GAME OVER");
+    	RestartButton.setText("Play Again");
     }
 
     public void putBlock(Block block){
 	score++;
 	statusBar.setText("SCORE = " + String.valueOf(score));
-
+	RestartButton.setText("Restart");
 	//int [][] theBlock = block.getBlock();
 	//int k = (int)(Math.random() * MAX_COL);
 
@@ -494,7 +514,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	    posY++;
 	    posX-=4;
 	}
-	RestartButton.setText("Restart");
+	
     }
 
 
