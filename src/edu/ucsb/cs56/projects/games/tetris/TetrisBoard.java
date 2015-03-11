@@ -21,6 +21,12 @@ import java.io.File;
 import java.io.IOException;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.Clip;
+import sun.audio.*;
+import java.io.*;
+import java.net.URL;
+
+
 
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -329,13 +335,49 @@ public class TetrisBoard extends JPanel implements ActionListener {
     }
 
 
-    public void playMusic() {
 
+    public void playMusic() {
+/*
+    	InputStream in = new FileInputStream("tetrisSong.mp3");
+
+    	AudioStream as = new AudioStream(in);
+
+    	AudioPlayer.player.start(as);
+*/
+
+
+
+/*
+    	String bip = "tetrisSong.mp3";
+    	Media hit = new Media(bip);
+    	MediaPlayer mediaPlayer = new MediaPlayer(hit);
+    	mediaPlayer.play();
+*/
+
+
+    	try{
+    		//File song = new File("C:/home/mnaito/csil/cs56-games-tetris/src/edu/ucsb/cs56/projects/games/tetris/tetrisSong.mp3");
+
+    		//File song = new File(
+    		//URL url = this.getClass().getClassLoader().getResource("tetrisSong.mp3");
+            //AudioInputStream aStream = AudioSystem.getAudioInputStream(url);
+
+    		AudioInputStream aStream = AudioSystem.getAudioInputStream(this.getClass().getResource("./cs/student/marshallnaito/cs56/cs56-games-tetris/src/edu/ucsb/cs56/projects/games/tetris/tetrisSong.wav"));
+    		//AudioInputStream aStream = AudioSystem.getAudioInputStream("/cs/student/marshallnaito/cs56/cs56-games-tetris/src/edu/ucsb/cs56/projects/games/tetris/tetrisSong.mp3");
+    		//AudioInputStream aStream = AudioSystem.getAudioInputStream(("/tetrisSong.wav"));
+    		//AudioInputStream aStream = AudioSystem.getAudioInputStream(song);
+
+
+    		Clip clip = AudioSystem.getClip();
+    		clip.open(aStream);
+    		clip.start();
+    	} catch (Exception ex) { System.out.println("sorry couldn't open audio");}
+  
   //   	Clip clip;
   //   	AudioInputStream audio;
 
   //   	try{
-	 //    audio = AudioSystem.getAudioInputStream(new File("Original Tetris theme (Tetris Soundtrack).mp3"));
+	 //    audio = AudioSystem.getAudioInputStream(new File("tetrisSong.mp3"));
 		// } catch(IOException e) {
 		// 	System.out.println("file not found");
 		// }
