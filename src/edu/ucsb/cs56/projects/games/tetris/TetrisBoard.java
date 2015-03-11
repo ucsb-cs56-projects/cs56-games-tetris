@@ -111,6 +111,8 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
     	}
     	else {
+    		
+    		if(isPaused) pause();
     		statusBar.setText("	Restarting Game ...	");
     		score = 0;
     		RestartButton.setText("Restarting...");
