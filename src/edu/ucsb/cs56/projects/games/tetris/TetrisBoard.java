@@ -49,7 +49,6 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	private int TIMER_DELAY = 400;
 	private JTextArea textArea;
 
-
 	static JFrame window;
 	static JFrame startFrame;
 	static JPanel RulePanel;
@@ -90,11 +89,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
     }
 
     public void MainMenu() {
-    	//jpanel is called startPanel
-    	//startbutton is your button for start
 
-    	//RulePanel.setVisible(false);
-    	//initialize JFrame for start screen
     	startFrame = new JFrame();
     	startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	   
@@ -108,28 +103,27 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	    StartButton.setPreferredSize(new Dimension (80, 20));
 	    StartButton.setText("Play Tetris");
 	    StartButton.addActionListener(new MainMenuButtons());
-	    //startPanel.getContentPane().add(StartButton);
 	    startPanel.add(StartButton);
 
 	    EasyButton = new JButton();
-	    EasyButton.setFocusable(false);
-	    EasyButton.setPreferredSize(new Dimension(40,40));
+	    EasyButton.setPreferredSize(new Dimension(80,20));
 	    EasyButton.setText("Easy");
-	    EasyButton.addActionListener(new SideButtons());
+	    EasyButton.addActionListener(new MainMenuButtons());
+	    EasyButton.setVisible(false);
 	    startPanel.add(EasyButton);
 
 	    MediumButton = new JButton();
-	    MediumButton.setFocusable(false);
-	    MediumButton.setPreferredSize(new Dimension(40,40));
+	    MediumButton.setPreferredSize(new Dimension(80,20));
 	    MediumButton.setText("Medium");
-	    MediumButton.addActionListener(new SideButtons());
+	    MediumButton.addActionListener(new MainMenuButtons());
+	    MediumButton.setVisible(false);
 	    startPanel.add(MediumButton);
 
 	    HardButton = new JButton();
-	    HardButton.setFocusable(false);
-	    HardButton.setPreferredSize(new Dimension(40,40));
+	    HardButton.setPreferredSize(new Dimension(80,20));
 	    HardButton.setText("Hard");
-	    HardButton.addActionListener(new SideButtons());
+	    HardButton.addActionListener(new MainMenuButtons());
+	    HardButton.setVisible(false);
 	    startPanel.add(HardButton);
 
 
@@ -145,12 +139,36 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
     	public void actionPerformed(ActionEvent e) {
     		if(e.getSource() == StartButton) {
+    			StartButton.setVisible(false);
+    			EasyButton.setVisible(true);
+    			MediumButton.setVisible(true);
+    			HardButton.setVisible(true);
+    		}
+    		else if(e.getSource() == EasyButton)
+		   	{
+    			startFrame.setVisible(false);
+    			startPanel.setVisible(false);
+    			window.setVisible(true);
+    			window.setSize(350,527);
+    			beginGame();
+		   	} 
+		   	else if(e.getSource() == MediumButton)
+		   	{
     			startFrame.setVisible(false);
     			startPanel.setVisible(false);
     			window.setVisible(true);
     			window.setSize(350,527);
     			beginGame();
     		}
+    		else if(e.getSource() == HardButton)
+		   	{
+    			startFrame.setVisible(false);
+    			startPanel.setVisible(false);
+    			window.setVisible(true);
+    			window.setSize(350,527);
+    			beginGame();
+
+		   	}  
     	}
 
 
