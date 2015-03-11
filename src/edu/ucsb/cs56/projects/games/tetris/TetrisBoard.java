@@ -47,6 +47,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
 
 	static JFrame window;
+	static JFrame startFrame;
 	static JPanel RulePanel;
 	static JPanel StartMenu;
 
@@ -78,10 +79,10 @@ public class TetrisBoard extends JPanel implements ActionListener {
     	}
 		this.setFocusable(true);
 
-	//MainMenu();
+	MainMenu();
 
 	InGameButtons();
-	beginGame();
+	//beginGame();
 
     }
 
@@ -89,10 +90,27 @@ public class TetrisBoard extends JPanel implements ActionListener {
     	//jpanel is called startmenu
     	//startbutton is your button for start
 
+    	startFrame = new JFrame();
+    	startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+       	//StartMenu =  new JPanel();
+	   
+	    //StartMenu.setBackground(Color.LIGHT_GRAY);
+	    //StartMenu.setLayout(new GridLayout(4,1,200,50));
+	    //StartMenu.setFocusable(false);
+	   
+	    StartButton = new JButton();
+	   // StartButton.setFocusable(false);
+	    StartButton.setPreferredSize(new Dimension (80, 20));
+	    StartButton.setText("Play Tetris");
+	    StartButton.addActionListener(new MainMenuButtons());
+	    //StartMenu.add(StartButton);
+	    
+	    startFrame.getContentPane().add(StartButton);
+
+	    startFrame.setSize(350,527);
+	    startFrame.setVisible(true);
     	
-    	StartButton.addActionListener(new MainMenuButtons());
-
-
     }
 
     private class MainMenuButtons implements ActionListener{
@@ -102,10 +120,19 @@ public class TetrisBoard extends JPanel implements ActionListener {
     			//beginGame();
     			//InGameButtons();
     			//hide this jpanel?
+    			startFrame.setVisible(false);
+    			window.setVisible(true);
+    			window.setSize(350,527);
+    			//StartButton.setText("ive been clicked");
+    			//window.setFocusable(false);
+    			beginGame();
+
     		}
     	}
 
     }
+
+
 
     public void InGameButtons() {
 
@@ -202,7 +229,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
 		   	}
 		   	else if (e.getSource() == MainMenuButton) {
-		   		//Mainmenu()
+		   		MainMenu();
 		   	}
 
 
@@ -247,6 +274,10 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	    }
     	}
 	this.setFocusable(true);
+	window.add(this);
+	window.revalidate();
+	window.repaint();
+
 	BlockColor = Color.BLACK;
 	Type1 y = new Type1();
 	this.putBlock(y);
@@ -738,6 +769,8 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	    TetrisBoard b = new TetrisBoard();
 	    window.add(b);
 	    window.add(BorderLayout.EAST, RulePanel);
+
+	    window.add(StartMenu);
 		
 	   
 	    window.setSize(350,527);
