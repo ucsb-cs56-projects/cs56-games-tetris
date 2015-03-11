@@ -42,7 +42,7 @@ import java.awt.Point;
 
 public class TetrisBoard extends JPanel implements ActionListener {
 
-	private JButton MainMenuButton;
+	private JButton RestartButton;
 	private JButton EasyButton;
 	private JButton MediumButton;
 	private JButton HardButton;
@@ -59,6 +59,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	static JFrame startFrame;
 	static JPanel RulePanel;
 	static JPanel startPanel;
+	static JPanel tetrisPanel;
 
     Block BlockInControl;
     Color BlockColor;
@@ -94,11 +95,42 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
     }
 
+    public void restartGame() {
+    	
+
+    	if(statusBar.getText().equals("GAME OVER")) {
+    		statusBar.setText("	Restarting Game ...	");
+    		score = 0;
+    		RestartButton.setText("Restarting...");
+    		timer.setDelay(TIMER_DELAY);
+    		timer.start();
+    		RestartButton.setText("Restart");
+
+    		statusBar.setText("SCORE = 1");
+
+    	}
+    	else {
+    		statusBar.setText("	Restarting Game ...	");
+    		score = 0;
+    		RestartButton.setText("Restarting...");
+
+	    	for(int row = 0; row < MAX_ROW; row++){
+	    		for(int col = 0; col<MAX_COL; col++){
+	    			board[row][col] = 0;
+				color[row][col] = 0;
+	    		}
+	    	}
+
+	    }
+
+    	
+    	
+    }
+
     public void MainMenu() {
 
     	startFrame = new JFrame();
     	startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	   
     	startPanel = new JPanel();
 
     	startPanel.setBackground(Color.LIGHT_GRAY);
@@ -136,7 +168,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	    startFrame.getContentPane().add(startPanel);
 
 	    //start screen attributes
-	    startFrame.setSize(350,527);
+	    startFrame.setSize(335,518);
 	    startFrame.setVisible(true);
     	
     }
@@ -152,11 +184,13 @@ public class TetrisBoard extends JPanel implements ActionListener {
     		}
     		else if(e.getSource() == EasyButton)
 		   	{
-		   		TIMER_DELAY = 900;
+
+		   		TIMER_DELAY = 1000;
+
     			startFrame.setVisible(false);
     			startPanel.setVisible(false);
     			window.setVisible(true);
-    			window.setSize(350,527);
+    			window.setSize(335,518);
     			beginGame();
 		   	} 
 		   	else if(e.getSource() == MediumButton)
@@ -165,16 +199,18 @@ public class TetrisBoard extends JPanel implements ActionListener {
     			startFrame.setVisible(false);
     			startPanel.setVisible(false);
     			window.setVisible(true);
-    			window.setSize(350,527);
+    			window.setSize(335,518);
     			beginGame();
     		}
     		else if(e.getSource() == HardButton)
 		   	{
-		   		TIMER_DELAY = 20;
+
+		   		TIMER_DELAY = 80;
+
     			startFrame.setVisible(false);
     			startPanel.setVisible(false);
     			window.setVisible(true);
-    			window.setSize(350,527);
+    			window.setSize(335,518);
     			beginGame();
 
 		   	}  
@@ -192,12 +228,12 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	   RulePanel.setBackground(Color.LIGHT_GRAY);
 	   RulePanel.setLayout(new GridLayout(5,1,0,10));
 	   
-	   MainMenuButton = new JButton();
-	   MainMenuButton.setFocusable(false);
-	   MainMenuButton.setSize(1,1);
-	   MainMenuButton.setText("Main Menu");
-	   MainMenuButton.addActionListener(new SideButtons());
-	   RulePanel.add(MainMenuButton);
+	   RestartButton = new JButton();
+	   RestartButton.setFocusable(false);
+	   RestartButton.setSize(1,1);
+	   RestartButton.setText("Restart");
+	   RestartButton.addActionListener(new SideButtons());
+	   RulePanel.add(RestartButton);
 
 	   PauseButton = new JButton();
 	   PauseButton.setFocusable(false);
@@ -244,18 +280,21 @@ public class TetrisBoard extends JPanel implements ActionListener {
 		   		"The Controls are as Follows:\n\n" +
 		   		"Left Arrow: Move Block Left\n" +
 		   		"Right Arrow: Move Block Right\n" +
+		   		"Up Arrow: Rotate Block\n" + 
 		   		"Down Arrow: Soft Drop\n" +
 		   		"Space Bar: Hard Drop\n" + 
+		   		"p: Pause Game\n" + 
 		   		"\n\nHave Fun !";
 		   		textArea = new JTextArea(text);
 		   		textArea.setEditable(false);
 		   		window.add(textArea);
 		   		window.revalidate();
-
+		   		tetrisPanel.setVisible(false);
 		   		textArea.setVisible(true);
+		   		//textArea.toFront();
 
 		   		UnpauseButton.setVisible(true);
-		   		MainMenuButton.setVisible(false);
+		   		RestartButton.setVisible(false);
 		   		PauseButton.setVisible(false);
 		   		RulesButton.setVisible(false);
 		   		
@@ -264,10 +303,12 @@ public class TetrisBoard extends JPanel implements ActionListener {
 		   	{
 		   		pause();
 		   		UnpauseButton.setVisible(false);
-		   		MainMenuButton.setVisible(true);
+		   		RestartButton.setVisible(true);
 		   		PauseButton.setVisible(true);
 		   		RulesButton.setVisible(true);
 		   		window.remove(textArea);
+		   		tetrisPanel.setVisible(true);
+		   		tetrisPanel.requestFocus();
 
 		   	} 
 		   	else if(e.getSource() == PauseButton)
@@ -281,12 +322,9 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
 
 		   	}
-		   	else if (e.getSource() == MainMenuButton) {
-		   		window.setVisible(false);
-		   		//window.remove(RulePanel);
-		   		RulePanel.setVisible(false);
-		   		MainMenu();
-		   	}
+		   	else if (e.getSource() == RestartButton) {
+				restartGame();
+			}
 
 
     	}
@@ -457,17 +495,23 @@ public class TetrisBoard extends JPanel implements ActionListener {
     }
 
     public void clearBoard(){
+    	
     	for(int row = 0; row < MAX_ROW; row++){
     		for(int col = 0; col<MAX_COL; col++){
     			board[row][col] = 0;
 			color[row][col] = 0;
     		}
     	}
+    	
+    	timer.stop();
+    	statusBar.setText("GAME OVER");
+    	RestartButton.setText("Play Again");
     }
 
     public void putBlock(Block block){
 	score++;
 	statusBar.setText("SCORE = " + String.valueOf(score));
+	RestartButton.setText("Restart");
 	//int [][] theBlock = block.getBlock();
 	//int k = (int)(Math.random() * MAX_COL);
 
@@ -517,6 +561,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	    posY++;
 	    posX-=4;
 	}
+	
     }
 
 
@@ -859,14 +904,15 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	    statusBar = new JLabel("A Fun Game of Classic Tetris");
 	    window.add(BorderLayout.SOUTH, statusBar);
 	    TetrisBoard b = new TetrisBoard();
-	    window.add(b);
+	    tetrisPanel = b;
+	    window.add(tetrisPanel);
 	    window.add(BorderLayout.EAST, RulePanel);
 	    RulePanel.setVisible(false);
 
 	    window.add(startPanel);
 		
 	   
-	    window.setSize(350,527);
+	    window.setSize(335,518);
 	    window.setVisible(true);
 	    
 	}
