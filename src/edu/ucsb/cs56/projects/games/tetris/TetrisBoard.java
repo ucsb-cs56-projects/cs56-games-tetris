@@ -67,7 +67,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
     private int[][] color = new int[MAX_ROW][MAX_COL];
     
     Timer timer;
-    int timerdelay = TIMER_DELAY;
+    int timerdelay;
     boolean isFallingFinished = false;
     boolean isStarted = false;
     boolean isPaused = false;
@@ -159,7 +159,9 @@ public class TetrisBoard extends JPanel implements ActionListener {
     		}
     		else if(e.getSource() == EasyButton)
 		   	{
+
 		   		TIMER_DELAY = 1000;
+
     			startFrame.setVisible(false);
     			startPanel.setVisible(false);
     			window.setVisible(true);
@@ -177,7 +179,9 @@ public class TetrisBoard extends JPanel implements ActionListener {
     		}
     		else if(e.getSource() == HardButton)
 		   	{
-		   		TIMER_DELAY = 25;
+
+		   		TIMER_DELAY = 20;
+
     			startFrame.setVisible(false);
     			startPanel.setVisible(false);
     			window.setVisible(true);
@@ -258,6 +262,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 		   		textArea.setEditable(false);
 		   		window.add(textArea);
 		   		window.revalidate();
+
 		   		textArea.setVisible(true);
 		   		//textArea.toFront();
 
@@ -342,7 +347,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	BlockColor = Color.BLACK;
 	Type1 y = new Type1();
 	this.putBlock(y);
-	timerdelay = 400;
+	timerdelay = TIMER_DELAY;
 	timer = new Timer(timerdelay,this);
 	timer.start();
 
