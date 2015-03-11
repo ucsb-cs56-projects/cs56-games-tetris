@@ -345,6 +345,11 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
 
 
+
+
+
+
+
 /*
     	String bip = "tetrisSong.mp3";
     	Media hit = new Media(bip);
@@ -354,23 +359,24 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
 
     	try{
-    		//File song = new File("C:/home/mnaito/csil/cs56-games-tetris/src/edu/ucsb/cs56/projects/games/tetris/tetrisSong.mp3");
+    		//File song = new File("~/home/mnaito/Downloads/tetrisSong.wav");
 
     		//File song = new File(
     		//URL url = this.getClass().getClassLoader().getResource("tetrisSong.mp3");
             //AudioInputStream aStream = AudioSystem.getAudioInputStream(url);
 
-    		AudioInputStream aStream = AudioSystem.getAudioInputStream(this.getClass().getResource("./cs/student/marshallnaito/cs56/cs56-games-tetris/src/edu/ucsb/cs56/projects/games/tetris/tetrisSong.wav"));
+    		//AudioInputStream aStream = AudioSystem.getAudioInputStream(this.getClass().getResource("./cs/student/marshallnaito/cs56/cs56-games-tetris/src/edu/ucsb/cs56/projects/games/tetris/tetrisSong.wav"));
     		//AudioInputStream aStream = AudioSystem.getAudioInputStream("/cs/student/marshallnaito/cs56/cs56-games-tetris/src/edu/ucsb/cs56/projects/games/tetris/tetrisSong.mp3");
     		//AudioInputStream aStream = AudioSystem.getAudioInputStream(("/tetrisSong.wav"));
     		//AudioInputStream aStream = AudioSystem.getAudioInputStream(song);
+    		AudioInputStream aStream = AudioSystem.getAudioInputStream(new File("X:/cs/student/marshallnaito/cs56/cs56-games-tetris/src/edu/ucsb/cs56/projects/games/tetris/tetrisSong.wav").getAbsoluteFile());
 
 
     		Clip clip = AudioSystem.getClip();
     		clip.open(aStream);
     		clip.start();
     	} catch (Exception ex) { System.out.println("sorry couldn't open audio");}
-  
+
   //   	Clip clip;
   //   	AudioInputStream audio;
 
