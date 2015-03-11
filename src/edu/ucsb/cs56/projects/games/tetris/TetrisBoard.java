@@ -93,7 +93,13 @@ public class TetrisBoard extends JPanel implements ActionListener {
     	statusBar.setText("	Restarting Game ...	");
     	score = 0;
     	RestartButton.setText("Restarting...");
-    	clearBoard();
+
+    	for(int row = 0; row < MAX_ROW; row++){
+    		for(int col = 0; col<MAX_COL; col++){
+    			board[row][col] = 0;
+			color[row][col] = 0;
+    		}
+    	}
     }
 
     public void MainMenu() {
@@ -426,6 +432,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 			color[row][col] = 0;
     		}
     	}
+    	MusicButton.setText("you lost fool");
     	
     }
 
