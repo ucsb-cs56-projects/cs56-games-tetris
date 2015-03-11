@@ -146,6 +146,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
     		}
     		else if(e.getSource() == EasyButton)
 		   	{
+		   		TIMER_DELAY = 600;
     			startFrame.setVisible(false);
     			startPanel.setVisible(false);
     			window.setVisible(true);
@@ -154,6 +155,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 		   	} 
 		   	else if(e.getSource() == MediumButton)
 		   	{
+		   		TIMER_DELAY = 400;
     			startFrame.setVisible(false);
     			startPanel.setVisible(false);
     			window.setVisible(true);
@@ -162,6 +164,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
     		}
     		else if(e.getSource() == HardButton)
 		   	{
+		   		TIMER_DELAY = 200;
     			startFrame.setVisible(false);
     			startPanel.setVisible(false);
     			window.setVisible(true);
@@ -271,6 +274,9 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
 		   	}
 		   	else if (e.getSource() == MainMenuButton) {
+		   		window.setVisible(false);
+		   		//window.remove(RulePanel);
+		   		RulePanel.setVisible(false);
 		   		MainMenu();
 		   	}
 
