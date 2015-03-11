@@ -199,7 +199,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
     		else if(e.getSource() == HardButton)
 		   	{
 
-		   		TIMER_DELAY = 20;
+		   		TIMER_DELAY = 80;
 
     			startFrame.setVisible(false);
     			startPanel.setVisible(false);
@@ -274,14 +274,16 @@ public class TetrisBoard extends JPanel implements ActionListener {
 		   		"The Controls are as Follows:\n\n" +
 		   		"Left Arrow: Move Block Left\n" +
 		   		"Right Arrow: Move Block Right\n" +
+		   		"Up Arrow: Rotate Block\n" + 
 		   		"Down Arrow: Soft Drop\n" +
 		   		"Space Bar: Hard Drop\n" + 
+		   		"p: Pause Game\n" + 
 		   		"\n\nHave Fun !";
 		   		textArea = new JTextArea(text);
 		   		textArea.setEditable(false);
 		   		window.add(textArea);
 		   		window.revalidate();
-
+		   		tetrisPanel.setVisible(false);
 		   		textArea.setVisible(true);
 		   		//textArea.toFront();
 
@@ -299,6 +301,8 @@ public class TetrisBoard extends JPanel implements ActionListener {
 		   		PauseButton.setVisible(true);
 		   		RulesButton.setVisible(true);
 		   		window.remove(textArea);
+		   		tetrisPanel.setVisible(true);
+		   		tetrisPanel.requestFocus();
 
 		   	} 
 		   	else if(e.getSource() == PauseButton)
