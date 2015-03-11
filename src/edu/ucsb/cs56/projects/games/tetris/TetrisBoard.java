@@ -80,6 +80,9 @@ public class TetrisBoard extends JPanel implements ActionListener {
     boolean isPaused = false;
     
     int BlockPosX,BlockPosY;
+
+    private static int WINDOW_X = 335;
+    private static int WINDOW_Y = 535;
     
     public TetrisBoard() {
     	for(int row = 0; row < MAX_ROW; row++){
@@ -171,7 +174,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	    startFrame.getContentPane().add(startPanel);
 
 	    //start screen attributes
-	    startFrame.setSize(335,518);
+	    startFrame.setSize(WINDOW_X, WINDOW_Y);
 	    startFrame.setVisible(true);
     	
     }
@@ -193,7 +196,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
     			startFrame.setVisible(false);
     			startPanel.setVisible(false);
     			window.setVisible(true);
-    			window.setSize(335,518);
+    			window.setSize(WINDOW_X, WINDOW_Y);
     			beginGame();
 		   	} 
 		   	else if(e.getSource() == MediumButton)
@@ -202,7 +205,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
     			startFrame.setVisible(false);
     			startPanel.setVisible(false);
     			window.setVisible(true);
-    			window.setSize(335,518);
+    			window.setSize(WINDOW_X, WINDOW_Y);
     			beginGame();
     		}
     		else if(e.getSource() == HardButton)
@@ -213,7 +216,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
     			startFrame.setVisible(false);
     			startPanel.setVisible(false);
     			window.setVisible(true);
-    			window.setSize(335,518);
+    			window.setSize(WINDOW_X, WINDOW_Y);
     			beginGame();
 
 		   	}  
@@ -926,7 +929,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	    window.add(startPanel);
 		
 	   
-	    window.setSize(335,518);
+	    window.setSize(WINDOW_X, WINDOW_Y);
 	    window.setVisible(true);
 	    
 	}
