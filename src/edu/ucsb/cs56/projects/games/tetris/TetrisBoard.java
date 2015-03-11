@@ -15,6 +15,11 @@ import javax.swing.Timer;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 
+import javax.sound.sampled.*;
+import java.io.File;
+import java.io.IOException;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.AudioInputStream;
 
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -37,8 +42,9 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	private JButton MusicButton;
 	private JButton StartButton;
 	private JButton UnpauseButton;
-	
+	private int TIMER_DELAY = 400;
 	private JTextArea textArea;
+
 
 	static JFrame window;
 	static JPanel RulePanel;
@@ -56,7 +62,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
     private int[][] color = new int[MAX_ROW][MAX_COL];
     
     Timer timer;
-    int timerdelay;
+    int timerdelay = TIMER_DELAY;
     boolean isFallingFinished = false;
     boolean isStarted = false;
     boolean isPaused = false;
@@ -154,17 +160,25 @@ public class TetrisBoard extends JPanel implements ActionListener {
     		if(e.getSource() == RulesButton)
 		   	{
 		   		
-
-		   		textArea = new JTextArea("HEY WAHTS UP");
-
+		   		if(!isPaused) pause();
+		   		String text;
+		   		text = "	RULES\n\n\nThis game is very similar\nto the classic game of tetris.\n\n" +
+		   		"The Controls are as Follows:\n\n" +
+		   		"Left Arrow: Move Block Left\n" +
+		   		"Right Arrow: Move Block Right\n" +
+		   		"Down Arrow: Soft Drop\n" +
+		   		"Space Bar: Hard Drop\n" + 
+		   		"\n\nHave Fun !";
+		   		textArea = new JTextArea(text);
+		   		textArea.setEditable(false);
 		   		window.add(textArea);
-		   		window.setVisible(true);
+		   		textArea.setVisible(true);
 
 		   		UnpauseButton.setVisible(true);
 		   		MainMenuButton.setVisible(false);
 		   		PauseButton.setVisible(false);
 		   		RulesButton.setVisible(false);
-		   		pause();
+		   		
 		   	}
 		   	else if(e.getSource() == UnpauseButton)
 		   	{
@@ -183,7 +197,9 @@ public class TetrisBoard extends JPanel implements ActionListener {
 		   	}
 		   	else if (e.getSource() == MusicButton){ 
 
-		   		//rowtobedeleted = MAX_ROW;
+		   		playMusic();
+
+
 		   	}
 		   	else if (e.getSource() == MainMenuButton) {
 		   		//Mainmenu()
@@ -194,7 +210,34 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
     }
 
-    
+
+    public void playMusic() {
+
+  //   	Clip clip;
+  //   	AudioInputStream audio;
+
+  //   	try{
+	 //    audio = AudioSystem.getAudioInputStream(new File("Original Tetris theme (Tetris Soundtrack).mp3"));
+		// } catch(IOException e) {
+		// 	System.out.println("file not found");
+		// }
+
+		// try {
+  //     	clip = AudioSystem.getClip();
+  //     	} catch(LineUnavailableException e) {
+  //     		System.out.println("line unavailable");
+  //     	}
+
+  //     	try{
+  //     	clip.open(audio);
+  //     	} catch(UnsupportedAudioFileException e) {
+  //     		System.out.println("sound file not found");
+  //     	}
+
+  //     	clip.start();
+      	 
+    }
+
 
     public void beginGame() {
 	for(int row = 0; row < MAX_ROW; row++){
@@ -653,19 +696,31 @@ public class TetrisBoard extends JPanel implements ActionListener {
                  return;
 	     
          	switch (keycode) {
-	     	case KeyEvent.VK_UP:
-		 		 BlockInControl.rotate();
-				 break;
-             case KeyEvent.VK_LEFT:
-                 moveLeft();
-                 break;
-             case KeyEvent.VK_RIGHT:
-                 moveRight();
-                 break;
-             case KeyEvent.VK_SPACE:
-                 drop();
-                 break;
-             }
+		     	case KeyEvent.VK_UP:
+			 	{ 
+			 		BlockInControl.rotate();
+			 		break;
+			 	}
+				// case KeyEvent.VK_DOWN:
+				// {
+				// 	add soft drop
+				// }
+	            case KeyEvent.VK_LEFT:
+	            {
+	            	moveLeft();
+	            	break;
+	            }
+	            case KeyEvent.VK_RIGHT:
+	            {
+	                moveRight();
+	                break;
+	            }
+	            case KeyEvent.VK_SPACE:
+	            { 
+	                drop();
+	                break;
+	            }
+            }
 
          }
     }
