@@ -99,7 +99,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
     		timer.setDelay(TIMER_DELAY);
     		timer.start();
     		RestartButton.setText("Restart");
-    		statusBar.setText("SCORE = 1";
+    		statusBar.setText("SCORE = 1");
     	}
     	else {
     		statusBar.setText("	Restarting Game ...	");
