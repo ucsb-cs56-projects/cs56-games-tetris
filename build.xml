@@ -22,12 +22,13 @@
   <target name="compile" description="compile the project">
     <mkdir dir="build"/>
 
-    <javac srcdir="src" destdir="build" debug="true" debuglevel="lines,source">
+    <javac srcdir="src" destdir="build" includeantruntime="false" debug="true" debuglevel="lines,source">
 
       <classpath>
-	<pathelement location="build"/>
-  <pathelement location="lib/junit-4.8.2.jar"/>
+      	<pathelement location="build"/>
+        <pathelement location="lib/junit-4.8.2.jar"/>
       </classpath>
+
     </javac>
   </target>
 
@@ -39,7 +40,6 @@
     <delete dir="build" quiet="true"/>
     <delete dir="javadoc" quiet="true"/>
     <delete dir="dist" quiet="true"/>
-    <delete dir="download" quiet="true"/>
     <delete dir="temp" quiet="true"/>
   </target>
 
@@ -48,7 +48,7 @@
     <junit haltonerror="no" haltonfailure="no">
 
       <classpath>
-	<pathelement location="/cs/faculty/pconrad/public_html/cs56/lib/junit-4.8.2.jar"/>
+	<pathelement location="lib/junit-4.8.2.jar"/>
 	<pathelement location="build"/>
       </classpath>
 
@@ -73,8 +73,9 @@
       <fileset dir="src" includes="**/*.java"/>
 
       <classpath>
-	<pathelement location="/cs/faculty/pconrad/public_html/cs56/lib/junit-4.8.2.jar"/>
+	       <pathelement location="lib/junit-4.8.2.jar"/>
       </classpath>
+      
     </javadoc>
     <!-- delete the old javadoc -->
     <delete quiet="true" dir="${javadocDest}"/>
@@ -108,50 +109,4 @@
       </manifest>
     </jar>
   </target>
-
-  <target name="download" depends="" description= "create the download dir">
-
-    <delete quiet="true">
-      <fileset dir="temp" includes="**/*"/>
-      <fileset dir="download" includes="**/*"/>
-    </delete>
-    <mkdir dir="download"/>
-    <mkdir dir="temp"/>
-    <mkdir dir="temp/${projectName}"/>
-
-    <copy todir="temp/${projectName}">
-      <fileset dir="." excludes="build/**, javadoc/**, **/*~, temp/**, dist/**, download/**"/>
-    </copy>
-    <tar destfile="temp/${projectName}.tar" basedir="temp" includes="${projectName}/**"/>
-    <gzip zipfile="download/${projectName}.tgz" src="temp/${projectName}.tar"/>
-    <zip destfile="download/${projectName}.zip" basedir="temp" includes="${projectName}/**"/>
-
-    <delete quiet="true">
-      <fileset dir="temp" includes="**/*"/>
-    </delete>
-  </target>
-
-  <target name="publish" depends="jar,javadoc,download">
-    <mkdir dir="${webRoot}/${projectPath}"/>
-    <delete dir="${webRoot}/${projectPath}/browse"/>
-    <mkdir dir="${webRoot}/${projectPath}/browse"/>
-    <delete dir="${webRoot}/${projectPath}/download"/>
-    <mkdir dir="${webRoot}/${projectPath}/download"/>
-    <copy file="html/index.html" todir="${webRoot}/${projectPath}"/>
-
-    <copy todir="${webRoot}/${projectPath}/download">
-      <fileset dir="download"/>
-      <fileset dir="dist"/>
-    </copy>
-    <copy file="build.xml" todir="${webRoot}/${projectPath}/browse"/>
-    <copy todir="${webRoot}/${projectPath}/browse/src">
-      <fileset dir="src"/>
-    </copy>
-    <chmod dir="${webRoot}/${projectPath}" perm="755" type="both" includes="**/*"/>
-    <echo>Project published to ${webBaseUrl}/${projectPath}</echo>
-  </target>
-
-
-
-
 </project>

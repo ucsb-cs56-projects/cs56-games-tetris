@@ -6,11 +6,26 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.*;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JButton;
 import javax.swing.Timer;
 import javax.swing.JFrame;
+import javax.swing.JTextArea;
+
+import javax.sound.sampled.*;
+import java.io.File;
+import java.io.IOException;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.Clip;
+import sun.audio.*;
+import java.io.*;
+import java.net.URL;
+//import java.applet;
 
 
 import java.util.Arrays;
@@ -28,13 +43,33 @@ import java.awt.Point;
 
 public class TetrisBoard extends JPanel implements ActionListener {
 
+	private JButton RestartButton;
+	private JButton EasyButton;
+	private JButton MediumButton;
+	private JButton HardButton;
+
+	private JButton RulesButton;
+	private JButton PauseButton;
+	private JButton MusicButton;
+	private JButton StartButton;
+	private JButton UnpauseButton;
+	private int TIMER_DELAY = 400;
+	private JTextArea textArea;
+
+	static JFrame window;
+	static JFrame startFrame;
+	static JPanel RulePanel;
+	static JPanel startPanel;
+	static JPanel tetrisPanel;
 
     Block BlockInControl;
     Color BlockColor;
     int whichType;
+    static JLabel statusBar;
+    int score = 0;
 
     private final int MAX_COL = 10;
-    private final int MAX_ROW = 20;
+    private final int MAX_ROW = 24;
     private int[][] board = new int[MAX_ROW][MAX_COL];
     private int[][] color = new int[MAX_ROW][MAX_COL];
     
@@ -45,6 +80,9 @@ public class TetrisBoard extends JPanel implements ActionListener {
     boolean isPaused = false;
     
     int BlockPosX,BlockPosY;
+
+    private static int WINDOW_X = 335;
+    private static int WINDOW_Y = 535;
     
     public TetrisBoard() {
     	for(int row = 0; row < MAX_ROW; row++){
@@ -53,22 +91,350 @@ public class TetrisBoard extends JPanel implements ActionListener {
 		color[row][col] = 0;
 	    }
     	}
+		this.setFocusable(true);
+
+	MainMenu();
+
+	InGameButtons();
+
+    }
+
+    public void restartGame() {
+    	
+
+    	if(statusBar.getText().equals("GAME OVER")) {
+    		statusBar.setText("	Restarting Game ...	");
+    		score = 0;
+    		RestartButton.setText("Restarting...");
+    		timer.setDelay(TIMER_DELAY);
+    		timer.start();
+    		RestartButton.setText("Restart");
+
+    		statusBar.setText("SCORE = 1");
+
+    	}
+    	else {
+    		
+    		if(isPaused) pause();
+    		statusBar.setText("	Restarting Game ...	");
+    		score = 0;
+    		RestartButton.setText("Restarting...");
+
+	    	for(int row = 0; row < MAX_ROW; row++){
+	    		for(int col = 0; col<MAX_COL; col++){
+	    			board[row][col] = 0;
+				color[row][col] = 0;
+	    		}
+	    	}
+
+	    }
+
+    	
+    	
+    }
+
+    public void MainMenu() {
+
+    	startFrame = new JFrame();
+    	startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	startPanel = new JPanel();
+
+    	startPanel.setBackground(Color.LIGHT_GRAY);
+	    startPanel.setLayout(new GridLayout(4,1,0,10));
+
+    	//declare start button
+	    StartButton = new JButton();
+	    StartButton.setPreferredSize(new Dimension (80, 20));
+	    StartButton.setText("Play Tetris");
+	    StartButton.addActionListener(new MainMenuButtons());
+	    startPanel.add(StartButton);
+
+	    EasyButton = new JButton();
+	    EasyButton.setPreferredSize(new Dimension(80,20));
+	    EasyButton.setText("Easy");
+	    EasyButton.addActionListener(new MainMenuButtons());
+	    EasyButton.setVisible(false);
+	    startPanel.add(EasyButton);
+
+	    MediumButton = new JButton();
+	    MediumButton.setPreferredSize(new Dimension(80,20));
+	    MediumButton.setText("Medium");
+	    MediumButton.addActionListener(new MainMenuButtons());
+	    MediumButton.setVisible(false);
+	    startPanel.add(MediumButton);
+
+	    HardButton = new JButton();
+	    HardButton.setPreferredSize(new Dimension(80,20));
+	    HardButton.setText("Hard");
+	    HardButton.addActionListener(new MainMenuButtons());
+	    HardButton.setVisible(false);
+	    startPanel.add(HardButton);
+
+
+	    startFrame.getContentPane().add(startPanel);
+
+	    //start screen attributes
+	    startFrame.setSize(WINDOW_X, WINDOW_Y);
+	    startFrame.setVisible(true);
+    	
+    }
+
+    private class MainMenuButtons implements ActionListener{
+
+    	public void actionPerformed(ActionEvent e) {
+    		if(e.getSource() == StartButton) {
+    			StartButton.setVisible(false);
+    			EasyButton.setVisible(true);
+    			MediumButton.setVisible(true);
+    			HardButton.setVisible(true);
+    		}
+    		else if(e.getSource() == EasyButton)
+		   	{
+
+		   		TIMER_DELAY = 1000;
+
+    			startFrame.setVisible(false);
+    			startPanel.setVisible(false);
+    			window.setVisible(true);
+    			window.setSize(WINDOW_X, WINDOW_Y);
+    			beginGame();
+		   	} 
+		   	else if(e.getSource() == MediumButton)
+		   	{
+		   		TIMER_DELAY = 400;
+    			startFrame.setVisible(false);
+    			startPanel.setVisible(false);
+    			window.setVisible(true);
+    			window.setSize(WINDOW_X, WINDOW_Y);
+    			beginGame();
+    		}
+    		else if(e.getSource() == HardButton)
+		   	{
+
+		   		TIMER_DELAY = 80;
+
+    			startFrame.setVisible(false);
+    			startPanel.setVisible(false);
+    			window.setVisible(true);
+    			window.setSize(WINDOW_X, WINDOW_Y);
+    			beginGame();
+
+		   	}  
+    	}
+
+
+    }
+
+
+
+    public void InGameButtons() {
+
+	   RulePanel =  new JPanel();
+	   
+	   RulePanel.setBackground(Color.LIGHT_GRAY);
+	   RulePanel.setLayout(new GridLayout(5,1,0,10));
+	   
+	   RestartButton = new JButton();
+	   RestartButton.setFocusable(false);
+	   RestartButton.setSize(1,1);
+	   RestartButton.setText("Restart");
+	   RestartButton.addActionListener(new SideButtons());
+	   RulePanel.add(RestartButton);
+
+	   PauseButton = new JButton();
+	   PauseButton.setFocusable(false);
+	   PauseButton.setPreferredSize(new Dimension(40,40));
+	   PauseButton.setText("Pause");
+	   PauseButton.addActionListener(new SideButtons());
+	   RulePanel.add(PauseButton);
+
+	   RulesButton = new JButton();
+	   RulesButton.setFocusable(false);
+	   RulesButton.setPreferredSize(new Dimension(40,40));
+	   RulesButton.setText("Rules\n");
+	   RulesButton.addActionListener(new SideButtons());
+	   RulePanel.add(RulesButton);
+
+	   UnpauseButton = new JButton();
+	   UnpauseButton.setFocusable(false);
+	   UnpauseButton.setText("Resume Game");
+	   UnpauseButton.addActionListener(new SideButtons());
+	   RulePanel.add(UnpauseButton);
+	   UnpauseButton.setVisible(false);
+
+
+	   MusicButton = new JButton();
+	   MusicButton.setFocusable(false);
+	   MusicButton.setText("Music on/off");
+	   MusicButton.addActionListener(new SideButtons());
+	   RulePanel.add(MusicButton);
+
+	   
+
+    }
+
+    private class SideButtons implements ActionListener{
+
+    	public void actionPerformed(ActionEvent e) {
+
+    		if(e.getSource() == RulesButton)
+		   	{
+		   		
+		   		if(!isPaused) pause();
+		   		String text;
+		   		text = "	RULES\n\n\nThis game is very similar\nto the classic game of tetris.\n\n" +
+		   		"The Controls are as Follows:\n\n" +
+		   		"Left Arrow: Move Block Left\n" +
+		   		"Right Arrow: Move Block Right\n" +
+		   		"Up Arrow: Rotate Block\n" + 
+		   		"Down Arrow: Soft Drop\n" +
+		   		"Space Bar: Hard Drop\n" + 
+		   		"p: Pause Game\n" + 
+		   		"\n\nHave Fun !";
+		   		textArea = new JTextArea(text);
+		   		textArea.setEditable(false);
+		   		window.add(textArea);
+		   		window.revalidate();
+		   		tetrisPanel.setVisible(false);
+		   		textArea.setVisible(true);
+		   		//textArea.toFront();
+
+		   		UnpauseButton.setVisible(true);
+		   		RestartButton.setVisible(false);
+		   		PauseButton.setVisible(false);
+		   		RulesButton.setVisible(false);
+		   		
+		   	}
+		   	else if(e.getSource() == UnpauseButton)
+		   	{
+		   		pause();
+		   		UnpauseButton.setVisible(false);
+		   		RestartButton.setVisible(true);
+		   		PauseButton.setVisible(true);
+		   		RulesButton.setVisible(true);
+		   		window.remove(textArea);
+		   		tetrisPanel.setVisible(true);
+		   		tetrisPanel.requestFocus();
+
+		   	} 
+		   	else if(e.getSource() == PauseButton)
+		   	{
+		   		pause();
+		   		
+		   	}
+		   	else if (e.getSource() == MusicButton){ 
+
+		   		playMusic();
+
+
+		   	}
+		   	else if (e.getSource() == RestartButton) {
+				restartGame();
+			}
+
+
+    	}
+
+    }
+
+
+
+    public void playMusic() {
+
+		try{
+    		File song = new File("tetrisSong.wav");
+    		AudioInputStream aStream = AudioSystem.getAudioInputStream(this.getClass().getResource("tetrisSong.wav"));
+    		//Clip clip = AudioSystem.getClip();
+    		//clip.open(aStream);
+    		//clip.start();
+			}	 catch (Exception ex) { System.out.println("sorry couldn't open audio");}
+
+	}
+/*
+    	InputStream in = new FileInputStream("tetrisSong.mp3");
+    	AudioStream as = new AudioStream(in);
+    	AudioPlayer.player.start(as);
+
+    	String bip = "tetrisSong.mp3";
+    	Media hit = new Media(bip);
+    	MediaPlayer mediaPlayer = new MediaPlayer(hit);
+    	mediaPlayer.play();
+	try {
+			java.applet.AudioClip clip = java.applet.Applet.newAudioClip(new java.net.URL(“file://c:/tetrisSong.wav"));
+			clip.play();
+		} catch (java.net.MalformedURLException murle) {
+		System.out.println(murle);
+		}
+    		//File song = new File(
+    		//URL url = this.getClass().getClassLoader().getResource("tetrisSong.mp3");
+            //AudioInputStream aStream = AudioSystem.getAudioInputStream(url);
+
+    		
+    		//AudioInputStream aStream = AudioSystem.getAudioInputStream("/cs/student/marshallnaito/cs56/cs56-games-tetris/src/edu/ucsb/cs56/projects/games/tetris/tetrisSong.mp3");
+    		//AudioInputStream aStream = AudioSystem.getAudioInputStream(song);
+    		//AudioInputStream aStream = AudioSystem.getAudioInputStream(song);
+    		//AudioInputStream aStream = AudioSystem.getAudioInputStream(new File("~/cs/student/marshallnaito/cs56/cs56-games-tetris/src/edu/ucsb/cs56/projects/games/tetris/tetrisSong.wav").getAbsoluteFile());
+    		
+  //   	Clip clip;
+  //   	AudioInputStream audio;
+
+  //   	try{
+	 //    audio = AudioSystem.getAudioInputStream(new File("tetrisSong.mp3"));
+		// } catch(IOException e) {
+		// 	System.out.println("file not found");
+		// }
+
+		// try {
+  //     	clip = AudioSystem.getClip();
+  //     	} catch(LineUnavailableException e) {
+  //     		System.out.println("line unavailable");
+  //     	}
+
+  //     	try{
+  //     	clip.open(audio);
+  //     	} catch(UnsupportedAudioFileException e) {
+  //     		System.out.println("sound file not found");
+  //     	}
+
+  //     	clip.start();
+      	 */
+
+    public void beginGame() {
+	for(int row = 0; row < MAX_ROW; row++){
+	    for(int col = 0; col<MAX_COL; col++){
+		board[row][col] = 0;
+		color[row][col] = 0;
+	    }
+    	}
 	this.setFocusable(true);
+	RulePanel.setVisible(true);
+	window.add(this);
+	window.revalidate();
+	window.repaint();
+
 	BlockColor = Color.BLACK;
 	Type1 y = new Type1();
 	this.putBlock(y);
-	timerdelay = 400;
+	timerdelay = TIMER_DELAY;
 	timer = new Timer(timerdelay,this);
 	timer.start();
-	
-	this.setPreferredSize(new Dimension(208,434));
+
+	//this.setPreferredSize(new Dimension(205,460));
 	this.setBackground(Color.WHITE);
-	
+
+
 	//if(this.canMoveDown() == true) 
-	    addKeyListener(new TAdapter());
+	addKeyListener(new TAdapter());
     }
     
     public void actionPerformed(ActionEvent e) {
+
+    
+
+   	
+
+
+
 	if (isFallingFinished) {
 	    isFallingFinished = false;
 	    int randomNumber = (int)(Math.random() * 7) + 1;
@@ -117,7 +483,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 		this.deleteRows();
 	    }
 	this.repaint();
-	
+
     }
     
     public int getBlockPosX(){
@@ -133,16 +499,23 @@ public class TetrisBoard extends JPanel implements ActionListener {
     }
 
     public void clearBoard(){
+    	
     	for(int row = 0; row < MAX_ROW; row++){
     		for(int col = 0; col<MAX_COL; col++){
     			board[row][col] = 0;
 			color[row][col] = 0;
     		}
     	}
+    	
+    	timer.stop();
+    	statusBar.setText("GAME OVER");
+    	RestartButton.setText("Play Again");
     }
 
     public void putBlock(Block block){
-	
+	score++;
+	statusBar.setText("SCORE = " + String.valueOf(score));
+	RestartButton.setText("Restart");
 	//int [][] theBlock = block.getBlock();
 	//int k = (int)(Math.random() * MAX_COL);
 
@@ -157,16 +530,18 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	    if(board[posY+1][i] == 1)
 	        x = 1;
 	}
-	if(x==1)
+	if(x==1){
 	    this.clearBoard();
-	
+	    score = 0;
+	}
+
 
 	for(int r=0;r<4;r++){
 	    for(int c=0;c<4;c++){
 		if(block.getRowCol(r,c) == 1)
 		    {
 			board[posY][posX]=1;
-			
+
 			switch(whichType){
 			case 1: color[posY][posX] = 1;
 			    break;
@@ -184,12 +559,13 @@ public class TetrisBoard extends JPanel implements ActionListener {
 			    break;
 			}
 		    }
-		
+
 		posX++;
 	    }
 	    posY++;
 	    posX-=4;
 	}
+	
     }
 
 
@@ -383,7 +759,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 			BlockPosY++;
 		}
 		else
-		    isFallingFinished=true;;
+		    isFallingFinished=true;
 
 	}
 
@@ -414,6 +790,10 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	}
 	for (int col = 0; col < MAX_COL; col++)
 	    board[0][col] = 0;
+	if(rowtobedeleted != 0){
+	    score = score + 10;
+	    statusBar.setText("SCORE = " + String.valueOf(score));
+	}
     }
 
     public Color getColor(int x){
@@ -436,9 +816,9 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	}
 	return BlockColor;
     }
-	
-		
-		
+
+
+
 
     public void paint(Graphics gr)
     {
@@ -453,16 +833,32 @@ public class TetrisBoard extends JPanel implements ActionListener {
 		    gr.setColor(Color.WHITE);
 		    gr.fillRect(20*col,20*row,20,20);
 		}
-	    
+
 	    }
 	}
     }
+
+    private void pause()
+    {	
+	isPaused = !isPaused;
+	if (isPaused) {
+	    timer.stop();
+	    PauseButton.setText("Resume");
+        statusBar.setText("GAME PAUSED");
+	} else {
+	    timer.start();
+	    PauseButton.setText("Pause");
+	    statusBar.setText("SCORE = " + String.valueOf(score));
+	}
+	repaint();
+    }
+    
     
     class TAdapter extends KeyAdapter {
          public void keyPressed(KeyEvent e) {
-	     
+
              int keycode = e.getKeyCode();
-	     /*
+	     
              if (keycode == 'p' || keycode == 'P') {
                  pause();
                  return;
@@ -470,89 +866,66 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	     
              if (isPaused)
                  return;
-	     */
-             switch (keycode) {
-             case KeyEvent.VK_LEFT:
-                 moveLeft();
-                 break;
-             case KeyEvent.VK_RIGHT:
-                 moveRight();
-                 break;
-             case KeyEvent.VK_SPACE:
-                 drop();
-                 break;
-             }
+	     
+         	switch (keycode) {
+		     	case KeyEvent.VK_UP:
+			 	{ 
+			 		BlockInControl.rotate();
+			 		break;
+			 	}
+				case KeyEvent.VK_DOWN:
+				{
+					timer.setDelay(TIMER_DELAY/6); break;
+				}
+	            case KeyEvent.VK_LEFT:
+	            {
+	            	moveLeft();
+	            	break;
+	            }
+	            case KeyEvent.VK_RIGHT:
+	            {
+	                moveRight();
+	                break;
+	            }
+	            case KeyEvent.VK_SPACE:
+	            { 
+	                drop();
+	                break;
+	            }
+	          
+            }
 
          }
-    }
+		 
+
+}
 
 
-
-
-
-
+   
 
 	public static void main(String [] args){
 
-	    JFrame window = new JFrame("TETRIS");
+	    
+	    window = new JFrame("TETRIS");
 	    
 	    window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+	    statusBar = new JLabel("A Fun Game of Classic Tetris");
+	    window.add(BorderLayout.SOUTH, statusBar);
+	    TetrisBoard b = new TetrisBoard();
+	    tetrisPanel = b;
+	    window.add(tetrisPanel);
+	    window.add(BorderLayout.EAST, RulePanel);
+	    RulePanel.setVisible(false);
 
-		TetrisBoard b = new TetrisBoard();
-		window.add(b);
-		window.setSize(212,432);
-		window.setVisible(true);
-
-
-		/*
-
-		b.putBlock(t3,4,9);
-		//b.drop();
-		b.updateBoard();
-		b.moveDown();
-		b.moveDown();
-		b.moveDown();
-		b.moveDown();
-		b.moveDown();
-		b.moveDown();
-		b.moveDown();
-		b.moveDown();
-		b.moveDown();b.moveDown();
-		b.moveDown();
-		b.moveDown();
-		b.moveDown();
-		b.moveDown();
-		b.moveDown();b.moveDown();
-		b.moveDown();
-		b.moveDown();
-		b.moveDown();
-		b.updateBoard;();
-		b.moveRight();
-		b.moveRight();
-		b.moveRight();
-		b.moveRight();
-		b.moveRight();
-
-		b.updateBoard();
-		b.moveLeft();
-		b.moveLeft();
-		b.moveLeft();
-		b.moveLeft();
-		b.moveLeft();
-		b.moveLeft();
-		b.moveLeft();
-		b.moveLeft();
-		b.updateBoard();
-		b.putBlock(t2,4,0);
-		b.updateBoard();
-		b.moveDown();
-		b.moveDown();
-		b.moveLeft();
-		b.moveRight();
-		b.moveRight();
-		b.updateBoard();
-		*/
+	    window.add(startPanel);
+		
+	   
+	    window.setSize(WINDOW_X, WINDOW_Y);
+	    window.setVisible(true);
+	    
 	}
 
     }
+
+
 
