@@ -341,30 +341,33 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
     public void playMusic() {
 
-		try{
-    		File song = new File("tetrisSong.wav");
-    		AudioInputStream aStream = AudioSystem.getAudioInputStream(this.getClass().getResource("tetrisSong.wav"));
-    		//Clip clip = AudioSystem.getClip();
-    		//clip.open(aStream);
-    		//clip.start();
-			}	 catch (Exception ex) { System.out.println("sorry couldn't open audio");}
-
+	try{
+	    //File song = new File("tetrisSong.mp3");
+	    //AudioInputStream aStream = AudioSystem.getAudioInputStream(this.getClass().getResource("tetrisSong.wav"));
+	    //Clip clip = AudioSystem.getClip();
+	    //clip.open(aStream);
+	    //clip.start();
+	    InputStream in = new FileInputStream("/cs/student/sdbistarkey/cs56/cs56-games-tetris/src/edu/ucsb/cs56/projects/games/tetris/tetrisSong.wav");
+	    AudioStream as = new AudioStream(in);
+	    AudioPlayer.player.start(as);
+	} catch (Exception ex) {
+	    System.out.println("sorry couldn't open audio");
 	}
-/*
-    	InputStream in = new FileInputStream("tetrisSong.mp3");
-    	AudioStream as = new AudioStream(in);
-    	AudioPlayer.player.start(as);
+
+    }
+    /*
+    	
 
     	String bip = "tetrisSong.mp3";
     	Media hit = new Media(bip);
     	MediaPlayer mediaPlayer = new MediaPlayer(hit);
     	mediaPlayer.play();
 	try {
-			java.applet.AudioClip clip = java.applet.Applet.newAudioClip(new java.net.URL(“file://c:/tetrisSong.wav"));
-			clip.play();
-		} catch (java.net.MalformedURLException murle) {
-		System.out.println(murle);
-		}
+	    java.applet.AudioClip clip = java.applet.Applet.newAudioClip(new java.net.URL("file:/c:/tetrisSong.wav"));
+	    clip.play();
+	} catch (java.net.MalformedURLException murle) {
+	    System.out.println(murle);
+	}
     		//File song = new File(
     		//URL url = this.getClass().getClassLoader().getResource("tetrisSong.mp3");
             //AudioInputStream aStream = AudioSystem.getAudioInputStream(url);
@@ -397,8 +400,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
   //     	}
 
   //     	clip.start();
-      	 */
-
+  */
     public void beginGame() {
 	for(int row = 0; row < MAX_ROW; row++){
 	    for(int col = 0; col<MAX_COL; col++){
