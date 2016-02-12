@@ -68,6 +68,11 @@ public class TetrisBoard extends JPanel implements ActionListener {
     static JLabel statusBar;
     int score = 0;
 
+    //music stuff
+    private boolean musicPlaying = false;
+    private InputStream is;
+    private AudioStream as;
+
     private final int MAX_COL = 10;
     private final int MAX_ROW = 24;
     private int[][] board = new int[MAX_ROW][MAX_COL];
@@ -91,7 +96,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 		color[row][col] = 0;
 	    }
     	}
-		this.setFocusable(true);
+	this.setFocusable(true);
 
 	MainMenu();
 
@@ -140,42 +145,42 @@ public class TetrisBoard extends JPanel implements ActionListener {
     	startPanel = new JPanel();
 
     	startPanel.setBackground(Color.LIGHT_GRAY);
-	    startPanel.setLayout(new GridLayout(4,1,0,10));
+	startPanel.setLayout(new GridLayout(4,1,0,10));
 
     	//declare start button
-	    StartButton = new JButton();
-	    StartButton.setPreferredSize(new Dimension (80, 20));
-	    StartButton.setText("Play Tetris");
-	    StartButton.addActionListener(new MainMenuButtons());
-	    startPanel.add(StartButton);
+	StartButton = new JButton();
+	StartButton.setPreferredSize(new Dimension (80, 20));
+	StartButton.setText("Play Tetris");
+	StartButton.addActionListener(new MainMenuButtons());
+	startPanel.add(StartButton);
+	
+	EasyButton = new JButton();
+	EasyButton.setPreferredSize(new Dimension(80,20));
+	EasyButton.setText("Easy");
+	EasyButton.addActionListener(new MainMenuButtons());
+	EasyButton.setVisible(false);
+	startPanel.add(EasyButton);
 
-	    EasyButton = new JButton();
-	    EasyButton.setPreferredSize(new Dimension(80,20));
-	    EasyButton.setText("Easy");
-	    EasyButton.addActionListener(new MainMenuButtons());
-	    EasyButton.setVisible(false);
-	    startPanel.add(EasyButton);
+	MediumButton = new JButton();
+	MediumButton.setPreferredSize(new Dimension(80,20));
+	MediumButton.setText("Medium");
+	MediumButton.addActionListener(new MainMenuButtons());
+	MediumButton.setVisible(false);
+	startPanel.add(MediumButton);
+	
+	HardButton = new JButton();
+	HardButton.setPreferredSize(new Dimension(80,20));
+	HardButton.setText("Hard");
+	HardButton.addActionListener(new MainMenuButtons());
+	HardButton.setVisible(false);
+	startPanel.add(HardButton);
+	
 
-	    MediumButton = new JButton();
-	    MediumButton.setPreferredSize(new Dimension(80,20));
-	    MediumButton.setText("Medium");
-	    MediumButton.addActionListener(new MainMenuButtons());
-	    MediumButton.setVisible(false);
-	    startPanel.add(MediumButton);
-
-	    HardButton = new JButton();
-	    HardButton.setPreferredSize(new Dimension(80,20));
-	    HardButton.setText("Hard");
-	    HardButton.addActionListener(new MainMenuButtons());
-	    HardButton.setVisible(false);
-	    startPanel.add(HardButton);
-
-
-	    startFrame.getContentPane().add(startPanel);
-
-	    //start screen attributes
-	    startFrame.setSize(WINDOW_X, WINDOW_Y);
-	    startFrame.setVisible(true);
+	startFrame.getContentPane().add(startPanel);
+	
+	//start screen attributes
+	startFrame.setSize(WINDOW_X, WINDOW_Y);
+	startFrame.setVisible(true);
     	
     }
 
@@ -319,17 +324,13 @@ public class TetrisBoard extends JPanel implements ActionListener {
 		   	} 
 		   	else if(e.getSource() == PauseButton)
 		   	{
-		   		pause();
-		   		
+			    pause();
 		   	}
-		   	else if (e.getSource() == MusicButton){ 
-
-		   		playMusic();
-
-
+		   	else if (e.getSource() == MusicButton){
+			    playMusic();
 		   	}
 		   	else if (e.getSource() == RestartButton) {
-				restartGame();
+			    restartGame();
 			}
 
 
@@ -341,66 +342,22 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
     public void playMusic() {
 
-	try{
-	    //File song = new File("tetrisSong.mp3");
-	    //AudioInputStream aStream = AudioSystem.getAudioInputStream(this.getClass().getResource("tetrisSong.wav"));
-	    //Clip clip = AudioSystem.getClip();
-	    //clip.open(aStream);
-	    //clip.start();
-	    InputStream in = new FileInputStream("/cs/student/sdbistarkey/cs56/cs56-games-tetris/src/edu/ucsb/cs56/projects/games/tetris/tetrisSong.wav");
-	    AudioStream as = new AudioStream(in);
-	    AudioPlayer.player.start(as);
-	} catch (Exception ex) {
-	    System.out.println("sorry couldn't open audio");
+	if (!musicPlaying) {
+	    try{
+		is = new FileInputStream("/cs/student/sdbistarkey/cs56/cs56-games-tetris/src/edu/ucsb/cs56/projects/games/tetris/tetrisSong.wav");
+		as = new AudioStream(is);
+		AudioPlayer.player.start(as);
+		musicPlaying = true;
+	    } catch (Exception ex) {
+		System.out.println("sorry couldn't open audio");
+	    }
 	}
-
+	else {
+	    AudioPlayer.player.stop(as);
+	    musicPlaying = false;
+	}
     }
-    /*
-    	
-
-    	String bip = "tetrisSong.mp3";
-    	Media hit = new Media(bip);
-    	MediaPlayer mediaPlayer = new MediaPlayer(hit);
-    	mediaPlayer.play();
-	try {
-	    java.applet.AudioClip clip = java.applet.Applet.newAudioClip(new java.net.URL("file:/c:/tetrisSong.wav"));
-	    clip.play();
-	} catch (java.net.MalformedURLException murle) {
-	    System.out.println(murle);
-	}
-    		//File song = new File(
-    		//URL url = this.getClass().getClassLoader().getResource("tetrisSong.mp3");
-            //AudioInputStream aStream = AudioSystem.getAudioInputStream(url);
-
-    		
-    		//AudioInputStream aStream = AudioSystem.getAudioInputStream("/cs/student/marshallnaito/cs56/cs56-games-tetris/src/edu/ucsb/cs56/projects/games/tetris/tetrisSong.mp3");
-    		//AudioInputStream aStream = AudioSystem.getAudioInputStream(song);
-    		//AudioInputStream aStream = AudioSystem.getAudioInputStream(song);
-    		//AudioInputStream aStream = AudioSystem.getAudioInputStream(new File("~/cs/student/marshallnaito/cs56/cs56-games-tetris/src/edu/ucsb/cs56/projects/games/tetris/tetrisSong.wav").getAbsoluteFile());
-    		
-  //   	Clip clip;
-  //   	AudioInputStream audio;
-
-  //   	try{
-	 //    audio = AudioSystem.getAudioInputStream(new File("tetrisSong.mp3"));
-		// } catch(IOException e) {
-		// 	System.out.println("file not found");
-		// }
-
-		// try {
-  //     	clip = AudioSystem.getClip();
-  //     	} catch(LineUnavailableException e) {
-  //     		System.out.println("line unavailable");
-  //     	}
-
-  //     	try{
-  //     	clip.open(audio);
-  //     	} catch(UnsupportedAudioFileException e) {
-  //     		System.out.println("sound file not found");
-  //     	}
-
-  //     	clip.start();
-  */
+    
     public void beginGame() {
 	for(int row = 0; row < MAX_ROW; row++){
 	    for(int col = 0; col<MAX_COL; col++){
@@ -420,10 +377,10 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	timerdelay = TIMER_DELAY;
 	timer = new Timer(timerdelay,this);
 	timer.start();
-
+	
 	//this.setPreferredSize(new Dimension(205,460));
 	this.setBackground(Color.WHITE);
-
+	this.playMusic();
 
 	//if(this.canMoveDown() == true) 
 	addKeyListener(new TAdapter());
