@@ -373,6 +373,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
 	BlockColor = Color.BLACK;
 	Type1 y = new Type1();
+	whichType = 1;
 	this.putBlock(y);
 	timerdelay = TIMER_DELAY;
 	timer = new Timer(timerdelay,this);
