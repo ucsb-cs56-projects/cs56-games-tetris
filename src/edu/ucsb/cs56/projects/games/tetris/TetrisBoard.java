@@ -57,7 +57,6 @@ public class TetrisBoard extends JPanel implements ActionListener {
     private JTextArea textArea;
 
     static JFrame window;
-    static JFrame startFrame;
     static JPanel RulePanel;
     static JPanel startPanel;
     static JPanel tetrisPanel;
@@ -140,8 +139,6 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
     public void MainMenu() {
 
-        startFrame = new JFrame();
-        startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         startPanel = new JPanel();
 
         startPanel.setBackground(Color.LIGHT_GRAY);
@@ -175,13 +172,6 @@ public class TetrisBoard extends JPanel implements ActionListener {
         HardButton.setVisible(false);
         startPanel.add(HardButton);
 
-
-        startFrame.getContentPane().add(startPanel);
-
-        //start screen attributes
-        startFrame.setSize(WINDOW_X, WINDOW_Y);
-        startFrame.setVisible(true);
-
     }
 
     private class MainMenuButtons implements ActionListener{
@@ -198,7 +188,6 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
                 TIMER_DELAY = 1000;
 
-                startFrame.setVisible(false);
                 startPanel.setVisible(false);
                 window.setVisible(true);
                 window.setSize(WINDOW_X, WINDOW_Y);
@@ -207,7 +196,6 @@ public class TetrisBoard extends JPanel implements ActionListener {
             else if(e.getSource() == MediumButton)
             {
                 TIMER_DELAY = 400;
-                startFrame.setVisible(false);
                 startPanel.setVisible(false);
                 window.setVisible(true);
                 window.setSize(WINDOW_X, WINDOW_Y);
@@ -218,7 +206,6 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
                 TIMER_DELAY = 80;
 
-                startFrame.setVisible(false);
                 startPanel.setVisible(false);
                 window.setVisible(true);
                 window.setSize(WINDOW_X, WINDOW_Y);
