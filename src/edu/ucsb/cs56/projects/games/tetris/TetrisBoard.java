@@ -418,10 +418,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
         else 
         {
             this.moveDown();
-            this.deleteRows();
-            this.deleteRows();
-            this.deleteRows();
-            this.deleteRows();
+            this.deleteRows(); 
         }
         this.repaint();
 
@@ -468,14 +465,12 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
         int x = 0;
         for(int i=0;i<MAX_COL;i++){
-            if(board[posY+1][i] == 1)
-                x = 1;
+            if(board[posY+1][i] == 1) {
+                this.clearBoard();
+                score = 0;
+                break;
+            }
         }
-        if(x==1){
-            this.clearBoard();
-            score = 0;
-        }
-
 
         for(int r=0;r<4;r++){
             for(int c=0;c<4;c++){
@@ -574,9 +569,13 @@ public class TetrisBoard extends JPanel implements ActionListener {
                     else{
                         if(tempPosY+1 > MAX_ROW-1)
                             return false;
+                        try {
                         if(temp[r+1][c] == 0){
                             if(board[tempPosY+1][tempPosX]==1)
                                 return false;
+                        }
+                        } catch (RuntimeException rex) {
+                            System.err.println("Out of bounds: " + String.valueOf(tempPosY + 1) + " vs the max " + MAX_COL + " and " + tempPosX + "vs max " + MAX_ROW);
                         }
                     }
                 }
@@ -663,13 +662,14 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
             for(int r=0; r<4; r++){
                 for(int c=0;c<4;c++){
-                    if(temp[r][c] == 1 && getRowCol(tempPosY,tempPosX)==1){
+                    if(temp[r][c] == 1) { // && getRowCol(tempPosY,tempPosX)==1){  <-- doesn't add any fucntionality and breaks the rotate
                         CoordinatesToDown.add(new Point(tempPosX,tempPosY));
                         board[tempPosY][tempPosX]=0;
                         color[tempPosY][tempPosX]=0;
                     }
                     tempPosX++;
                 }
+                //Moves to next row, and first column (which is why there's a -4 for posX)
                 tempPosY++;
                 tempPosX-=4;
             }
