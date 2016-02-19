@@ -95,6 +95,6 @@ public class Type2 extends Block{
 	    type2 = rotated0;
 	    rotCounter=1;
     	}
-	rotating = false;
+        rotating = false;
     }
 }

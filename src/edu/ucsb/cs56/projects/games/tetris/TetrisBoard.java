@@ -331,7 +331,11 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
         if (!musicPlaying) {
             try{
-                is = new FileInputStream("/cs/student/sdbistarkey/cs56/cs56-games-tetris/src/edu/ucsb/cs56/projects/games/tetris/tetrisSong.wav");
+                File currentDir = new File(System.getProperty("user.dir"));
+                //Note this is the relative path of the wav file to whever the repo is located
+                //So if you move the wav file you need to change this
+                File songFile = new File(currentDir, "src/edu/ucsb/cs56/projects/games/tetris/tetrisSong.wav");
+                is = new FileInputStream(songFile);
                 as = new AudioStream(is);
                 AudioPlayer.player.start(as);
                 musicPlaying = true;

@@ -13,6 +13,7 @@ abstract class Block {
     abstract void rotate();
     abstract int[][] getBlock();
     abstract int getRowCol(int r,int c);
+    public boolean rotating = false;
     
     public void display(Block type){
 	
