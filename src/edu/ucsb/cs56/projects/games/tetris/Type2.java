@@ -11,7 +11,6 @@ package edu.ucsb.cs56.projects.games.tetris;
 */
 
 public class Type2 extends Block{
-
     private int [][] type2= {{0,0,0,0},
 			     {0,1,0,0},
 			     {1,1,1,0},
@@ -79,6 +78,7 @@ public class Type2 extends Block{
     */
     
     public void rotate() {
+	rotating = true;
 	if(rotCounter == 1){
 	    type2 = rotated1;
 	    rotCounter++;
@@ -95,7 +95,6 @@ public class Type2 extends Block{
 	    type2 = rotated0;
 	    rotCounter=1;
     	}
-	
+	rotating = false;
     }
-    
 }
