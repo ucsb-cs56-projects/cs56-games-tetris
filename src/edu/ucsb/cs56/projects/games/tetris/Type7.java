@@ -14,7 +14,10 @@ package edu.ucsb.cs56.projects.games.tetris;
 public class Type7 extends Block{
 
 
-	private int [][] type7= {{0,1,0,0},{0,1,0,0},{0,1,0,0},{0,1,0,0}};
+	private int [][] type7= {{0,1,0,0},
+				 {0,1,0,0},
+				 {0,1,0,0},
+				 {0,1,0,0}};
 	int rotCounter = 1;
 
     /**
@@ -52,7 +55,7 @@ public class Type7 extends Block{
     */
 
     public void rotate(){
-
+	rotated = true;
     	if(rotCounter == 1){
     		int [][] temp = {{0,0,0,0},{1,1,1,1},{0,0,0,0},{0,0,0,0}};
     		type7 = temp;
@@ -64,5 +67,4 @@ public class Type7 extends Block{
     		rotCounter--;
     	}
     }
-
 }

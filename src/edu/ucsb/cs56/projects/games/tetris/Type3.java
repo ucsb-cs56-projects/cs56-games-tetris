@@ -52,6 +52,7 @@ public class Type3 extends Block{
 
     */
     public void rotate(){
+	rotated = true;
     	if(rotCounter == 1){
     		int [][] temp = {{0,0,0,0},{1,1,1,0},{0,0,1,0},{0,0,0,0}};
     		type3 = temp;
@@ -72,6 +73,5 @@ public class Type3 extends Block{
     		type3 = temp;
 		    rotCounter =1;
     	}
-    }
-
+    }    
 }

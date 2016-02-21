@@ -574,10 +574,10 @@ public class TetrisBoard extends JPanel implements ActionListener {
                         if(tempPosY+1 > MAX_ROW-1)
                             return false;
                         try {
-                        if(temp[r+1][c] == 0){
-                            if(board[tempPosY+1][tempPosX]==1)
-                                return false;
-                        }
+                            if(temp[r+1][c] == 0){
+                                if(board[tempPosY+1][tempPosX]==1)
+                                    return false;
+                            }
                         } catch (RuntimeException rex) {
                             System.err.println("Out of bounds: " + String.valueOf(tempPosY + 1) + " vs the max " + MAX_COL + " and " + tempPosX + "vs max " + MAX_ROW);
                         }
@@ -657,7 +657,6 @@ public class TetrisBoard extends JPanel implements ActionListener {
     }
 
     public void moveDown(){
-
         if(canMoveDown()){
             int[][] temp = BlockInControl.getBlock();
             int tempPosX = BlockPosX;
@@ -668,16 +667,19 @@ public class TetrisBoard extends JPanel implements ActionListener {
                 for(int c=0;c<4;c++){
                     if(temp[r][c] == 1) { // && getRowCol(tempPosY,tempPosX)==1){  <-- doesn't add any fucntionality and breaks the rotate
                         CoordinatesToDown.add(new Point(tempPosX,tempPosY));
-                        board[tempPosY][tempPosX]=0;
+                        board[tempPosY][tempPosX]=0;	
                         color[tempPosY][tempPosX]=0;
+                        if(BlockInControl.rotated) {
+                            clearRotatedSelection();
+                            BlockInControl.rotated=false; 
+                        }
                     }
                     tempPosX++;
-                }
+                }   
                 //Moves to next row, and first column (which is why there's a -4 for posX)
                 tempPosY++;
                 tempPosX-=4;
             }
-
             for(Point p : CoordinatesToDown){
                 board[(int)p.getY()+1][(int)p.getX()]=1;
                 color[(int)p.getY()+1][(int)p.getX()]=whichType;
@@ -687,174 +689,194 @@ public class TetrisBoard extends JPanel implements ActionListener {
             CoordinatesToDown = null;
             BlockPosY++;
         }
-        else
+        else {
             isFallingFinished=true;
-
-    }
-
-    public void drop(){
-        while(canMoveDown())
-            moveDown();
-    }
-
-    public void deleteRows(){
-        int nodelete;
-        int rowtobedeleted = 0;
-
-        for(int row = 0; row<MAX_ROW; row++){
-            nodelete = 0;
-            for(int col = 0; col <MAX_COL; col++){
-                if(board[row][col] == 0)
-                    nodelete = 1;
-            }
-            if(nodelete == 0){
-                rowtobedeleted = row;
-            }
         }
-        if(rowtobedeleted != 0){
-            for(int row = rowtobedeleted; row > 1; row--)
-                for (int col = 0; col < MAX_COL; col++){
-                    board[row][col] = board[row-1][col];
+    }
+
+    public void clearRotatedSelection() { 
+        int tempPosX = BlockPosX;
+        int tempPosY = BlockPosY;
+        for(int i=0; i<4; i++) {
+            for(int j=0; j<4; j++) {
+                if(tempPosX > 0 && tempPosX < MAX_COL-1) {
+                    board[tempPosY][tempPosX-1] = board[tempPosY][tempPosX+1] = 0;
+                    color[tempPosY][tempPosX-1] = board[tempPosY][tempPosX+1] = 0;
                 }
+                tempPosX++;
+            }
+            tempPosX -= 4;
+            if(tempPosY > 0 && tempPosY < MAX_ROW-1) {
+                board[tempPosY+1][tempPosX] = board[tempPosY-1][tempPosX] = 0;
+                color[tempPosY+1][tempPosX] = color[tempPosY-1][tempPosX] = 0;
+            }
+            tempPosY++;
         }
-        for (int col = 0; col < MAX_COL; col++)
-            board[0][col] = 0;
-        if(rowtobedeleted != 0){
-            score = score + 10;
-            statusBar.setText("SCORE = " + String.valueOf(score));
+    } 
+
+        public void drop(){
+            while(canMoveDown())
+                moveDown();
         }
-    }
 
-    public Color getColor(int x){
-        switch(x){
-            case 1: BlockColor = Color.BLACK;
-                    break;
-            case 2: BlockColor = Color.GREEN;
-                    break;
-            case 3: BlockColor =  Color.BLUE;
-                    break;
-            case 4: BlockColor =  Color.ORANGE;
-                    break;
-            case 5: BlockColor =  Color.MAGENTA;
-                    break;
-            case 6: BlockColor =  Color.BLUE;
-                    break;
-            case 7: BlockColor =  Color.RED;
-                    break;
+        public void deleteRows(){
+            int nodelete;
+            int rowtobedeleted = 0;
 
-        }
-        return BlockColor;
-    }
-
-
-
-
-    public void paint(Graphics gr)
-    {
-        super.paint(gr);
-        for(int row = 0; row<MAX_ROW; row++){
-            for(int col = 0; col <MAX_COL; col++){
-                if(board[row][col] == 1){
-                    gr.setColor(getColor(color[row][col]));
-                    gr.fillRect(20*col,20*row,20,20);
+            for(int row = 0; row<MAX_ROW; row++){
+                nodelete = 0;
+                for(int col = 0; col <MAX_COL; col++){
+                    if(board[row][col] == 0)
+                        nodelete = 1;
                 }
-                else{
-                    gr.setColor(Color.WHITE);
-                    gr.fillRect(20*col,20*row,20,20);
+                if(nodelete == 0){
+                    rowtobedeleted = row;
+                }
+            }
+            if(rowtobedeleted != 0){
+                for(int row = rowtobedeleted; row > 1; row--)
+                    for (int col = 0; col < MAX_COL; col++){
+                        board[row][col] = board[row-1][col];
+                    }
+            }
+            for (int col = 0; col < MAX_COL; col++)
+                board[0][col] = 0;
+            if(rowtobedeleted != 0){
+                score = score + 10;
+                statusBar.setText("SCORE = " + String.valueOf(score));
+            }
+        }
+
+        public Color getColor(int x){
+            switch(x){
+                case 1: BlockColor = Color.BLACK;
+                        break;
+                case 2: BlockColor = Color.GREEN;
+                        break;
+                case 3: BlockColor =  Color.BLUE;
+                        break;
+                case 4: BlockColor =  Color.ORANGE;
+                        break;
+                case 5: BlockColor =  Color.MAGENTA;
+                        break;
+                case 6: BlockColor =  Color.BLUE;
+                        break;
+                case 7: BlockColor =  Color.RED;
+                        break;
+
+            }
+            return BlockColor;
+        }
+
+
+
+
+        public void paint(Graphics gr)
+        {
+            super.paint(gr);
+            for(int row = 0; row<MAX_ROW; row++){
+                for(int col = 0; col <MAX_COL; col++){
+                    if(board[row][col] == 1){
+                        gr.setColor(getColor(color[row][col]));
+                        gr.fillRect(20*col,20*row,20,20);
+                    }
+                    else{
+                        gr.setColor(Color.WHITE);
+                        gr.fillRect(20*col,20*row,20,20);
+                    }
+
+                }
+            }
+        }
+
+        private void pause()
+        {	
+            isPaused = !isPaused;
+            if (isPaused) {
+                timer.stop();
+                PauseButton.setText("Resume");
+                statusBar.setText("GAME PAUSED");
+            } else {
+                timer.start();
+                PauseButton.setText("Pause");
+                statusBar.setText("SCORE = " + String.valueOf(score));
+            }
+            repaint();
+        }
+
+
+        class TAdapter extends KeyAdapter {
+            public void keyPressed(KeyEvent e) {
+
+                int keycode = e.getKeyCode();
+
+                if (keycode == 'p' || keycode == 'P') {
+                    pause();
+                    return;
+                }
+
+                if (isPaused)
+                    return;
+
+                switch (keycode) {
+                    case KeyEvent.VK_UP:
+                        { 
+                            BlockInControl.rotate();
+                            break;
+                        }
+                    case KeyEvent.VK_DOWN:
+                        {
+                            timer.setDelay(TIMER_DELAY/6); break;
+                        }
+                    case KeyEvent.VK_LEFT:
+                        {
+                            moveLeft();
+                            break;
+                        }
+                    case KeyEvent.VK_RIGHT:
+                        {
+                            moveRight();
+                            break;
+                        }
+                    case KeyEvent.VK_SPACE:
+                        { 
+                            drop();
+                            break;
+                        }
+
                 }
 
             }
-        }
-    }
 
-    private void pause()
-    {	
-        isPaused = !isPaused;
-        if (isPaused) {
-            timer.stop();
-            PauseButton.setText("Resume");
-            statusBar.setText("GAME PAUSED");
-        } else {
-            timer.start();
-            PauseButton.setText("Pause");
-            statusBar.setText("SCORE = " + String.valueOf(score));
-        }
-        repaint();
-    }
-
-
-    class TAdapter extends KeyAdapter {
-        public void keyPressed(KeyEvent e) {
-
-            int keycode = e.getKeyCode();
-
-            if (keycode == 'p' || keycode == 'P') {
-                pause();
-                return;
-            }
-
-            if (isPaused)
-                return;
-
-            switch (keycode) {
-                case KeyEvent.VK_UP:
-                    { 
-                        BlockInControl.rotate();
-                        break;
-                    }
-                case KeyEvent.VK_DOWN:
-                    {
-                        timer.setDelay(TIMER_DELAY/6); break;
-                    }
-                case KeyEvent.VK_LEFT:
-                    {
-                        moveLeft();
-                        break;
-                    }
-                case KeyEvent.VK_RIGHT:
-                    {
-                        moveRight();
-                        break;
-                    }
-                case KeyEvent.VK_SPACE:
-                    { 
-                        drop();
-                        break;
-                    }
-
-            }
 
         }
 
 
+
+
+        public static void main(String [] args){
+
+
+            window = new JFrame("TETRIS");
+
+            window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+            statusBar = new JLabel("A Fun Game of Classic Tetris");
+            window.add(BorderLayout.SOUTH, statusBar);
+            TetrisBoard b = new TetrisBoard();
+            tetrisPanel = b;
+            window.add(tetrisPanel);
+            window.add(BorderLayout.EAST, RulePanel);
+            RulePanel.setVisible(false);
+
+            window.add(startPanel);
+
+
+            window.setSize(WINDOW_X, WINDOW_Y);
+            window.setVisible(true);
+
+        }
+
     }
-
-
-
-
-    public static void main(String [] args){
-
-
-        window = new JFrame("TETRIS");
-
-        window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
-        statusBar = new JLabel("A Fun Game of Classic Tetris");
-        window.add(BorderLayout.SOUTH, statusBar);
-        TetrisBoard b = new TetrisBoard();
-        tetrisPanel = b;
-        window.add(tetrisPanel);
-        window.add(BorderLayout.EAST, RulePanel);
-        RulePanel.setVisible(false);
-
-        window.add(startPanel);
-
-
-        window.setSize(WINDOW_X, WINDOW_Y);
-        window.setVisible(true);
-
-    }
-
-}
 
 
 
