@@ -669,10 +669,14 @@ public class TetrisBoard extends JPanel implements ActionListener {
                         CoordinatesToDown.add(new Point(tempPosX,tempPosY));
                         board[tempPosY][tempPosX]=0;	
                         color[tempPosY][tempPosX]=0;
-                        if(BlockInControl.rotated) {
-                            clearRotatedSelection();
-                            BlockInControl.rotated=false; 
-                        }
+                        //if(BlockInControl.rotated) {
+                          //  clearRotatedSelection();
+                            //BlockInControl.rotated=false; 
+                        //}
+                    }
+                    else if(temp[r][c] == 2 && board[tempPosY][tempPosX] == 1) {
+                        board[tempPosY][tempPosX] = color[tempPosY][tempPosX] = 0;
+                        BlockInControl.setRowCol(r,c,0);
                     }
                     tempPosX++;
                 }   

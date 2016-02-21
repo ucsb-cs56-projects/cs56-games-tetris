@@ -13,21 +13,26 @@ abstract class Block {
     abstract void rotate();
     abstract int[][] getBlock();
     abstract int getRowCol(int r,int c);
+    abstract void setRowCol(int r, int c, int i);
     public boolean rotated = false;
-    
+
     public void display(Block type){
-	
-	int [][] shape = new int [4][4];
-	shape = type.getBlock();
-	
-	for(int row = 0; row<4;row++){
-	    for(int col = 0; col<4;col++){
-		if(shape[row][col] == 0)
-		    System.out.print(" ");
-		else if(shape[row][col] == 1)
-		    System.out.print("*");
-	    }
-	    System.out.println();
-    	}
+
+        int [][] shape = new int [4][4];
+        shape = type.getBlock();
+
+        for(int row = 0; row<4;row++){
+            for(int col = 0; col<4;col++){
+                if(shape[row][col] == 0)
+                    System.out.print(" ");
+                else if(shape[row][col] == 1)
+                    System.out.print("*");
+            }
+            System.out.println();
+        }
+    }
+
+    public void setColRow(int c, int r) {
+        
     }
 }

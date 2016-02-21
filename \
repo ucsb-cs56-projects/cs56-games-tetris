@@ -77,20 +77,6 @@ public class Type2 extends Block{
         return type2[r][c];
     }
 
-    /**
-     * set the current row and column to the value i
-     *
-     * @param r the row to be replaced
-     * @param c the col to be replaced
-     * @param i the value to replace r,c with
-     */
-
-    public void setRowCol(int r, int c, int i) {
-        if (i != 0 && i!=1 && i!=2)
-            return;
-        type2[r][c] = i;
-    }
-
     /** 
 
       Rotates the block

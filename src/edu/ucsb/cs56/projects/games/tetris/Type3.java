@@ -45,7 +45,21 @@ public class Type3 extends Block{
     public int getRowCol(int r, int c){
     	return type3[r][c];
     }
-    
+
+    /**
+     * set the current row and column to the value i
+     *
+     * @param r the row to be replaced
+     * @param c the col to be replaced
+     * @param i the value to replace r,c with
+     */
+
+    public void setRowCol(int r, int c, int i) {
+        if (i != 0 && i!=1 && i!=2)
+            return;
+        type3[r][c] = i;
+    }
+
      /**
        
        Rotates the block
@@ -54,22 +68,34 @@ public class Type3 extends Block{
     public void rotate(){
 	rotated = true;
     	if(rotCounter == 1){
-    		int [][] temp = {{0,0,0,0},{1,1,1,0},{0,0,1,0},{0,0,0,0}};
+    		int [][] temp = {{0,0,0,0},
+    		    {1,1,1,0},
+    		    {0,2,1,0},
+    		    {0,2,0,0}};
     		type3 = temp;
     		rotCounter++;
     	}
     	else if(rotCounter ==2){
-    		int [][] temp = {{0,0,1,0},{0,0,1,0},{0,1,1,0},{0,0,0,0}};
+    		int [][] temp = {{0,0,1,0},
+    		    {2,2,1,0},
+    		    {0,1,1,0},
+    		    {0,0,0,0}};
     		type3 = temp;
     		rotCounter++;
     	}
     	else if(rotCounter ==3){
-    		int [][] temp = {{0,0,0,0},{1,0,0,0},{1,1,1,0},{0,0,0,0}};
+    		int [][] temp = {{0,0,2,0},
+    		    {1,0,2,0},
+    		    {1,1,1,0},
+    		    {0,0,0,0}};
     		type3= temp;
     		rotCounter++;
     	}
     	else{
-    		int [][] temp = {{0,0,0,0},{0,1,1,0},{0,1,0,0},{0,1,0,0}};
+    		int [][] temp = {{0,0,0,0},
+    		{2,1,1,0},
+    		{2,1,2,0},
+    		{0,1,0,0}};
     		type3 = temp;
 		    rotCounter =1;
     	}
