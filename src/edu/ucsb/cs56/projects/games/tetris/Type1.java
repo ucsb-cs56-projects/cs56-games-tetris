@@ -49,5 +49,9 @@ public class Type1 extends Block {
     	return type1[r][c];
     }
 
-
+    public void setRowCol(int r, int c, int i) {
+        if(i!=0 && i!=1 && i!=2)
+            return;
+        type1[r][c]=i;
+    }
 }
