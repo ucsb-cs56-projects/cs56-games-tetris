@@ -1,5 +1,4 @@
 package edu.ucsb.cs56.projects.games.tetris;
-
 /** 
 
   Block Type2 Mountain Shape
@@ -22,30 +21,7 @@ public class Type2 extends Block{
         {1,1,1,0},
         {0,0,0,0}};
 
-    private final int [][] rotated0 = {{0,0,0,0},
-        {0,1,0,0},
-        {1,1,1,0},
-        {0,2,0,0}};
-
-
-    private final int[][] rotated1 = {{0,0,0,0},
-        {0,1,0,0},
-        {2,1,1,0},
-        {0,1,0,0}};
-
-
-    private final int[][] rotated2 = {{0,0,0,0},
-        {0,2,0,0},
-        {1,1,1,0},
-        {0,1,0,0}};
-
-
-    private final int[][] rotated3 = {{0,0,0,0},
-        {0,1,0,0},
-        {1,1,2,0},
-        {0,1,0,0}};
-
-    int rotCounter = 1;
+        int rotCounter = 1;
 
     /**
 
@@ -100,19 +76,35 @@ public class Type2 extends Block{
     public void rotate() {
         rotated = true;
         if(rotCounter == 1){
-            type2 = rotated1;
+            int[][] temp = {{0,0,0,0},
+                {0,1,0,0},
+                {2,1,1,0},
+                {0,1,0,0}};
+            type2 = temp;
             rotCounter++;
         }
-        else if(rotCounter ==2){
-            type2 = rotated2;
+        else if(rotCounter == 2){
+            int[][] temp = {{0,0,0,0},
+                {0,2,0,0},
+                {1,1,1,0},
+                {0,1,0,0}};
+            type2 = temp;
             rotCounter++;
         }
         else if(rotCounter ==3){
-            type2 = rotated3;
+            int[][] temp = {{0,0,0,0},
+                {0,1,0,0},
+                {1,1,2,0},
+                {0,1,0,0}};
+            type2 = temp;
             rotCounter++;
         }
         else {
-            type2 = rotated0;
+            int[][] temp = {{0,0,0,0},
+                {0,1,0,0},
+                {1,1,1,0},
+                {0,2,0,0}};
+            type2 = temp;
             rotCounter=1;
         }
     }
