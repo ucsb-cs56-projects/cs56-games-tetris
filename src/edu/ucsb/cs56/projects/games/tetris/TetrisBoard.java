@@ -665,16 +665,12 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
             for(int r=0; r<4; r++){
                 for(int c=0;c<4;c++){
-                    if(temp[r][c] == 1) { // && getRowCol(tempPosY,tempPosX)==1){  <-- doesn't add any fucntionality and breaks the rotate
+                    if(temp[r][c] == 1 && tempPosX >= 0 && tempPosX < MAX_COL) { // && getRowCol(tempPosY,tempPosX)==1){  <-- doesn't add any fucntionality and breaks the rotate
                         CoordinatesToDown.add(new Point(tempPosX,tempPosY));
                         board[tempPosY][tempPosX]=0;	
                         color[tempPosY][tempPosX]=0;
-                        //if(BlockInControl.rotated) {
-                          //  clearRotatedSelection();
-                            //BlockInControl.rotated=false; 
-                        //}
                     }
-                    else if(temp[r][c] == 2 && board[tempPosY][tempPosX] == 1) {
+                    else if(temp[r][c] == 2 && board[tempPosY][tempPosX] == 1 && tempPosX >= 0 && tempPosX < MAX_COL) {
                         board[tempPosY][tempPosX] = color[tempPosY][tempPosX] = 0;
                         BlockInControl.setRowCol(r,c,0);
                     }
@@ -825,7 +821,10 @@ public class TetrisBoard extends JPanel implements ActionListener {
                 switch (keycode) {
                     case KeyEvent.VK_UP:
                         { 
-                            BlockInControl.rotate();
+                            //Check if block will still be in bounds
+                            if(BlockPosX >= 0 && BlockPosX < MAX_COL - 3) {
+                                BlockInControl.rotate();
+                            }
                             break;
                         }
                     case KeyEvent.VK_DOWN:
