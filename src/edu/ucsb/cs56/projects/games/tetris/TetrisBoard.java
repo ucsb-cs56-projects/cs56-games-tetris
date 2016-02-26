@@ -675,44 +675,24 @@ public class TetrisBoard extends JPanel implements ActionListener {
                         BlockInControl.setRowCol(r,c,0);
                     }
                     tempPosX++;
-                }   
-                //Moves to next row, and first column (which is why there's a -4 for posX)
-                tempPosY++;
-                tempPosX-=4;
-            }
-            for(Point p : CoordinatesToDown){
-                board[(int)p.getY()+1][(int)p.getX()]=1;
-                color[(int)p.getY()+1][(int)p.getX()]=whichType;
-            }
-
-            CoordinatesToDown.clear();
-            CoordinatesToDown = null;
-            BlockPosY++;
-        }
-        else {
-            isFallingFinished=true;
-        }
-    }
-
-    public void clearRotatedSelection() { 
-        int tempPosX = BlockPosX;
-        int tempPosY = BlockPosY;
-        for(int i=0; i<4; i++) {
-            for(int j=0; j<4; j++) {
-                if(tempPosX > 0 && tempPosX < MAX_COL-1) {
-                    board[tempPosY][tempPosX-1] = board[tempPosY][tempPosX+1] = 0;
-                    color[tempPosY][tempPosX-1] = board[tempPosY][tempPosX+1] = 0;
+                    }   
+                    //Moves to next row, and first column (which is why there's a -4 for posX)
+                    tempPosY++;
+                    tempPosX-=4;
                 }
-                tempPosX++;
+                for(Point p : CoordinatesToDown){
+                    board[(int)p.getY()+1][(int)p.getX()]=1;
+                    color[(int)p.getY()+1][(int)p.getX()]=whichType;
+                }
+
+                CoordinatesToDown.clear();
+                CoordinatesToDown = null;
+                BlockPosY++;
             }
-            tempPosX -= 4;
-            if(tempPosY > 0 && tempPosY < MAX_ROW-1) {
-                board[tempPosY+1][tempPosX] = board[tempPosY-1][tempPosX] = 0;
-                color[tempPosY+1][tempPosX] = color[tempPosY-1][tempPosX] = 0;
+            else {
+                isFallingFinished=true;
             }
-            tempPosY++;
         }
-    } 
 
         public void drop(){
             while(canMoveDown())

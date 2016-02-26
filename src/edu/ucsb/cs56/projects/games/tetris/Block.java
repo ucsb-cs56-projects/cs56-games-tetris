@@ -10,11 +10,17 @@ package edu.ucsb.cs56.projects.games.tetris;
 
 abstract class Block {
 
+    protected int[][] block;
+
     abstract void rotate();
-    abstract int[][] getBlock();
-    abstract int getRowCol(int r,int c);
-    abstract void setRowCol(int r, int c, int i);
-    public boolean rotated = false;
+
+    public int[][] getBlock() { return this.block; }
+
+    public int getRowCol(int r,int c) {
+        if(r>=10 || r<0 || c<0 || c>=24) //prevents index out of bounds
+            return 0;
+        return block[r][c];
+    }
 
     public void display(Block type){
 
@@ -32,7 +38,10 @@ abstract class Block {
         }
     }
 
-    public void setColRow(int c, int r) {
-        
+
+    void setRowCol(int r, int c, int i) {
+        if(i!=0 && i!=1 && i!=2)
+            return;
+        block[r][c] = i;
     }
 }
