@@ -32,35 +32,13 @@ public class MenuButtons extends JPanel{
     TetrisBoard b;
 
     public MenuButtons() {
-	this.setBackground(Color.BLUE);
-	this.setPreferredSize(new Dimension(150,440));
-	
-	JButton Start = new JButton();
-	Start.setText("START GAME");
-	//Start.addActionListener(new StartGame());
-	this.add(Start);
+        this.setBackground(Color.BLUE);
+        this.setPreferredSize(new Dimension(150,440));
+        
+        JButton Start = new JButton();
+        Start.setText("START GAME");
+        this.add(Start);
     }
 
 }
 
-/*
-
- public class MainMenu extends JPanel  implements ActionListener{
-	MainMenu(){
-
-	    JButton Start = new JButton();
-	    Start.setText("START GAME");
-	    Start.addActionListener(this);
-	    this.add(Start);
-
-	}
-
-	public void actionPerformed(ActionEvent e) {
-	    
-		
-	}
-
-
-
-
-    }*/

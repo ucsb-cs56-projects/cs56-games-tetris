@@ -52,9 +52,10 @@ public class TetrisBoard extends JPanel implements ActionListener {
     private JButton PauseButton;
     private JButton MusicButton;
     private JButton StartButton;
-    private JButton UnpauseButton;
+    private HoldPanel HoldSpace;
     private int TIMER_DELAY = 400;
     private JTextArea textArea;
+    private boolean rulesOn = false;
 
     static JFrame window;
     static JPanel RulePanel;
@@ -247,19 +248,18 @@ public class TetrisBoard extends JPanel implements ActionListener {
         RulesButton.addActionListener(new SideButtons());
         RulePanel.add(RulesButton);
 
-        UnpauseButton = new JButton();
-        UnpauseButton.setFocusable(false);
-        UnpauseButton.setText("Resume Game");
-        UnpauseButton.addActionListener(new SideButtons());
-        RulePanel.add(UnpauseButton);
-        UnpauseButton.setVisible(false);
-
-
         MusicButton = new JButton();
         MusicButton.setFocusable(false);
         MusicButton.setText("Music on/off");
         MusicButton.addActionListener(new SideButtons());
         RulePanel.add(MusicButton);
+
+        HoldSpace = new HoldPanel();
+        HoldSpace.setPreferredSize(new Dimension(80,80));
+        HoldSpace.setFocusable(false);
+        RulePanel.add(HoldSpace);
+        HoldSpace.setVisible(false); //set this to true at the appropriate time (along with other buttons)
+            //watch out for overlapping with resume game button when you click on rules
 
 
 
@@ -271,6 +271,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
             if(e.getSource() == RulesButton)
             {
+                rulesOn = true;
 
                 if(!isPaused) pause();
                 String text;
@@ -291,16 +292,15 @@ public class TetrisBoard extends JPanel implements ActionListener {
                 textArea.setVisible(true);
                 //textArea.toFront();
 
-                UnpauseButton.setVisible(true);
                 RestartButton.setVisible(false);
-                PauseButton.setVisible(false);
+                PauseButton.setVisible(true);
                 RulesButton.setVisible(false);
 
             }
-            else if(e.getSource() == UnpauseButton)
+            else if(e.getSource() == PauseButton && rulesOn)
             {
                 pause();
-                UnpauseButton.setVisible(false);
+                rulesOn = false;
                 RestartButton.setVisible(true);
                 PauseButton.setVisible(true);
                 RulesButton.setVisible(true);
@@ -324,7 +324,6 @@ public class TetrisBoard extends JPanel implements ActionListener {
         }
 
     }
-
 
 
     public void playMusic() {
