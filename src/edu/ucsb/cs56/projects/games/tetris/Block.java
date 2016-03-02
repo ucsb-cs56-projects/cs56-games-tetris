@@ -17,7 +17,7 @@ abstract class Block {
     public int[][] getBlock() { return this.block; }
 
     public int getRowCol(int r,int c) {
-        if(r>=10 || r<0 || c<0 || c>=24) //prevents index out of bounds
+        if(r>=4 || r<0 || c<0 || c>=4) //prevents index out of bounds
             return 0;
         return block[r][c];
     }
@@ -44,4 +44,5 @@ abstract class Block {
             return;
         block[r][c] = i;
     }
+    
 }

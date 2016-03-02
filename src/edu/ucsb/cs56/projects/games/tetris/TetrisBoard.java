@@ -86,8 +86,8 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
     int BlockPosX,BlockPosY;
 
-    private static int WINDOW_X = 335;
-    private static int WINDOW_Y = 535;
+    private static int WINDOW_X = 320;
+    private static int WINDOW_Y = 520;
 
     public TetrisBoard() {
         for(int row = 0; row < MAX_ROW; row++){
@@ -244,7 +244,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
         RulesButton = new JButton();
         RulesButton.setFocusable(false);
         RulesButton.setPreferredSize(new Dimension(40,40));
-        RulesButton.setText("Rules\n");
+        RulesButton.setText("Rules");
         RulesButton.addActionListener(new SideButtons());
         RulePanel.add(RulesButton);
 
@@ -294,6 +294,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
                 RestartButton.setVisible(false);
                 PauseButton.setVisible(true);
+                HoldSpace.setVisible(false);
                 RulesButton.setVisible(false);
 
             }
@@ -304,6 +305,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
                 RestartButton.setVisible(true);
                 PauseButton.setVisible(true);
                 RulesButton.setVisible(true);
+                HoldSpace.setVisible(true);
                 window.remove(textArea);
                 tetrisPanel.setVisible(true);
                 tetrisPanel.requestFocus();
@@ -357,6 +359,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
         }
         this.setFocusable(true);
         RulePanel.setVisible(true);
+        HoldSpace.setVisible(true);
         window.add(this);
         window.revalidate();
         window.repaint();
@@ -385,31 +388,38 @@ public class TetrisBoard extends JPanel implements ActionListener {
             switch(randomNumber){
                 case 1: Type1 a = new Type1();
                         whichType = 1;
-                        this.putBlock(a);
+                        this.putBlock(HoldSpace.getHeldBlock());
+                        HoldSpace.setBlock(a);
                         break;
                 case 2: Type2 b = new Type2();
                         whichType = 2;
-                        this.putBlock(b);
+                        this.putBlock(HoldSpace.getHeldBlock());
+                        HoldSpace.setBlock(b);
                         break;
                 case 3: Type3 c = new Type3();
                         whichType = 3;
-                        this.putBlock(c);
+                        this.putBlock(HoldSpace.getHeldBlock());
+                        HoldSpace.setBlock(c);
                         break;
                 case 4: Type4 d = new Type4();
                         whichType = 4;
-                        this.putBlock(d);
+                        this.putBlock(HoldSpace.getHeldBlock());
+                        HoldSpace.setBlock(d);
                         break;
                 case 5: Type5 h = new Type5();
                         whichType = 5;
-                        this.putBlock(h);
+                        this.putBlock(HoldSpace.getHeldBlock());
+                        HoldSpace.setBlock(h);
                         break;
                 case 6: Type6 f = new Type6();
                         whichType = 6;
-                        this.putBlock(f);
+                        this.putBlock(HoldSpace.getHeldBlock());
+                        HoldSpace.setBlock(f);
                         break;
                 case 7: Type7 g = new Type7();
                         whichType = 7;
-                        this.putBlock(g);
+                        this.putBlock(HoldSpace.getHeldBlock());
+                        HoldSpace.setBlock(g);
                         break;
             }
             if(timerdelay > 200){
@@ -424,7 +434,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
             this.deleteRows(); 
         }
         this.repaint();
-
+        HoldSpace.repaint();
     }
 
     public int getBlockPosX(){
