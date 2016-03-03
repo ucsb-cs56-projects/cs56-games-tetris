@@ -87,7 +87,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
     int BlockPosX,BlockPosY;
 
     private static int WINDOW_X = 320;
-    private static int WINDOW_Y = 520;
+    private static int WINDOW_Y = 535;
 
     public TetrisBoard() {
         for(int row = 0; row < MAX_ROW; row++){
@@ -256,6 +256,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
         HoldSpace = new HoldPanel();
         HoldSpace.setPreferredSize(new Dimension(80,80));
+        HoldSpace.setAlignmentX(RIGHT_ALIGNMENT);
         HoldSpace.setFocusable(false);
         RulePanel.add(HoldSpace);
         HoldSpace.setVisible(false); //set this to true at the appropriate time (along with other buttons)
@@ -387,39 +388,46 @@ public class TetrisBoard extends JPanel implements ActionListener {
             int randomNumber = (int)(Math.random() * 7) + 1;
             switch(randomNumber){
                 case 1: Type1 a = new Type1();
-                        whichType = 1;
+                        whichType = HoldSpace.getColor();
                         this.putBlock(HoldSpace.getHeldBlock());
                         HoldSpace.setBlock(a);
+                        HoldSpace.setColor(1);
                         break;
                 case 2: Type2 b = new Type2();
-                        whichType = 2;
+                        whichType = HoldSpace.getColor();
                         this.putBlock(HoldSpace.getHeldBlock());
                         HoldSpace.setBlock(b);
+                        HoldSpace.setColor(2);
                         break;
                 case 3: Type3 c = new Type3();
-                        whichType = 3;
+                        whichType = HoldSpace.getColor();
                         this.putBlock(HoldSpace.getHeldBlock());
                         HoldSpace.setBlock(c);
+                        HoldSpace.setColor(3);
                         break;
                 case 4: Type4 d = new Type4();
-                        whichType = 4;
+                        whichType = HoldSpace.getColor();
                         this.putBlock(HoldSpace.getHeldBlock());
                         HoldSpace.setBlock(d);
+                        HoldSpace.setColor(4);
                         break;
                 case 5: Type5 h = new Type5();
-                        whichType = 5;
+                        whichType = HoldSpace.getColor();
                         this.putBlock(HoldSpace.getHeldBlock());
                         HoldSpace.setBlock(h);
+                        HoldSpace.setColor(5);
                         break;
                 case 6: Type6 f = new Type6();
-                        whichType = 6;
+                        whichType = HoldSpace.getColor();
                         this.putBlock(HoldSpace.getHeldBlock());
                         HoldSpace.setBlock(f);
+                        HoldSpace.setColor(6);
                         break;
                 case 7: Type7 g = new Type7();
-                        whichType = 7;
+                        whichType = HoldSpace.getColor();
                         this.putBlock(HoldSpace.getHeldBlock());
                         HoldSpace.setBlock(g);
+                        HoldSpace.setColor(7);
                         break;
             }
             if(timerdelay > 200){
