@@ -1,5 +1,14 @@
 package edu.ucsb.cs56.projects.games.tetris;
 
+/**
+ * Panel that displays the next block.
+ *
+ * @author Davina Zamanzadeh
+ * @author Skyler Bistarkey-Rez
+ * @version cs56, Tetris, Winter 2016
+ */
+
+
 import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.Graphics2D;

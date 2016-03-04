@@ -1,12 +1,14 @@
 package edu.ucsb.cs56.projects.games.tetris;
 /** 
 
-  Block Type2 Mountain Shape
+  Block Type2 T Shape
 
   Extends Block abstract class.
 
   @author Jinouk Lee
-  @version cs56, Tetris, Spring 2011
+  @author Davina Zamanzadeh
+  @author Skyler Bistarkey-Rez
+  @version cs56, Tetris, Winter 2016
   */
 
 public class Type2 extends Block{

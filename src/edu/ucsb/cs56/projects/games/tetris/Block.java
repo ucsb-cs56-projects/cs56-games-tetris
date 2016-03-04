@@ -3,9 +3,12 @@ package edu.ucsb.cs56.projects.games.tetris;
 /**
  * @(#)Block.java
  *
+ * Abstract class that all the specific block types extend.
  *
  * @author Jinouk Lee
- * @version  2011/5/5
+ * @author Davina Zamanzadeh
+ * @author Skyler Bistarkey-Rez
+ * @version cs56, Tetris, Winter 2016
  */
 
 abstract class Block {

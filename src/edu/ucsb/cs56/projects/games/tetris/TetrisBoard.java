@@ -15,6 +15,8 @@ import javax.swing.JButton;
 import javax.swing.Timer;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.BoxLayout;
 
 import javax.sound.sampled.*;
 import java.io.File;
@@ -53,6 +55,8 @@ public class TetrisBoard extends JPanel implements ActionListener {
     private JButton MusicButton;
     private JButton StartButton;
     private HoldPanel HoldSpace;
+    private JPanel SpacingPanel;
+    private JTextField NextBlockText;
     private int TIMER_DELAY = 400;
     private JTextArea textArea;
     private boolean rulesOn = false;
@@ -87,7 +91,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
     int BlockPosX,BlockPosY;
 
     private static int WINDOW_X = 320;
-    private static int WINDOW_Y = 535;
+    private static int WINDOW_Y = 585;
 
     public TetrisBoard() {
         for(int row = 0; row < MAX_ROW; row++){
@@ -225,44 +229,58 @@ public class TetrisBoard extends JPanel implements ActionListener {
         RulePanel =  new JPanel();
 
         RulePanel.setBackground(Color.LIGHT_GRAY);
-        RulePanel.setLayout(new GridLayout(5,1,0,10));
+        RulePanel.setLayout(new GridLayout(6,1,0,10));
 
         RestartButton = new JButton();
         RestartButton.setFocusable(false);
-        RestartButton.setSize(1,1);
+        //RestartButton.setSize(1,1);
+        RestartButton.setPreferredSize(new Dimension(20,20));
         RestartButton.setText("Restart");
         RestartButton.addActionListener(new SideButtons());
         RulePanel.add(RestartButton);
 
         PauseButton = new JButton();
         PauseButton.setFocusable(false);
-        PauseButton.setPreferredSize(new Dimension(40,40));
+        PauseButton.setPreferredSize(new Dimension(20,20));
         PauseButton.setText("Pause");
         PauseButton.addActionListener(new SideButtons());
         RulePanel.add(PauseButton);
 
         RulesButton = new JButton();
         RulesButton.setFocusable(false);
-        RulesButton.setPreferredSize(new Dimension(40,40));
+        RulesButton.setPreferredSize(new Dimension(20,20));
         RulesButton.setText("Rules");
         RulesButton.addActionListener(new SideButtons());
         RulePanel.add(RulesButton);
 
         MusicButton = new JButton();
         MusicButton.setFocusable(false);
+        RulesButton.setPreferredSize(new Dimension(20,20));
         MusicButton.setText("Music on/off");
         MusicButton.addActionListener(new SideButtons());
         RulePanel.add(MusicButton);
 
+        SpacingPanel = new JPanel(); //This is for creating proper spacing for the icon that shows the block
+        SpacingPanel.setBackground(Color.LIGHT_GRAY);
+        SpacingPanel.setLayout(new GridBagLayout());
+        SpacingPanel.setFocusable(false);
+        RulePanel.add(SpacingPanel);
+
         HoldSpace = new HoldPanel();
         HoldSpace.setPreferredSize(new Dimension(80,80));
-        HoldSpace.setAlignmentX(RIGHT_ALIGNMENT);
         HoldSpace.setFocusable(false);
-        RulePanel.add(HoldSpace);
+        SpacingPanel.add(HoldSpace);
         HoldSpace.setVisible(false); //set this to true at the appropriate time (along with other buttons)
             //watch out for overlapping with resume game button when you click on rules
 
-
+        
+        NextBlockText = new JTextField();
+        NextBlockText.setFocusable(false);
+        NextBlockText.setText("Next Block");
+        NextBlockText.setEditable(false);
+        NextBlockText.setBackground(Color.LIGHT_GRAY);
+        NextBlockText.setHorizontalAlignment(JTextField.CENTER);
+        RulePanel.add(NextBlockText);
 
     }
 
@@ -847,12 +865,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
                 }
 
             }
-
-
         }
-
-
-
 
         public static void main(String [] args){
 
