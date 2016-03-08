@@ -345,7 +345,11 @@ public class TetrisBoard extends JPanel implements ActionListener {
         }
 
     }
-
+    
+    /* Function to play the tetris theme
+     * NOTE: Must download and run the repo locally for this to work
+     * Because X11 doesn't forward audio
+     */
 
     public void playMusic() {
 
