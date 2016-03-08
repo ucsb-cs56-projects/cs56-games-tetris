@@ -68,7 +68,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
     Block BlockInControl;
     Color BlockColor;
-    int whichType;
+    int whichColor;
     static JLabel statusBar;
     int score = 0;
 
@@ -385,7 +385,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
         BlockColor = Color.BLACK;
         Type1 y = new Type1();
-        whichType = 1;
+        whichColor = 1;
         this.putBlock(y);
         timerdelay = TIMER_DELAY;
         timer = new Timer(timerdelay,this);
@@ -406,43 +406,43 @@ public class TetrisBoard extends JPanel implements ActionListener {
             int randomNumber = (int)(Math.random() * 7) + 1;
             switch(randomNumber){
                 case 1: Type1 a = new Type1();
-                        whichType = HoldSpace.getColor();
+                        whichColor = HoldSpace.getColor();
                         this.putBlock(HoldSpace.getHeldBlock());
                         HoldSpace.setBlock(a);
                         HoldSpace.setColor(1);
                         break;
                 case 2: Type2 b = new Type2();
-                        whichType = HoldSpace.getColor();
+                        whichColor = HoldSpace.getColor();
                         this.putBlock(HoldSpace.getHeldBlock());
                         HoldSpace.setBlock(b);
                         HoldSpace.setColor(2);
                         break;
                 case 3: Type3 c = new Type3();
-                        whichType = HoldSpace.getColor();
+                        whichColor = HoldSpace.getColor();
                         this.putBlock(HoldSpace.getHeldBlock());
                         HoldSpace.setBlock(c);
                         HoldSpace.setColor(3);
                         break;
                 case 4: Type4 d = new Type4();
-                        whichType = HoldSpace.getColor();
+                        whichColor = HoldSpace.getColor();
                         this.putBlock(HoldSpace.getHeldBlock());
                         HoldSpace.setBlock(d);
                         HoldSpace.setColor(4);
                         break;
                 case 5: Type5 h = new Type5();
-                        whichType = HoldSpace.getColor();
+                        whichColor = HoldSpace.getColor();
                         this.putBlock(HoldSpace.getHeldBlock());
                         HoldSpace.setBlock(h);
                         HoldSpace.setColor(5);
                         break;
                 case 6: Type6 f = new Type6();
-                        whichType = HoldSpace.getColor();
+                        whichColor = HoldSpace.getColor();
                         this.putBlock(HoldSpace.getHeldBlock());
                         HoldSpace.setBlock(f);
                         HoldSpace.setColor(6);
                         break;
                 case 7: Type7 g = new Type7();
-                        whichType = HoldSpace.getColor();
+                        whichColor = HoldSpace.getColor();
                         this.putBlock(HoldSpace.getHeldBlock());
                         HoldSpace.setBlock(g);
                         HoldSpace.setColor(7);
@@ -516,7 +516,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
                 if(block.getRowCol(r,c) == 1) {
                     board[posY][posX]=1;
 
-                    color[posY][posX] = whichType;
+                    color[posY][posX] = whichColor;
                 }
 
                 posX++;
@@ -649,7 +649,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
             for(Point p : CoordinatesToRight){
                 board[(int)p.getY()][(int)p.getX()+1]=1;
-                color[(int)p.getY()][(int)p.getX()+1]= whichType;
+                color[(int)p.getY()][(int)p.getX()+1]= whichColor;
             }
 
             CoordinatesToRight.clear();
@@ -680,7 +680,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
             for(Point p : CoordinatesToLeft){
                 board[(int)p.getY()][(int)p.getX()-1]=1;
-                color[(int)p.getY()][(int)p.getX()-1]=whichType;
+                color[(int)p.getY()][(int)p.getX()-1]=whichColor;
             }
 
             CoordinatesToLeft.clear();
@@ -717,7 +717,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
                 }
                 for(Point p : CoordinatesToDown){
                     board[(int)p.getY()+1][(int)p.getX()]=1;
-                    color[(int)p.getY()+1][(int)p.getX()]=whichType;
+                    color[(int)p.getY()+1][(int)p.getX()]=whichColor;
                 }
 
                 CoordinatesToDown.clear();
@@ -861,11 +861,35 @@ public class TetrisBoard extends JPanel implements ActionListener {
                             drop();
                             break;
                         }
-
+                    case KeyEvent.VK_S:
+                        {
+                            if(BlockPosX >= 0 && BlockPosX < MAX_COL - 3) 
+                                swap();
+                            break;
+                        }
                 }
 
             }
         }
+
+        private void swap() {
+            int tempColor = whichColor;
+            whichColor = HoldSpace.getColor();
+            HoldSpace.setColor(tempColor);
+            Block temp = BlockInControl;
+            BlockInControl = HoldSpace.getHeldBlock();
+            HoldSpace.setBlock(temp);
+
+            //this double for loop checks to see which blocks are no longer present
+            //after the swap, then sets those to 2 so they can be deleted on the board.
+            for (int r=0; r<4; r++) {
+                for (int c=0; c<4; c++) {
+                    if(HoldSpace.getHeldBlock().getRowCol(r,c) == 1 && BlockInControl.getRowCol(r,c) == 0)
+                        BlockInControl.setRowCol(r,c,2);
+                }
+            }
+        }
+
 
         public static void main(String [] args){
 
