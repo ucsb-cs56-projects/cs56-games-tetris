@@ -2,70 +2,54 @@ package edu.ucsb.cs56.projects.games.tetris;
 
 /** 
 
-    Block Type5: Generates left zig-zag 
+  Block Type5: Generates left zig-zag 
 
-    Extends Block abstract class.
+  Extends Block abstract class.
 
-    @author Jinouk Lee
-    @version cs56, Tetris, Spring 2011
-*/
+  @author Jinouk Lee
+  @author Davina Zamanzadeh
+  @author Skyler Bistarkey-Rez
+  @version cs56, Tetris, Winter 2016
+  */
 public class Type5 extends Block{
 
-	private int [][] type5= {{0,0,0,0},
-				 {0,1,1,0},
-				 {1,1,0,0},
-				 {0,0,0,0}};
-	int rotCounter = 1;
+    int rotCounter = 1;
 
     /**
-       Default Constructor
-    */
+      Default Constructor
+      */
 
     public Type5() {
+        int[][] temp= {{0,0,0,0},
+                {0,1,1,0},
+                {1,1,0,0},
+                {0,0,0,0}};
+        block = temp;
+        temp = null;
     }
 
-    /**
+    /** 
 
-       Returns the block
-       @return String [2][2] array
+      Rotates the block
 
-    */
-       
+*/
 
-    public int[][] getBlock(){
-    	return type5;
-    }
-
-    /**
-
-       Return the value 0 or 1 that is located block demension (4x4)
-
-    */
-
-    public int getRowCol(int r, int c){
-    	return type5[r][c];
-    }
-
-       /** 
-
-	Rotates the block
-
-    */
-    
     public void rotate(){
-	if(rotCounter == 1){
-	    int [][] temp = {{0,0,0,0},
-			     {0,1,0,0},
-			     {0,1,1,0},
-			     {0,0,1,0}};
-	    type5 = temp;
-	    rotCounter++;
-    	}
-    	else{
-	    int [][] temp = {{0,0,0,0},{0,1,1,0},{1,1,0,0},{0,0,0,0}};
-	    type5 = temp;
-	    rotCounter = 1;
-    	}
+        if(rotCounter == 1){
+            int [][] temp = {{0,0,0,0},
+                {0,1,2,0},
+                {2,1,1,0},
+                {0,0,1,0}};
+            block = temp;
+            rotCounter++;
+        }
+        else{
+            int [][] temp = {{0,0,0,0},
+                {0,1,1,0},
+                {1,1,2,0},
+                {0,0,2,0}};
+            block = temp;
+            rotCounter = 1;
+        }
     }
-
 }
