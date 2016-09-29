@@ -23,7 +23,7 @@ Good luck, have fun!
 Best,
     Skyler and Davina
 
-<h2>Bugs from Franklin:<h2>
+<h2>Bugs from Franklin:</h2>
 - Rapid movements can cause some blocks to "shed" a one unit block that stays on screen in definitely. The block can interfere with other blocks while present.
 - Instead of instantly  placing down the block on harddrop, it should be a faster animation speed so that the clearing animation is in sync.
 - A slight nuance that the game has is the ability to move the blocks momentarily before solidifying in space. This could just be a feature I guess.
@@ -32,7 +32,7 @@ Best,
 - Music button should be able to change states to indicate whether it's on or not. I cannot hear any music either so maybe that's a bug as well.
 - When the game ends, the screen shouldn't reset and clear all the blocks.
 
-<h2>Suggestions from Franklin:<h2>
+<h2>Suggestions from Franklin:</h2>
 - Perhaps have a save button for if you want to play more and you don't have time.
 - When the game ends, there could be a "Game over" text that overlays onto the screen.
 - Have a grid so that the players can see where their blocks are landing.
