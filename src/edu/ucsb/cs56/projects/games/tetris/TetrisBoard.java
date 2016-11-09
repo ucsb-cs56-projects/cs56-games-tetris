@@ -122,36 +122,20 @@ public class TetrisBoard extends JPanel implements ActionListener {
     }
 
     public void restartGame() {
-        if(statusBar.getText().equals("GAME OVER")) {
-            statusBar.setText("	Restarting Game ...	");
-            score = 0;
-            RestartButton.setText("Restarting...");
-	    timerdelay = TIMER_DELAY;
-	    timer = new Timer(timerdelay,this);
-            //timer.setDelay(TIMER_DELAY);
-            timer.start();
-            RestartButton.setText("Restart");
-	    
-            statusBar.setText("SCORE = 1");
+	if(isPaused) pause();
+	timer.stop();
+        statusBar.setText(" Restarting Game ...     ");
+	score = 0;
+	RestartButton.setText("Restarting...");
+	for(int row = 0; row < MAX_ROW; row++){
+	    for(int col = 0; col<MAX_COL; col++){
+		board[row][col] = 0;
+		color[row][col] = 0;
 	    }
-        else {
-            if(isPaused) pause();
-	    timer.stop();
-            statusBar.setText("	Restarting Game ...	");
-            score = 0;
-            RestartButton.setText("Restarting...");
-            for(int row = 0; row < MAX_ROW; row++){
-                for(int col = 0; col<MAX_COL; col++){
-                    board[row][col] = 0;
-                    color[row][col] = 0;
-                }
-            }
-	    //timer.setDelay(TIMER_DELAY);
-	    timerdelay = TIMER_DELAY;
-	    timer = new Timer(timerdelay,this);
-	    timer.start();
 	}
-
+	timerdelay = TIMER_DELAY;
+	timer = new Timer(timerdelay,this);
+	timer.start();	    
     }
 
     public void MainMenu() {
@@ -436,7 +420,12 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	}
 	else {
                 this.moveDown();
-                this.deleteRows(); 
+		if(isFallingFinished){
+		    this.deleteRows();
+		    this.deleteRows();
+		    this.deleteRows();
+		    this.deleteRows();
+		}
             }
 	this.repaint();
 	HoldSpace.repaint();
@@ -454,13 +443,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	return board[r][c];
     }
     
-    public void clearBoard(){	
-	for(int row = 0; row < MAX_ROW; row++){
-	    for(int col = 0; col<MAX_COL; col++){
-		board[row][col] = 0;
-		color[row][col] = 0;
-	    }
-	}	
+    public void gameOver(){
 	timer.stop();
 	statusBar.setText("GAME OVER");
 	RestartButton.setText("Play Again");
@@ -481,7 +464,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	int x = 0;
 	for(int i=0;i<MAX_COL;i++){
 	    if(board[posY+1][i] == 1) {
-		this.clearBoard();
+		this.gameOver();
 		score = 0;
 		break;
 	    }
@@ -503,7 +486,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
     public boolean canMoveRight(){	
 	int [][] temp = BlockInControl.getBlock();
 	int tempPosX = BlockPosX;
-	int	tempPosY = BlockPosY;
+	int tempPosY = BlockPosY;
 	
 	for(int r = 0; r <4; r++){
 	    for(int c = 0; c < 4;c++){
