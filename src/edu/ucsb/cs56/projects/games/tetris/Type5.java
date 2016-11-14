@@ -21,9 +21,9 @@ public class Type5 extends Block{
 
     public Type5() {
         int[][] temp= {{0,0,0,0},
-                {0,1,1,0},
-                {1,1,0,0},
-                {0,0,0,0}};
+		       {0,1,1,0},
+		       {1,1,0,0},
+		       {0,0,0,0}};
         block = temp;
         temp = null;
     }
@@ -37,17 +37,17 @@ public class Type5 extends Block{
     public void rotate(){
         if(rotCounter == 1){
             int [][] temp = {{0,0,0,0},
-                {0,1,2,0},
-                {2,1,1,0},
-                {0,0,1,0}};
+			     {0,1,2,0},
+			     {2,1,1,0},
+			     {0,0,1,0}};
             block = temp;
             rotCounter++;
         }
         else{
             int [][] temp = {{0,0,0,0},
-                {0,1,1,0},
-                {1,1,2,0},
-                {0,0,2,0}};
+			     {0,1,1,0},
+			     {1,1,2,0},
+			     {0,0,2,0}};
             block = temp;
             rotCounter = 1;
         }
