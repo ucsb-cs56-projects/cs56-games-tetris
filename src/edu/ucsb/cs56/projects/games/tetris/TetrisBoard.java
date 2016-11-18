@@ -732,9 +732,11 @@ public class TetrisBoard extends JPanel implements ActionListener {
 		    gr.setColor(getColor(color[row][col]));
 		    gr.fillRect(20*col,20*row,20,20);
 		}
-		else{
+		else{ // Add hollow square
 		    gr.setColor(Color.WHITE);
 		    gr.fillRect(20*col,20*row,20,20);
+		    gr.drawRect(20*col,20*row,20,20);
+		    
 		}		
 	    }
 	}
