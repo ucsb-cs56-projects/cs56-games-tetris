@@ -764,7 +764,6 @@ public class TetrisBoard extends JPanel implements ActionListener {
 		    gr.fillRect(20*col,20*row,20,20);
 		    gr.setColor(Color.BLACK);
 		    gr.drawRect(20*col,20*row,20,20);
- 		    gr.drawRect(20*col,20*row,20,20);
 		}		
 	    }
 	}
