@@ -693,6 +693,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	}
 	else {
 	    isFallingFinished=true;
+	    playSoundEffect("bd");
 	}
     }
     
