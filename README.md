@@ -14,6 +14,7 @@ When we started this project it was running but there were a lot of bugs to be w
 but there are still a lot more that need to be worked out. The two biggest things that need to be done with the code now are:
 - Refactoring (TetrisBoard.java in particular)
 - Fixing bugs (issues #30 and #39 are the most gamebreaking)
+
 The rest of the issues are either adding new features or making the game look better. Another important thing to keep in mind
 is that when working on sound effects is that if you are working remotely by sshing to csil you won't be able to hear the sound.
 You have to either physically be at csil or download the code and run it on your own machine at home (I used eclipse).
