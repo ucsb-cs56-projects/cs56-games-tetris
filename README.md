@@ -45,11 +45,9 @@ Best,
 - A slight nuance that the game has is the ability to move the blocks momentarily before solidifying in space. This could just be a feature I guess.
 - No exit buttons to the main menu.
 - If the block is against either wall and the left or right keys are pressed, the block will stop when contacting the wall for too long. This bug only occurs once in a while so just take note when it does occur.
-- Music button should be able to change states to indicate whether it's on or not. I cannot hear any music either so maybe that's a bug as well.
 - When the game ends, the screen shouldn't reset and clear all the blocks.
 
 <h2>Suggestions from Franklin:</h2>
 - Perhaps have a save button for if you want to play more and you don't have time.
 - When the game ends, there could be a "Game over" text that overlays onto the screen.
-- Have a grid so that the players can see where their blocks are landing.
 - Tetris games usually have the blocks moving every pixel so with the grid, you can make the animation move down every pixel instead of a constant rate. (This might make it more complicated though).
