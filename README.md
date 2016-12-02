@@ -48,7 +48,6 @@ Best,
 - A slight nuance that the game has is the ability to move the blocks momentarily before solidifying in space. This could just be a feature I guess.
 - No exit buttons to the main menu.
 - If the block is against either wall and the left or right keys are pressed, the block will stop when contacting the wall for too long. This bug only occurs once in a while so just take note when it does occur.
-- When the game ends, the screen shouldn't reset and clear all the blocks.
 
 <h2>Suggestions from Franklin:</h2>
 - Perhaps have a save button for if you want to play more and you don't have time.
