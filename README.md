@@ -18,6 +18,7 @@ but there are still a lot more that need to be worked out. The two biggest thing
 The rest of the issues are either adding new features or making the game look better. Another important thing to keep in mind
 is that when working on sound effects is that if you are working remotely by sshing to csil you won't be able to hear the sound.
 You have to either physically be at csil or download the code and run it on your own machine at home (I used eclipse).
+
 Good luck!
 
 Wesley and Juan
