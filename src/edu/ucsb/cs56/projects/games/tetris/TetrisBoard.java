@@ -51,6 +51,8 @@ public class TetrisBoard extends JPanel implements ActionListener {
     
     private JButton RulesButton;
     private JButton PauseButton;
+    private JButton newGameButton;
+    private JButton MainMenuButton;
     private JButton MusicButton;
     private JButton StartButton;
     private HoldPanel HoldSpace;
@@ -60,6 +62,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
     private JTextArea rulesText;
     private boolean rulesOn = false;
     
+    static JFrame endGameWindow;
     static JFrame window;
     static JPanel RulePanel;
     static JPanel startPanel;
@@ -204,10 +207,11 @@ public class TetrisBoard extends JPanel implements ActionListener {
     private class MainMenuButtons implements ActionListener{
         public void actionPerformed(ActionEvent e) {
             if(e.getSource() == StartButton) {
-                startPanel.setLayout(new GridLayout(4,1,0,10));
+                startPanel.setLayout(new GridLayout(3,1,0,10));
                 StartButton.setVisible(false);
                 rulesText.setVisible(false);
                 startPanel.remove(rulesText);
+		startPanel.remove(StartButton);
                 startPanel.add(EasyButton);
                 startPanel.add(MediumButton);
                 startPanel.add(HardButton);
@@ -249,7 +253,14 @@ public class TetrisBoard extends JPanel implements ActionListener {
         RulePanel =  new JPanel();
 
         RulePanel.setBackground(Color.LIGHT_GRAY);
-        RulePanel.setLayout(new GridLayout(6,1,0,10));
+        RulePanel.setLayout(new GridLayout(7,1,0,0));
+
+	MainMenuButton = new JButton();
+	MainMenuButton.setFocusable(false);
+        MainMenuButton.setPreferredSize(new Dimension(20,20));
+        MainMenuButton.setText("Main Menu");
+        MainMenuButton.addActionListener(new SideButtons());
+        RulePanel.add(MainMenuButton);
 
         RestartButton = new JButton();
         RestartButton.setFocusable(false);
@@ -347,6 +358,14 @@ public class TetrisBoard extends JPanel implements ActionListener {
             else if (e.getSource() == RestartButton) {
                 restartGame();
 	    }
+	    else if (e.getSource() == MainMenuButton) {
+		timer.stop();
+		HoldSpace.setVisible(false);
+                SpacingPanel.setVisible(false);
+                tetrisPanel.setVisible(false);
+                RulePanel.setVisible(false);
+                startPanel.setVisible(true);
+	    }
         }
     }
     
@@ -360,7 +379,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
      */
 
     public void playMusic() {
-
+	    /*
 	if (!musicPlaying) {
 	    try{
 		File currentDir = new File(System.getProperty("user.dir"));
@@ -378,10 +397,11 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	else {
 	    AudioPlayer.player.stop(as);
 	    musicPlaying = false;
-	}
+	}*/
     }
    
     public void playSoundEffect(String event) {
+	    /*
 	try{
 	    String sound = null;
 	    File currentDir = new File(System.getProperty("user.dir"));
@@ -401,8 +421,8 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	} catch (Exception ex) {
 	    System.out.println("sorry couldn't open audio");
 	}
+	*/
     }
-
 
 
     /*
@@ -419,6 +439,8 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	    }
 	}
 	this.setFocusable(true);
+	tetrisPanel.setVisible(true);
+	SpacingPanel.setVisible(true);
 	RulePanel.setVisible(true);
 	HoldSpace.setVisible(true);
 	window.add(this);
@@ -550,16 +572,58 @@ public class TetrisBoard extends JPanel implements ActionListener {
     }
     
     
+    /*
+     * ActionListener for gameOver buttons
+     */
+
+    private class gameOverButtonListener implements ActionListener
+    {
+	public void actionPerformed(ActionEvent e)
+	{
+		if(e.getSource() == newGameButton)
+		{
+			restartGame();
+			endGameWindow.dispose();
+		}
+		else if(e.getSource() == MainMenuButton)
+		{
+			HoldSpace.setVisible(false);
+			SpacingPanel.setVisible(false);
+			tetrisPanel.setVisible(false);
+			RulePanel.setVisible(false);
+			startPanel.setVisible(true);
+			endGameWindow.dispose();
+		}
+	}
+    }
     
     /*
      * method that handles gameover
      */
 
     public void gameOver(){
-	timer.stop();	
-	statusBar.setText("GAME OVER");
-	RestartButton.setText("Play Again");     
-	playSoundEffect("go");	
+	timer.stop();
+	endGameWindow = new JFrame("You Lose!");
+	JPanel endPanel = new JPanel();
+
+	JTextArea endText = new JTextArea("LOSER!!!");
+	newGameButton = new JButton("Play again");
+	newGameButton.addActionListener(new gameOverButtonListener());
+	MainMenuButton = new JButton("Main Menu");
+	MainMenuButton.addActionListener(new gameOverButtonListener());
+
+	endPanel.add(endText);
+	endPanel.add(newGameButton);
+	endPanel.add(MainMenuButton);
+	endGameWindow.setSize(WINDOW_X/2, WINDOW_Y/4);
+
+	endGameWindow.add(endPanel);
+	endPanel.setVisible(true);
+	endGameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	endGameWindow.setVisible(true);
+	//statusBar.setText("GAME OVER");
+	//RestartButton.setText("Play Again");     
+	//playSoundEffect("go");	
     }
     
     
