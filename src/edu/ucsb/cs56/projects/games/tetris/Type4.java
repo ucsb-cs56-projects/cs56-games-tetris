@@ -1,41 +1,36 @@
 package edu.ucsb.cs56.projects.games.tetris;
 
 /** 
+ * Block Type4: Left-Hook Shaped Block
+ * Extends Block abstract class.
+ * @author Jinouk Lee
+ * @author Davina Zamanzadeh
+ * @author Skyler Bistarkey-Rez
+ * @version cs56, Tetris, Winter 2016
+ */
 
-  BLock Type3: generates Left-Hooked shaped block.
-
-  Extends Block abstract class.
-
-  @author Jinouk Lee
-  @author Davina Zamanzadeh
-  @author Skyler Bistarkey-Rez
-  @version cs56, Tetris, Winter 2016
-  */
-
-
-
-public class Type4 extends Block{
+public class Type4 extends Block {
 
     int rotCounter = 1;
 
     /**
-      Default Constructor
-      */
+     * Default Constructor
+     */
 
     public Type4() {
-        int[][] temp= {{0,0,0,0},
-		       {0,1,1,0},
-		       {0,0,1,0},
-		       {0,0,1,0}};
+        int[][] temp = {{0,0,0,0},
+			{0,1,1,0},
+			{0,0,1,0},
+			{0,0,1,0}};
         block = temp;
         temp = null;
     }
-    /** 
 
-      Rotates the block
+    /**
+     * Rotates the block
+     */
 
-*/
-    public void rotate(){
+    public void rotate() {
         if(rotCounter == 1){
             int [][] temp = {{0,0,0,0},
 			     {0,2,1,0},
@@ -44,7 +39,7 @@ public class Type4 extends Block{
             block = temp;
             rotCounter++;
         }
-        else if(rotCounter ==2){
+        else if(rotCounter == 2){
             int [][] temp = {{0,1,0,0},
 			     {0,1,2,0},
 			     {2,1,1,0},
@@ -53,11 +48,11 @@ public class Type4 extends Block{
             rotCounter++;
         }
         else if(rotCounter == 3){
-            int [][] temp ={{0,2,0,0},
-			    {0,1,1,1},
-			    {0,1,2,0},
-			    {0,0,0,0}};
-            block= temp;
+            int [][] temp = {{0,2,0,0},
+		    	     {0,1,1,1},
+			     {0,1,2,0},
+			     {0,0,0,0}};
+            block = temp;
             rotCounter++;
         }
         else{
