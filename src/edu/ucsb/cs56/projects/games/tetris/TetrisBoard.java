@@ -64,6 +64,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
     
     static JFrame endGameWindow;
     static JFrame window;
+
     static JPanel RulePanel;
     static JPanel startPanel;
     static JPanel tetrisPanel;
@@ -639,9 +640,9 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	RestartButton.setText("Restart");
 	//int [][] theBlock = block.getBlock();
 	//int k = (int)(Math.random() * MAX_COL);
-	BlockPosX = 5;
+	BlockPosX = 3;
 	BlockPosY = 0;
-	int posX = 5;
+	int posX = 3;
 	int posY = 0;
 	BlockInControl = block;
 	
@@ -1056,6 +1057,13 @@ public class TetrisBoard extends JPanel implements ActionListener {
 		    break;
 		}
 	    }	    
+	}
+	public void keyReleased(KeyEvent e)
+	{
+		int keycode = e.getKeyCode();
+		if(keycode== KeyEvent.VK_DOWN){
+			timer.setDelay(TIMER_DELAY);
+		}
 	}
     }
     
