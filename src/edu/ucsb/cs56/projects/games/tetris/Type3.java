@@ -1,23 +1,28 @@
 package edu.ucsb.cs56.projects.games.tetris;
 
-/**
- * Block Type3: Right-hook Shaped Block
- * Extends Block abstract class.
- * @author Jinouk Lee
- * @author Davina Zamanzadeh
- * @author Skyler Bistarkey-Rez
- * @version cs56, Tetris, Winter 2016
- */
+/** 
 
-public class Type3 extends Block {
+  BLock Type3: generates Righthooked-shaped block.
+
+  Extends Block abstract class.
+
+  @author Jinouk Lee
+  @author Davina Zamanzadeh
+  @author Skyler Bistarkey-Rez
+  @version cs56, Tetris, Winter 2016
+  */
+
+public class Type3 extends Block{
 
     int rotCounter = 1;
 
 
-    /**
-     * Default Constructor
-     */
+    /** 
 
+      Default Constructor
+
+
+    */
     public Type3() {
         int[][] temp = {{0,0,0,0},
                         {0,1,1,0},
@@ -26,12 +31,12 @@ public class Type3 extends Block {
         block = temp;
         temp = null;
     }
-
     /**
-     * Rotates the block
-     */
 
-    public void rotate() {
+      Rotates the block
+
+    */
+    public void rotate(){
         if(rotCounter == 1){
             int [][] temp = {{0,0,0,0},
 			     {1,1,1,0},
@@ -40,7 +45,7 @@ public class Type3 extends Block {
             block = temp;
             rotCounter++;
         }
-        else if(rotCounter == 2){
+        else if(rotCounter ==2){
             int [][] temp = {{0,0,1,0},
 			     {2,2,1,0},
 			     {0,1,1,0},
@@ -48,12 +53,12 @@ public class Type3 extends Block {
             block = temp;
             rotCounter++;
         }
-        else if(rotCounter == 3){
+        else if(rotCounter ==3){
             int [][] temp = {{0,0,2,0},
 			     {1,0,2,0},
 			     {1,1,1,0},
 			     {0,0,0,0}};
-            block = temp;
+            block= temp;
             rotCounter++;
         }
         else{
@@ -62,7 +67,7 @@ public class Type3 extends Block {
 			     {2,1,2,0},
 			     {0,1,0,0}};
             block = temp;
-            rotCounter = 1;
+            rotCounter =1;
         }
     }    
 }
