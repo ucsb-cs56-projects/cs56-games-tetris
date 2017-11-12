@@ -1,17 +1,15 @@
 package edu.ucsb.cs56.projects.games.tetris;
-/** 
 
-  Block Type2 T Shape
+/**
+ * Block Type2: T Shaped Block
+ * Extends Block abstract class.
+ * @author Jinouk Lee
+ * @author Davina Zamanzadeh
+ * @author Skyler Bistarkey-Rez
+ * @version cs56, Tetris, Winter 2016
+ */
 
-  Extends Block abstract class.
-
-  @author Jinouk Lee
-  @author Davina Zamanzadeh
-  @author Skyler Bistarkey-Rez
-  @version cs56, Tetris, Winter 2016
-  */
-
-public class Type2 extends Block{
+public class Type2 extends Block {
     //0 = empty space
     //1 = block is there
     //2 = block used to be there before rotation
@@ -21,11 +19,8 @@ public class Type2 extends Block{
     int rotCounter = 1;
 
     /**
-
-      Default Constructor 
-
-
-    */
+     * Default Constructor 
+     */
 
     public Type2() {
         int[][] temp = {{0,0,0,0},
@@ -37,10 +32,8 @@ public class Type2 extends Block{
     }
 
     /** 
-
-      Rotates the block
-
-    */
+     * Rotates the block
+     */
 
     public void rotate() {
         if(rotCounter == 1){
@@ -59,7 +52,7 @@ public class Type2 extends Block{
             block = temp;
             rotCounter++;
         }
-        else if(rotCounter ==3){
+        else if(rotCounter == 3){
             int[][] temp = {{0,0,0,0},
 			    {0,1,0,0},
 			    {1,1,2,0},
@@ -73,7 +66,7 @@ public class Type2 extends Block{
 			    {1,1,1,0},
 			    {0,2,0,0}};
             block = temp;
-            rotCounter=1;
+            rotCounter = 1;
         }
     }
 }
