@@ -1,36 +1,40 @@
 package edu.ucsb.cs56.projects.games.tetris;
 
 /** 
- * Block Type5: Left Zig-Zag Shaped Block
- * Extends Block abstract class.
- * @author Jinouk Lee
- * @author Davina Zamanzadeh
- * @author Skyler Bistarkey-Rez
- * @version cs56, Tetris, Winter 2016
- */
 
-public class Type5 extends Block {
+  Block Type5: Generates left zig-zag 
+
+  Extends Block abstract class.
+
+  @author Jinouk Lee
+  @author Davina Zamanzadeh
+  @author Skyler Bistarkey-Rez
+  @version cs56, Tetris, Winter 2016
+  */
+public class Type5 extends Block{
 
     int rotCounter = 1;
 
     /**
-     * Default Constructor
-     */
+      Default Constructor
+      */
 
     public Type5() {
-        int[][] temp = {{0,0,0,0},
-			{0,1,1,0},
-			{1,1,0,0},
-		        {0,0,0,0}};
+        int[][] temp= {{0,0,0,0},
+		       {0,1,1,0},
+		       {1,1,0,0},
+		       {0,0,0,0}};
         block = temp;
         temp = null;
     }
 
-    /**
-     * Rotates the block
-     */
+    /** 
 
-    public void rotate() {
+      Rotates the block
+
+*/
+
+    public void rotate(){
         if(rotCounter == 1){
             int [][] temp = {{0,0,0,0},
 			     {0,1,2,0},
