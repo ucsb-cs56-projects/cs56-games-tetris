@@ -69,6 +69,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
     static JPanel startPanel;
     static JPanel tetrisPanel;
     
+    private BlockCreator blockCreator;
     Block BlockInControl;
     Color BlockColor;
     int whichColor;
@@ -127,6 +128,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	
         rulesText = new JTextArea(text);
         rulesText.setEditable(false);
+        blockCreator = new BlockCreator();
 	
         MainMenu();
 	
@@ -469,74 +471,40 @@ public class TetrisBoard extends JPanel implements ActionListener {
     /**
      * This method is the actionPerformed method for tetrisBoard
      * it is triggered by a timer with a delay based on the difficulty of the game.
-     * This switch statement is unnescesary and should be replaced with a method
-     * that takes in the random number and has the code in each of the cases.
+     * Each block is created though the class BlockCreator that uses the factory patten.
+     * This method the BlockCreator method createBlock(int type) a type number and the 
+     * method returns a block of that cooresponding type.
      */
 
     public void actionPerformed(ActionEvent e) {	
-	if (isFallingFinished) {
-	    isFallingFinished = false;
-	    int randomNumber = (int)(Math.random() * 7) + 1;
-	    switch(randomNumber){
-	    case 1: Type1 a = new Type1();
-		whichColor = HoldSpace.getColor();
-		this.putBlock(HoldSpace.getHeldBlock());
-		HoldSpace.setBlock(a);
-		HoldSpace.setColor(1);
-		break;
-	    case 2: Type2 b = new Type2();
-		whichColor = HoldSpace.getColor();
-		this.putBlock(HoldSpace.getHeldBlock());
-		HoldSpace.setBlock(b);
-		HoldSpace.setColor(2);
-		break;
-	    case 3: Type3 c = new Type3();
-		whichColor = HoldSpace.getColor();
-		this.putBlock(HoldSpace.getHeldBlock());
-		HoldSpace.setBlock(c);
-		HoldSpace.setColor(3);
-		break;
-	    case 4: Type4 d = new Type4();
-		whichColor = HoldSpace.getColor();
-		this.putBlock(HoldSpace.getHeldBlock());
-		HoldSpace.setBlock(d);
-		HoldSpace.setColor(4);
-		break;
-	    case 5: Type5 h = new Type5();
-		whichColor = HoldSpace.getColor();
-		this.putBlock(HoldSpace.getHeldBlock());
-		HoldSpace.setBlock(h);
-		HoldSpace.setColor(5);
-		break;
-	    case 6: Type6 f = new Type6();
-		whichColor = HoldSpace.getColor();
-		this.putBlock(HoldSpace.getHeldBlock());
-		HoldSpace.setBlock(f);
-		HoldSpace.setColor(6);
-		break;
-	    case 7: Type7 g = new Type7();
-		whichColor = HoldSpace.getColor();
-		this.putBlock(HoldSpace.getHeldBlock());
-		HoldSpace.setBlock(g);
-		HoldSpace.setColor(7);
-		break;
-	    }
-	    if(timerdelay > 200){
-		double x = .1*timerdelay;
-		timerdelay = timerdelay - (int)x;
-	    }
-	    timer.setDelay(timerdelay);
-	}
-	else {
-                this.moveDown();
-		if(isFallingFinished){
-		    this.deleteRows();
-		    this.deleteRows();
-		    this.deleteRows();
-		    this.deleteRows();
-		}
+        if (isFallingFinished)
+        {
+            isFallingFinished = false;
+            int randomNumber = (int)(Math.random() * 7) + 1;
+            
+            Block a = blockCreator.createBlock(randomNumber);
+            whichColor = HoldSpace.getColor();
+            this.putBlock(HoldSpace.getHeldBlock());
+            HoldSpace.setBlock(a);
+            HoldSpace.setColor(randomNumber);
+            
+            
+            if(timerdelay > 200){
+            double x = .1*timerdelay;
+            timerdelay = timerdelay - (int)x;
             }
-	HoldSpace.repaint();
+            timer.setDelay(timerdelay);
+        }
+        else {
+            this.moveDown();
+            if(isFallingFinished){
+                this.deleteRows();
+                this.deleteRows();
+                this.deleteRows();
+                this.deleteRows();
+            }
+        }
+        HoldSpace.repaint();
     }
 
 
@@ -1014,57 +982,59 @@ public class TetrisBoard extends JPanel implements ActionListener {
      */
 
     class TAdapter extends KeyAdapter {
-	public void keyPressed(KeyEvent e) {	    
-	    int keycode = e.getKeyCode();	    
-	    if (keycode == 'p' || keycode == 'P') {
-		pause();
-		return;
-	    }	    
-	    if (isPaused)
-		return;	    
-	    switch (keycode) {
-	    case KeyEvent.VK_UP:
-		{ 
-		    //Check if block will still be in bounds
-		    if(BlockPosX >= 0 && BlockPosX < MAX_COL - 3) {
-			BlockInControl.rotate();
-		    }
-		    break;
-		}
-	    case KeyEvent.VK_DOWN:
-		{
-		    timer.setDelay(TIMER_DELAY/6); break;
-		}
-	    case KeyEvent.VK_LEFT:
-		{
-		    moveLeft();
-		    break;
-		}
-	    case KeyEvent.VK_RIGHT:
-		{
-		    moveRight();
-		    break;
-		}
-	    case KeyEvent.VK_SPACE:
-		{ 
-		    drop();
-		    break;
-		}
-	    case KeyEvent.VK_S:
-		{
-		    if(BlockPosX >= 0 && BlockPosX < MAX_COL - 3) 
-			swap();
-		    break;
-		}
-	    }	    
-	}
-	public void keyReleased(KeyEvent e)
-	{
-		int keycode = e.getKeyCode();
-		if(keycode== KeyEvent.VK_DOWN){
-			timer.setDelay(TIMER_DELAY);
-		}
-	}
+        
+        public void keyPressed(KeyEvent e) {
+            int keycode = e.getKeyCode();	    
+            if (keycode == 'p' || keycode == 'P')
+            {
+                pause();
+                return;
+            }	    
+            if (isPaused)
+                return;
+            switch (keycode) {
+                case KeyEvent.VK_UP:
+                { 
+                    //Check if block will still be in bounds
+                    if(BlockPosX >= 0 && BlockPosX < MAX_COL - 3) {
+                    BlockInControl.rotate();
+                    }
+                    break;
+                }
+                case KeyEvent.VK_DOWN:
+                {
+                    timer.setDelay(TIMER_DELAY/6); break;
+                }
+                case KeyEvent.VK_LEFT:
+                {
+                    moveLeft();
+                    break;
+                }
+                case KeyEvent.VK_RIGHT:
+                {
+                    moveRight();
+                    break;
+                }
+                case KeyEvent.VK_SPACE:
+                { 
+                    drop();
+                    break;
+                }
+                case KeyEvent.VK_S:
+                {
+                    if(BlockPosX >= 0 && BlockPosX < MAX_COL - 3) 
+                    swap();
+                    break;
+                }
+            }
+        }
+        public void keyReleased(KeyEvent e)
+        {
+            int keycode = e.getKeyCode();
+            if(keycode== KeyEvent.VK_DOWN){
+                timer.setDelay(timerdelay);
+            }
+        }
     }
     
     

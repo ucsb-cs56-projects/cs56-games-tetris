@@ -16,7 +16,7 @@ public class BlockCreator{
 
 	public Block createBlock(int type)
     {
-        Block block;
+        Block block = new Type1();
         switch(type){
             case 1: block = new Type1();
                 break;
@@ -36,4 +36,3 @@ public class BlockCreator{
         return block;
     }
 }
-c
