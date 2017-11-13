@@ -48,13 +48,15 @@ public class TetrisBoard extends JPanel implements ActionListener {
     private JButton EasyButton;
     private JButton MediumButton;
     private JButton HardButton;
-    
     private JButton RulesButton;
     private JButton PauseButton;
     private JButton newGameButton;
     private JButton MainMenuButton;
     private JButton MusicButton;
     private JButton StartButton;
+
+    private KeyAdapter gameInput;
+
     private HoldPanel HoldSpace;
     private JPanel SpacingPanel;
     private JTextField NextBlockText;
@@ -67,6 +69,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
     static JPanel RulePanel;
     static JPanel startPanel;
+    static JPanel difficultyPanel;
     static JPanel tetrisPanel;
     
     Block BlockInControl;
@@ -98,8 +101,6 @@ public class TetrisBoard extends JPanel implements ActionListener {
     private static int WINDOW_X = 320;
     private static int WINDOW_Y = 585;
 
-
-
     /**
      * This is the constructor for TetrisBoard
      */
@@ -111,54 +112,32 @@ public class TetrisBoard extends JPanel implements ActionListener {
                 color[row][col] = 0;
             }
         }
-        this.setFocusable(true);
+
+        this.setFocusable(false);
 	
         String text;
-        text = "	RULES\n\n\nThis game is very similar\nto the classic game of tetris.\n\n" +
-            "The Controls are as Follows:\n\n" +
-            "Left Arrow: Move Block Left\n" +
-            "Right Arrow: Move Block Right\n" +
-            "Up Arrow: Rotate Block\n" + 
-            "Down Arrow: Soft Drop\n" +
-            "Space Bar: Hard Drop\n" + 
-            "s: Swap with next block\n" +
-            "p: Pause Game\n" + 
-            "\n\nHave Fun !";
+        text =	"	RULES\n\n\n" +
+		"This game is very similar\n" +
+		"to the classic game of tetris.\n\n" +
+		"The Controls are as Follows:\n\n" +
+        	"Left Arrow: Move Block Left\n" +
+		"Right Arrow: Move Block Right\n" +
+		"Up Arrow: Rotate Block\n" +
+		"Down Arrow: Soft Drop\n" +
+		"Space Bar: Hard Drop\n" +
+		"s: Swap with next block\n" +
+		"p: Pause Game\n" + 
+		"\n\nHave Fun !";
 	
         rulesText = new JTextArea(text);
         rulesText.setEditable(false);
 	
+	addKeyListener(new TAdapter());
+
         MainMenu();
-	
-        InGameButtons();
+	DifficultyMenu();
+        SideMenu();
     }
-
-
-
-    /* 
-     * Method that restarts the game.
-     * Shares some code with beginGame().
-     * Needs refactoring.
-     */
-
-    public void restartGame() {
-	if(isPaused) pause();
-	timer.stop();
-        statusBar.setText(" Restarting Game ...     ");
-	score = 0;
-	RestartButton.setText("Restarting...");
-	for(int row = 0; row < MAX_ROW; row++){
-	    for(int col = 0; col<MAX_COL; col++){
-		board[row][col] = 0;
-		color[row][col] = 0;
-	    }
-	}
-	timerdelay = TIMER_DELAY;
-	timer = new Timer(timerdelay,this);
-	timer.start();	    
-    }
-
-
 
     /**
      * This is a method that initializes the buttons in the main menu.
@@ -167,37 +146,22 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
     public void MainMenu() {
         startPanel = new JPanel();
-	
         startPanel.setBackground(Color.LIGHT_GRAY);
         startPanel.setLayout(new GridLayout(2,1,0,10));
 	
-        //declare start button
         StartButton = new JButton();
         StartButton.setPreferredSize(new Dimension (80, 20));
         StartButton.setText("Play Tetris");
         StartButton.addActionListener(new MainMenuButtons());
+
         startPanel.add(StartButton);
-        
-        rulesText.setVisible(true);
         startPanel.add(rulesText);
-	
-        EasyButton = new JButton();
-        EasyButton.setPreferredSize(new Dimension(80,20));
-        EasyButton.setText("Easy");
-        EasyButton.addActionListener(new MainMenuButtons());
-	
-        MediumButton = new JButton();
-        MediumButton.setPreferredSize(new Dimension(80,20));
-        MediumButton.setText("Medium");
-        MediumButton.addActionListener(new MainMenuButtons());
-	
-        HardButton = new JButton();
-        HardButton.setPreferredSize(new Dimension(80,20));
-        HardButton.setText("Hard");
-        HardButton.addActionListener(new MainMenuButtons()); 
+
+	startPanel.setVisible(true);
+	window.add(startPanel);
+	window.revalidate();
+	window.repaint();
     }
-
-
 
     /**
      * An inner class of Tetris board that implements ActionListener.
@@ -208,40 +172,102 @@ public class TetrisBoard extends JPanel implements ActionListener {
     private class MainMenuButtons implements ActionListener{
         public void actionPerformed(ActionEvent e) {
             if(e.getSource() == StartButton) {
-                startPanel.setLayout(new GridLayout(3,1,0,10));
-                StartButton.setVisible(false);
-                rulesText.setVisible(false);
-                startPanel.remove(rulesText);
-		startPanel.remove(StartButton);
-                startPanel.add(EasyButton);
-                startPanel.add(MediumButton);
-                startPanel.add(HardButton);
+                startPanel.setVisible(false);
+		difficultyPanel.setVisible(true);
             }
-            else if(e.getSource() == EasyButton){
-                TIMER_DELAY = 1000;
-                startPanel.setVisible(false);
-                window.setVisible(true);
-                window.setSize(WINDOW_X, WINDOW_Y);
-                beginGame();
-            } 
-            else if(e.getSource() == MediumButton){
-                TIMER_DELAY = 400;
-                startPanel.setVisible(false);
-                window.setVisible(true);
-                window.setSize(WINDOW_X, WINDOW_Y);
-                beginGame();
-            }
-            else if(e.getSource() == HardButton){
-                TIMER_DELAY = 80;
-                startPanel.setVisible(false);
-                window.setVisible(true);
-                window.setSize(WINDOW_X, WINDOW_Y);
-                beginGame();
-            }  
         }
     }
 
 
+    public void DifficultyMenu(){
+	difficultyPanel = new JPanel();
+	difficultyPanel.setBackground(Color.LIGHT_GRAY);
+	difficultyPanel.setLayout(new GridLayout(3,1,0,10));
+
+        EasyButton = new JButton();
+        EasyButton.setPreferredSize(new Dimension(80,20));
+        EasyButton.setText("Easy");
+        EasyButton.addActionListener(new DifficultyMenuButtons());
+	
+        MediumButton = new JButton();
+        MediumButton.setPreferredSize(new Dimension(80,20));
+        MediumButton.setText("Medium");
+        MediumButton.addActionListener(new DifficultyMenuButtons());
+	
+        HardButton = new JButton();
+        HardButton.setPreferredSize(new Dimension(80,20));
+        HardButton.setText("Hard");
+        HardButton.addActionListener(new DifficultyMenuButtons());
+
+	difficultyPanel.add(EasyButton);
+	difficultyPanel.add(MediumButton);
+	difficultyPanel.add(HardButton);
+
+	difficultyPanel.setVisible(false);
+	window.add(difficultyPanel);
+	window.revalidate();
+    }
+
+    /**
+     * An inner class of Tetris board that implements ActionListener.
+     * This handles the actions of the buttons in the main menu.
+     * This can be refactored into MenuButtons.java
+     */
+
+    private class DifficultyMenuButtons implements ActionListener{
+	public void actionPerformed(ActionEvent e){
+
+	    difficultyPanel.setVisible(false);
+
+            if(e.getSource() == EasyButton){
+                TIMER_DELAY = 1000;
+            } 
+            else if(e.getSource() == MediumButton){
+                TIMER_DELAY = 400;
+            }
+            else if(e.getSource() == HardButton){
+                TIMER_DELAY = 80;
+            }
+
+	    beginGame();  
+        }
+    }
+
+    /*
+     * method that initializes a new game
+     * shares some simmilar code with restartGame().
+     * needs refactoring.
+     */
+    
+    public void beginGame() {
+	for(int row = 0; row < MAX_ROW; row++){
+	    for(int col = 0; col<MAX_COL; col++){
+		board[row][col] = 0;
+		color[row][col] = 0;
+	    }
+	}
+	window.add(this);
+	this.setFocusable(true);
+	this.setVisible(true);
+	this.requestFocus();
+	RulePanel.setVisible(true);
+	window.revalidate();
+	window.repaint();
+
+	BlockColor = Color.BLACK;
+	Type1 y = new Type1();
+	whichColor = 1;
+	this.putBlock(y);
+	timerdelay = TIMER_DELAY;
+	timer = new Timer(timerdelay,this);
+	timer.start();
+
+	//this.setPreferredSize(new Dimension(205,460));
+	this.setBackground(Color.WHITE);
+	this.playMusic();
+
+	//addKeyListener(new TAdapter());
+    }
 
     /**
      * This method is kind of like the MenuButtons method above but instead it initializes
@@ -249,10 +275,10 @@ public class TetrisBoard extends JPanel implements ActionListener {
      * This can be put into an InGameButtons.java class
      */
 
-    public void InGameButtons() {
+    public void SideMenu() {
 
         RulePanel =  new JPanel();
-
+	RulePanel.setFocusable(false);
         RulePanel.setBackground(Color.LIGHT_GRAY);
         RulePanel.setLayout(new GridLayout(7,1,0,0));
 
@@ -265,7 +291,6 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
         RestartButton = new JButton();
         RestartButton.setFocusable(false);
-        //RestartButton.setSize(1,1);
         RestartButton.setPreferredSize(new Dimension(20,20));
         RestartButton.setText("Restart");
         RestartButton.addActionListener(new SideButtons());
@@ -302,8 +327,6 @@ public class TetrisBoard extends JPanel implements ActionListener {
         HoldSpace.setPreferredSize(new Dimension(80,80));
         HoldSpace.setFocusable(false);
         SpacingPanel.add(HoldSpace);
-        HoldSpace.setVisible(false); //set this to true at the appropriate time (along with other buttons)
-        //watch out for overlapping with resume game button when you click on rules
 
         NextBlockText = new JTextField();
         NextBlockText.setFocusable(false);
@@ -312,11 +335,13 @@ public class TetrisBoard extends JPanel implements ActionListener {
         NextBlockText.setBackground(Color.LIGHT_GRAY);
         NextBlockText.setHorizontalAlignment(JTextField.CENTER);
         RulePanel.add(NextBlockText);
-    }
-    
-    
 
-    /**
+	RulePanel.setVisible(false);
+	window.add(BorderLayout.EAST, RulePanel);
+	window.revalidate();
+    }
+
+    /*
      * This class handles the actions of the inGame buttons.
      * This can be refactored into an InGameButtons.java class
      */
@@ -330,14 +355,13 @@ public class TetrisBoard extends JPanel implements ActionListener {
                 if(!isPaused) pause();
                 window.add(rulesText);
                 window.revalidate();
+
                 tetrisPanel.setVisible(false);
                 rulesText.setVisible(true);
-                //rulesText.toFront();
-
                 RestartButton.setVisible(false);
                 PauseButton.setVisible(true);
-                HoldSpace.setVisible(false);
-                RulesButton.setVisible(false);
+		HoldSpace.setVisible(false);
+		RulesButton.setVisible(false);
             }
             else if(e.getSource() == PauseButton && rulesOn){
                 pause();
@@ -361,8 +385,6 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	    }
 	    else if (e.getSource() == MainMenuButton) {
 		timer.stop();
-		HoldSpace.setVisible(false);
-                SpacingPanel.setVisible(false);
                 tetrisPanel.setVisible(false);
                 RulePanel.setVisible(false);
                 startPanel.setVisible(true);
@@ -425,46 +447,29 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	*/
     }
 
-
     /*
-     * method that initializes a new game
-     * shares some simmilar code with restartGame().
-     * needs refactoring.
+     * Method that restarts the game.
+     * Shares some code with beginGame().
+     * Needs refactoring.
      */
 
-    public void beginGame() {
-	for(int row = 0; row < MAX_ROW; row++){
-	    for(int col = 0; col<MAX_COL; col++){
-		board[row][col] = 0;
-		color[row][col] = 0;
-	    }
-	}
-	this.setFocusable(true);
-	tetrisPanel.setVisible(true);
-	SpacingPanel.setVisible(true);
-	RulePanel.setVisible(true);
-	HoldSpace.setVisible(true);
-	window.add(this);
-	window.revalidate();
-	window.repaint();
-	
-	BlockColor = Color.BLACK;
-	Type1 y = new Type1();
-	whichColor = 1;
-	this.putBlock(y);
-	timerdelay = TIMER_DELAY;
-	timer = new Timer(timerdelay,this);
-	timer.start();
-	
-	//this.setPreferredSize(new Dimension(205,460));
-	this.setBackground(Color.WHITE);
-	this.playMusic();
-	
-	//if(this.canMoveDown() == true) 
-	addKeyListener(new TAdapter());
+    public void restartGame() {
+        if(isPaused) pause();
+        timer.stop();
+        statusBar.setText(" Restarting Game ...     ");
+        score = 0;
+        RestartButton.setText("Restarting...");
+        for(int row = 0; row < MAX_ROW; row++){
+            for(int col = 0; col<MAX_COL; col++){
+                board[row][col] = 0;
+                color[row][col] = 0;
+            }
+        }
+        timerdelay = TIMER_DELAY;
+        timer = new Timer(timerdelay,this);
+        timer.start();
     }
-    
-    
+
     
     /**
      * This method is the actionPerformed method for tetrisBoard
@@ -1101,22 +1106,18 @@ public class TetrisBoard extends JPanel implements ActionListener {
     
     public static void main(String [] args){	
        	window = new JFrame("TETRIS");
-	
 	window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+
+	window.setSize(WINDOW_X, WINDOW_Y);
+        window.setVisible(true);
+
 	statusBar = new JLabel("A Fun Game of Classic Tetris");
 	window.add(BorderLayout.SOUTH, statusBar);
+
 	TetrisBoard b = new TetrisBoard();
 	tetrisPanel = b;
 	new Timer(20,e -> b.repaint()).start(); // wow it compiles! This line of code creates a
 						// timer that repaints the tetris board every 20ms
 						// using a lambda function
-	window.add(tetrisPanel);
-	window.add(BorderLayout.EAST, RulePanel);
-	RulePanel.setVisible(false);
-	
-	window.add(startPanel);
-	
-	window.setSize(WINDOW_X, WINDOW_Y);
-	window.setVisible(true);	
     }    
 }
