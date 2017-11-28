@@ -117,7 +117,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
         this.setFocusable(false);
 	
         String text;
-        text =	"	RULES\n\n\n" +
+        text =	"	RULES\n\n" +
 		"This game is very similar\n" +
 		"to the classic game of tetris.\n\n" +
 		"The Controls are as Follows:\n\n" +
@@ -379,7 +379,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
                 PauseButton.setVisible(true);
                 RulesButton.setVisible(true);
                 HoldSpace.setVisible(true);
-                window.remove(rulesText);
+                rulesText.setVisible(false);
                 tetrisPanel.setVisible(true);
                 tetrisPanel.requestFocus();
             } 
@@ -394,6 +394,8 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	    }
 	    else if (e.getSource() == MainMenuButton) {
                 timer.stop();
+		startPanel.add(rulesText);
+		rulesText.setVisible(true);
                 tetrisPanel.setVisible(false);
                 RulePanel.setVisible(false);
                 startPanel.setVisible(true);
@@ -1087,7 +1089,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
 	window.setSize(WINDOW_X, WINDOW_Y);
         window.setVisible(true);
-
+	
 	statusBar = new JLabel("A Fun Game of Classic Tetris");
 	window.add(BorderLayout.SOUTH, statusBar);
 
