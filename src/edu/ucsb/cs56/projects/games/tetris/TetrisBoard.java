@@ -54,6 +54,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
     private JButton MainMenuButton;
     private JButton MusicButton;
     private JButton StartButton;
+    private JButton EndMainMenuButton;
 
     private KeyAdapter gameInput;
 
@@ -568,7 +569,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
 			restartGame();
 			endGameWindow.dispose();
 		}
-		else if(e.getSource() == MainMenuButton)
+		else if(e.getSource() == EndMainMenuButton)
 		{
 			HoldSpace.setVisible(false);
 			SpacingPanel.setVisible(false);
@@ -592,12 +593,12 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	JTextArea endText = new JTextArea("LOSER!!!");
 	newGameButton = new JButton("Play again");
 	newGameButton.addActionListener(new gameOverButtonListener());
-	MainMenuButton = new JButton("Main Menu");
-	MainMenuButton.addActionListener(new gameOverButtonListener());
+	EndMainMenuButton = new JButton("Main Menu");
+	EndMainMenuButton.addActionListener(new gameOverButtonListener());
 
 	endPanel.add(endText);
 	endPanel.add(newGameButton);
-	endPanel.add(MainMenuButton);
+	endPanel.add(EndMainMenuButton);
 	endGameWindow.setSize(WINDOW_X/2, WINDOW_Y/4);
 
 	endGameWindow.add(endPanel);
