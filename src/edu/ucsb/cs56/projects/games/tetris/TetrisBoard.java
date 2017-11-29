@@ -46,10 +46,6 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
 
     // BUTTONS
-    private JButton StartButton;
-    private JButton EasyButton;
-    private JButton MediumButton;
-    private JButton HardButton;
     private JButton MainMenuButton;
     private JButton RestartButton;
     private JButton PauseButton;
@@ -60,23 +56,26 @@ public class TetrisBoard extends JPanel implements ActionListener {
     private KeyAdapter gameInput;
 
     // sidePanel ITEMS
-    private HoldPanel HoldSpace;
-    private JPanel SpacingPanel;
-    private JTextField NextBlockText;
     private boolean rulesOn = false;
+    static JPanel SpacingPanel;
+    static HoldPanel HoldSpace;
+    static JTextField NextBlockText;
 
     // GENERAL ITEMS
     private JTextArea rulesText;
     static JLabel statusBar;
     
     // MENUS
-    static JPanel startPanel;
-    static JPanel difficultyPanel;
-    static JPanel tetrisPanel;
+    static MainMenu mainPanel;
+    static DiffMenu diffPanel;
+    static JPanel rulesPanel;
     static JPanel sidePanel;
+    static JPanel gamePanel;
+    static JPanel tetrisPanel;
     static JFrame window;
     static JFrame endGameWindow;
-    
+    static JPanel cards;
+    static CardLayout cardLayout;
     // MUSIC
     private boolean musicPlaying = false;
     private InputStream is;
@@ -106,7 +105,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
     int BlockPosX,BlockPosY;
     
     private static int WINDOW_X = 320;
-    private static int WINDOW_Y = 585;
+    private static int WINDOW_Y = 640;
 
     /**
      * This is the constructor for TetrisBoard
@@ -114,129 +113,79 @@ public class TetrisBoard extends JPanel implements ActionListener {
 
     public TetrisBoard() {
         for(int row = 0; row < MAX_ROW; row++){
-            for(int col = 0; col<MAX_COL; col++){
+            for(int col = 0; col < MAX_COL; col++){
                 board[row][col] = 0;
                 color[row][col] = 0;
             }
         }
 	
-        String text;
-        text =	"\tRULES\n\n" +
-		"This game is very similar\n" +
-		"to the classic game of tetris.\n\n" +
-		"The Controls are as Follows:\n\n" +
-        	"Left Arrow: Move Block Left\n" +
-		"Right Arrow: Move Block Right\n" +
-		"Up Arrow: Rotate Block\n" +
-		"Down Arrow: Soft Drop\n" +
-		"Space Bar: Hard Drop\n" +
-		"s: Swap with next block\n" +
-		"p: Pause Game\n" + 
-		"\n\nHave Fun !";
-	
-        rulesText = new JTextArea(text);
-        rulesText.setEditable(false);
         blockCreator = new BlockCreator();
-	
         addKeyListener(new TAdapter());
-
-        MainMenu();
-        DifficultyMenu();
-        SideMenu();
-    }
-
-    /**
-     * This is a method that initializes the buttons in the main menu.
-     * This may be refactored into MenuButtons.java
-     */
-
-    public void MainMenu() {
-        startPanel = new JPanel();
-        startPanel.setBackground(Color.LIGHT_GRAY);
-        startPanel.setLayout(new GridLayout(2,1,0,10));
 	
-        StartButton = new JButton();
-        StartButton.setPreferredSize(new Dimension (80, 20));
-        StartButton.setText("Play Tetris");
-        StartButton.addActionListener(new MainMenuButtons());
+	cards = new JPanel(new CardLayout());
+	
+	mainPanel = new MainMenu();
+	mainPanel.startButton.addActionListener(new MainMenuButtons());
+	cards.add(mainPanel, "MAIN MENU");
 
-        startPanel.add(StartButton);
-        startPanel.add(rulesText);
+	diffPanel = new DiffMenu();
+	diffPanel.EasyButton.addActionListener(new DiffMenuButtons());
+	diffPanel.MediumButton.addActionListener(new DiffMenuButtons());
+	diffPanel.HardButton.addActionListener(new DiffMenuButtons());
+	cards.add(diffPanel, "DIFF MENU");
 
-        startPanel.setVisible(true);
-        window.add(startPanel);
-        window.revalidate();
-        window.repaint();
+	SideMenu();
+	gamePanel = new JPanel(new BorderLayout());
+	gamePanel.add(sidePanel, BorderLayout.EAST);
+	gamePanel.add(this);
+	cards.add(gamePanel, "GAME SCREEN");
+
+	rulesText = new JTextArea(mainPanel.rules);
+	rulesPanel = new JPanel(new BorderLayout());
+	rulesPanel.add(rulesText);
+	cards.add(rulesPanel, "RULES");
+
+	cardLayout = (CardLayout) cards.getLayout();
+	
+	window.add(cards);
+	window.revalidate();
+	window.repaint();
     }
+
 
     /**
      * An inner class of Tetris board that implements ActionListener.
-     * This handles the actions of the buttons in the main menu.
-     * This can be refactored into MenuButtons.java
+     * This handles the actions of the buttons in the Main Menu.
+     * This can be refactored into MainMenu.java
      */
 
     private class MainMenuButtons implements ActionListener{
         public void actionPerformed(ActionEvent e) {
-            if(e.getSource() == StartButton) {
-                startPanel.setVisible(false);
-		difficultyPanel.setVisible(true);
-		window.revalidate();
+            if(e.getSource() == mainPanel.startButton) {
+		cardLayout.show(cards, "DIFF MENU");
             }
         }
-    }
-
-
-    public void DifficultyMenu(){
-        difficultyPanel = new JPanel();
-        difficultyPanel.setBackground(Color.LIGHT_GRAY);
-        difficultyPanel.setLayout(new GridLayout(3,1,0,10));
-
-        EasyButton = new JButton();
-        EasyButton.setPreferredSize(new Dimension(80,20));
-        EasyButton.setText("Easy");
-        EasyButton.addActionListener(new DifficultyMenuButtons());
-	
-        MediumButton = new JButton();
-        MediumButton.setPreferredSize(new Dimension(80,20));
-        MediumButton.setText("Medium");
-        MediumButton.addActionListener(new DifficultyMenuButtons());
-	
-        HardButton = new JButton();
-        HardButton.setPreferredSize(new Dimension(80,20));
-        HardButton.setText("Hard");
-        HardButton.addActionListener(new DifficultyMenuButtons());
-
-        difficultyPanel.add(EasyButton);
-        difficultyPanel.add(MediumButton);
-        difficultyPanel.add(HardButton);
-
-        difficultyPanel.setVisible(false);
-        window.add(difficultyPanel);
-        window.revalidate();
     }
 
     /**
      * An inner class of Tetris board that implements ActionListener.
      * This handles the actions of the buttons in the Difficulty Menu.
-     * This can be refactored into DifficultyMenuButtons.java
+     * This can be refactored into DiffMenu.java
      */
 
-    private class DifficultyMenuButtons implements ActionListener{
+    private class DiffMenuButtons implements ActionListener{
 	public void actionPerformed(ActionEvent e){
-
-	    difficultyPanel.setVisible(false);
-
-            if(e.getSource() == EasyButton){
+            if(e.getSource() == diffPanel.EasyButton){
                 TIMER_DELAY = 1000;
             } 
-            else if(e.getSource() == MediumButton){
+            else if(e.getSource() == diffPanel.MediumButton){
                 TIMER_DELAY = 400;
             }
-            else if(e.getSource() == HardButton){
+            else if(e.getSource() == diffPanel.HardButton){
                 TIMER_DELAY = 80;
             }
-
-	    beginGame();  
+	    cardLayout.show(cards, "GAME SCREEN");
+	    beginGame();
         }
     }
 
@@ -248,18 +197,13 @@ public class TetrisBoard extends JPanel implements ActionListener {
     
     public void beginGame() {
         for(int row = 0; row < MAX_ROW; row++){
-            for(int col = 0; col<MAX_COL; col++){
+            for(int col = 0; col < MAX_COL; col++){
             board[row][col] = 0;
             color[row][col] = 0;
             }
         }
-        window.add(this);
         this.setFocusable(true);
-        this.setVisible(true);
         this.requestFocus();
-        sidePanel.setVisible(true);
-        window.revalidate();
-        window.repaint();
             
         int rand = (int)(Math.random() * 7) + 1;
         BlockColor = getColor(rand);
@@ -280,12 +224,6 @@ public class TetrisBoard extends JPanel implements ActionListener {
         this.setBackground(Color.WHITE);
         this.playMusic();
     }
-
-    /**
-     * This method is kind of like the MenuButtons method above but instead it initializes
-     * the buttons inside the game.
-     * This can be put into an InGameButtons.java class
-     */
 
     public void SideMenu() {
 
@@ -329,7 +267,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
         MusicButton.addActionListener(new SideButtons());
         sidePanel.add(MusicButton);
 
-        SpacingPanel = new JPanel(); //This is for creating proper spacing for the icon that shows the block
+        SpacingPanel = new JPanel(); //Creates proper spacing for the icon that shows the block
         SpacingPanel.setBackground(Color.LIGHT_GRAY);
         SpacingPanel.setLayout(new GridBagLayout());
         SpacingPanel.setFocusable(false);
@@ -347,12 +285,8 @@ public class TetrisBoard extends JPanel implements ActionListener {
         NextBlockText.setBackground(Color.LIGHT_GRAY);
         NextBlockText.setHorizontalAlignment(JTextField.CENTER);
         sidePanel.add(NextBlockText);
-
-        sidePanel.setVisible(false);
-        window.add(BorderLayout.EAST, sidePanel);
-        window.revalidate();
-    }
-
+}
+    
     /*
      * This class handles the actions of the inGame buttons.
      * This can be refactored into an InGameButtons.java class
@@ -365,11 +299,10 @@ public class TetrisBoard extends JPanel implements ActionListener {
             if(e.getSource() == RulesButton){
                 rulesOn = true;
                 if(!isPaused) pause();
-                window.add(rulesText);
-                window.revalidate();
-
-                tetrisPanel.setVisible(false);
-                rulesText.setVisible(true);
+		
+		rulesPanel.add(sidePanel, BorderLayout.EAST);
+		cardLayout.show(cards, "RULES");
+		
                 RestartButton.setVisible(false);
                 PauseButton.setVisible(true);
                 HoldSpace.setVisible(false);
@@ -378,12 +311,14 @@ public class TetrisBoard extends JPanel implements ActionListener {
             else if(e.getSource() == PauseButton && rulesOn){
                 pause();
                 rulesOn = false;
+		
+		gamePanel.add(sidePanel, BorderLayout.EAST);
+		cardLayout.show(cards, "GAME SCREEN");
+		
                 RestartButton.setVisible(true);
                 PauseButton.setVisible(true);
                 RulesButton.setVisible(true);
                 HoldSpace.setVisible(true);
-                rulesText.setVisible(false);
-                tetrisPanel.setVisible(true);
                 tetrisPanel.requestFocus();
             } 
             else if(e.getSource() == PauseButton){
@@ -397,11 +332,13 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	    }
 	    else if (e.getSource() == MainMenuButton) {
                 timer.stop();
-		startPanel.add(rulesText);
-		rulesText.setVisible(true);
-                tetrisPanel.setVisible(false);
-                sidePanel.setVisible(false);
-                startPanel.setVisible(true);
+		RestartButton.setVisible(true);
+                PauseButton.setVisible(true);
+                RulesButton.setVisible(true);
+                HoldSpace.setVisible(true);
+		gamePanel.add(sidePanel, BorderLayout.EAST);
+		statusBar.setText("A Fun Game of Classic Tetris");
+                cardLayout.show(cards, "MAIN MENU");
 	    }
         }
     }
@@ -416,19 +353,20 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	JPanel endPanel = new JPanel();
 
 	JTextArea endText = new JTextArea("LOSER!!!");
+	endText.setEditable(false);
 	newGameButton = new JButton("Play again");
 	newGameButton.addActionListener(new gameOverButtonListener());
+	
 	endMainMenuButton = new JButton("Main Menu");
 	endMainMenuButton.addActionListener(new gameOverButtonListener());
 
 	endPanel.add(endText);
 	endPanel.add(newGameButton);
 	endPanel.add(endMainMenuButton);
+	
 	endGameWindow.setSize(WINDOW_X/2, WINDOW_Y/4);
-
-	endGameWindow.add(endPanel);
-	endPanel.setVisible(true);
 	endGameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	endGameWindow.add(endPanel);
 	endGameWindow.setVisible(true);
 	//statusBar.setText("GAME OVER");
 	//RestartButton.setText("Play Again");     
@@ -439,24 +377,17 @@ public class TetrisBoard extends JPanel implements ActionListener {
      * ActionListener for gameOver buttons
      */
 
-    private class gameOverButtonListener implements ActionListener
-    {
-	public void actionPerformed(ActionEvent e)
-	{
-		if(e.getSource() == newGameButton)
-		{
-			restartGame();
-			endGameWindow.dispose();
-		}
-		else if(e.getSource() == endMainMenuButton)
-		{
-			HoldSpace.setVisible(false);
-			SpacingPanel.setVisible(false);
-			tetrisPanel.setVisible(false);
-			sidePanel.setVisible(false);
-			startPanel.setVisible(true);
-			endGameWindow.dispose();
-		}
+    private class gameOverButtonListener implements ActionListener {
+	public void actionPerformed(ActionEvent e) {
+	    if(e.getSource() == newGameButton) {
+		restartGame();
+		endGameWindow.dispose();
+	    }
+	    else if(e.getSource() == endMainMenuButton){
+		statusBar.setText("A Fun Game of Classic Tetris");
+		cardLayout.show(cards, "MAIN MENU");
+		endGameWindow.dispose();
+	    }
 	}
     }
     
@@ -767,8 +698,6 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	return true;
     }
     
-    
-    
     /*
      * method that moves the block to the right
      */
@@ -800,8 +729,6 @@ public class TetrisBoard extends JPanel implements ActionListener {
 	    BlockPosX++;
 	}
     }
-    
-    
     
     /*
      * method that moves the block to the left
