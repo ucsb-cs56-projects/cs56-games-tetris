@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.ComponentListener;
+import java.awt.event.ComponentEvent;
 import java.awt.*;
 
 import javax.swing.JLabel;
@@ -84,6 +86,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
     private AudioStream se;
 
     // GAME PROPERTIES
+    private Dimension dimension;
     private int TIMER_DELAY = 400;
     private BlockCreator blockCreator;
     Block BlockInControl;
@@ -104,7 +107,7 @@ public class TetrisBoard extends JPanel implements ActionListener {
     
     int BlockPosX,BlockPosY;
     
-    private static int WINDOW_X = 320;
+    private static int WINDOW_X = 380;
     private static int WINDOW_Y = 640;
 
     /**
@@ -118,38 +121,40 @@ public class TetrisBoard extends JPanel implements ActionListener {
                 color[row][col] = 0;
             }
         }
+        dimension = new Dimension(WINDOW_X, WINDOW_Y);
 	
+        window.addComponentListener(new FrameListener());
         blockCreator = new BlockCreator();
         addKeyListener(new TAdapter());
 	
-	cards = new JPanel(new CardLayout());
-	
-	mainPanel = new MainMenu();
-	mainPanel.startButton.addActionListener(new MainMenuButtons());
-	cards.add(mainPanel, "MAIN MENU");
+        cards = new JPanel(new CardLayout());
+        
+        mainPanel = new MainMenu();
+        mainPanel.startButton.addActionListener(new MainMenuButtons());
+        cards.add(mainPanel, "MAIN MENU");
 
-	diffPanel = new DiffMenu();
-	diffPanel.EasyButton.addActionListener(new DiffMenuButtons());
-	diffPanel.MediumButton.addActionListener(new DiffMenuButtons());
-	diffPanel.HardButton.addActionListener(new DiffMenuButtons());
-	cards.add(diffPanel, "DIFF MENU");
+        diffPanel = new DiffMenu();
+        diffPanel.EasyButton.addActionListener(new DiffMenuButtons());
+        diffPanel.MediumButton.addActionListener(new DiffMenuButtons());
+        diffPanel.HardButton.addActionListener(new DiffMenuButtons());
+        cards.add(diffPanel, "DIFF MENU");
 
-	SideMenu();
-	gamePanel = new JPanel(new BorderLayout());
-	gamePanel.add(sidePanel, BorderLayout.EAST);
-	gamePanel.add(this);
-	cards.add(gamePanel, "GAME SCREEN");
+        SideMenu();
+        gamePanel = new JPanel(new BorderLayout());
+        gamePanel.add(sidePanel, BorderLayout.EAST);
+        gamePanel.add(this);
+        cards.add(gamePanel, "GAME SCREEN");
 
-	rulesText = new JTextArea(mainPanel.rules);
-	rulesPanel = new JPanel(new BorderLayout());
-	rulesPanel.add(rulesText);
-	cards.add(rulesPanel, "RULES");
+        rulesText = new JTextArea(mainPanel.rules);
+        rulesPanel = new JPanel(new BorderLayout());
+        rulesPanel.add(rulesText);
+        cards.add(rulesPanel, "RULES");
 
-	cardLayout = (CardLayout) cards.getLayout();
-	
-	window.add(cards);
-	window.revalidate();
-	window.repaint();
+        cardLayout = (CardLayout) cards.getLayout();
+        
+        window.add(cards);
+        window.revalidate();
+        window.repaint();
     }
 
 
@@ -873,21 +878,22 @@ public class TetrisBoard extends JPanel implements ActionListener {
      */
 
     public void paint(Graphics gr){
-	super.paint(gr);
-	for(int row = 0; row<MAX_ROW; row++){
-	    for(int col = 0; col <MAX_COL; col++){
-		if(board[row][col] == 1){
-		    gr.setColor(getColor(color[row][col]));
-		    gr.fillRect(20*col,20*row,20,20);
-		}
-		else{ // Add hollow square
-		    gr.setColor(Color.WHITE);
-		    gr.fillRect(20*col,20*row,20,20);
-		    gr.setColor(Color.BLACK);
-		    gr.drawRect(20*col,20*row,20,20);
-		}		
-	    }
-	}
+        super.paint(gr);
+        int size = (int)(dimension.getHeight()-0.23*dimension.getHeight())/20;
+        for(int row = 0; row<MAX_ROW; row++){
+            for(int col = 0; col <MAX_COL; col++){
+                if(board[row][col] == 1){
+                    gr.setColor(getColor(color[row][col]));
+                    gr.fillRect(size*col,size*row,size,size);
+                }
+                else{ // Add hollow square
+                    gr.setColor(new Color(255,255,204));
+                    gr.fillRect(size*col,size*row,size,size);
+                    gr.setColor(Color.BLACK);
+                    gr.drawRect(size*col,size*row,size,size);
+                }
+            }
+        }
     }
     
     /*
@@ -950,6 +956,24 @@ public class TetrisBoard extends JPanel implements ActionListener {
             }
         }
     }
+    
+    /*
+     *  Class that implements component listener in order to change
+     *  the size of the tetris board when the window is resized
+     */
+    
+    class FrameListener implements ComponentListener{
+        
+        public void componentHidden(ComponentEvent e) {}
+        public void componentMoved(ComponentEvent e) {}
+        public void componentShown(ComponentEvent e) {}
+        
+        public void componentResized(ComponentEvent e){
+            dimension = e.getComponent().getBounds().getSize();
+            repaint();
+        }
+    }
+
     
     /*
      * method that swaps the block with the block
