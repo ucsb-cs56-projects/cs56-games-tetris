@@ -72,7 +72,7 @@ Jesmar and Matthew
 - Backgroud color changed.
 
 ### MAJOR CHANGES:
-- Some menus got refactored into their own classes outside of the TetrisBoard. These menus include the main menu and difficulty menu. We refactored the side panel but experienced some resizing issues when using this refactored panel. For example, the buttons would not resize properly and the text in them would have tracing ellipses (i.e. Main Men...). The ref
+- Some menus got refactored into their own classes outside of the TetrisBoard. These menus include the main menu and difficulty menu. We refactored the side panel but experienced some resizing issues when using this refactored panel. For example, the buttons would not resize properly and the text in them would have tracing ellipses (i.e. Main Men...).
 
 - CardLayout was implemented so that contributors did not have to keep track of panel visibility. Prior to this, panel visibilty would have to be set when changing panels (i.e. .setVisible(true)). This also helped reduce code to a single .show() member function to show the desired panel. There is still a case where visibilty must be set when clicking on the rules button on the side menu.
 
