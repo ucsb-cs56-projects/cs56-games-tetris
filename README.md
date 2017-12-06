@@ -9,7 +9,7 @@ project history
 ```
  F16 | wpeery | Juan-Pacheco|  A classic tetris game.
 ```
-<h2>##F16 Final Remarks</h2>
+<h1>F16 Final Remarks</h1>
 When we started this project it was running but there were a lot of bugs to be worked out. We fixed some of them 
 but there are still a lot more that need to be worked out. The two biggest things that need to be done with the code now are:
 - Refactoring (TetrisBoard.java in particular)
@@ -28,7 +28,7 @@ Wesley and Juan
  W16 | hannavigil 4pm | davzaman | FourPieces | A classic tetris game.
 ```
 
-<h2>##W16 Final Remarks</h2>
+<h1>W16 Final Remarks</h1>
 The game started out very bare, and needed a lot of improvement. We are
 thankful for the previous group doing most of the GUI legwork for the basics of the
 game. As it stands the game is currently mostly functional and can be played fairly well.
