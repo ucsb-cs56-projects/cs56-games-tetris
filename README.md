@@ -61,14 +61,22 @@ Best,
 # F17 Final Remarks
 The core of the project had been made when we started contributing. Besides fixing some bugs and adding features, the main problems were in the organization of the code. The TetrisBoard.java file contained all of the music, controls, and menu panels. Major changes are listed below, some of which are incomplete but give a sense of direction of where we wanted to take the project.
 
+Best of luck!
+
+Jesmar and Matthew
+
 ### NEW FEATURES:
 - Defeat screen window pops out when losing.
 - Main menu button now available in the side panel.
+- Tetris board is now resizable.
+- Backgroud color changed.
 
 ### MAJOR CHANGES:
 - Some menus got refactored into their own classes outside of the TetrisBoard. These menus include the main menu and difficulty menu. We refactored the side panel but experienced some resizing issues when using this refactored panel. For example, the buttons would not resize properly and the text in them would have tracing ellipses (i.e. Main Men...). The ref
 
 - CardLayout was implemented so that contributors did not have to keep track of panel visibility. Prior to this, panel visibilty would have to be set when changing panels (i.e. .setVisible(true)). This also helped reduce code to a single .show() member function to show the desired panel. There is still a case where visibilty must be set when clicking on the rules button on the side menu.
+
+- Made a class whose purpose is to take care of block creation. An integer is used to determine the desired block.
 
 ### SUGGESTED STEPS:
 1. Try to refactor the side menu panel and the rules panel (appears when clicking the rules button).
