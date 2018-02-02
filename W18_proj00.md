@@ -8,4 +8,6 @@ b) As a user, I can change the difficulty of the game. As a user, I can pause th
 
 c) The software runs, and the game is playable. However, there are small bugs where the block just splits apart. 
 
-d) As a user, I can see more overall asthetic user interface.
+d) As a user, I can see more overall asthetic user interface. As a user, I can see a leaderboard of the highest scores.
+
+e) 
